@@ -87,7 +87,6 @@
 		D745059C1A63CB0C00A39FB7 /* RosyWriterCPURenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74505951A63B0F100A39FB7 /* RosyWriterCPURenderer.swift */; };
 		D745059E1A63CB7600A39FB7 /* RosyWriterOpenCVRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D745059D1A63CB7600A39FB7 /* RosyWriterOpenCVRenderer.swift */; };
 		D7667A7F1A6FDBFA0028C007 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7667A7E1A6FDBFA0028C007 /* AssetsLibrary.framework */; };
-		D7667A801A6FDC100028C007 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7667A7E1A6FDBFA0028C007 /* AssetsLibrary.framework */; };
 		D7667A811A6FDC100028C007 /* AssetsLibrary.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7667A7E1A6FDBFA0028C007 /* AssetsLibrary.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7B915C41A77BFCE002949C6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7667A7E1A6FDBFA0028C007 /* AssetsLibrary.framework */; };
 		D7B915C51A77BFCE002949C6 /* AssetsLibrary.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7667A7E1A6FDBFA0028C007 /* AssetsLibrary.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -108,10 +107,6 @@
 		D7F661001A79199100C16933 /* CMTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660F91A79199100C16933 /* CMTime+.swift */; };
 		D7F661011A79199100C16933 /* CMTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660F91A79199100C16933 /* CMTime+.swift */; };
 		D7F661021A79199100C16933 /* CMTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660F91A79199100C16933 /* CMTime+.swift */; };
-		D7F661031A79199100C16933 /* empty_struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FA1A79199100C16933 /* empty_struct.swift */; };
-		D7F661041A79199100C16933 /* empty_struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FA1A79199100C16933 /* empty_struct.swift */; };
-		D7F661051A79199100C16933 /* empty_struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FA1A79199100C16933 /* empty_struct.swift */; };
-		D7F661061A79199100C16933 /* empty_struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FA1A79199100C16933 /* empty_struct.swift */; };
 		D7F661071A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
 		D7F661081A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
 		D7F661091A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
@@ -204,7 +199,6 @@
 		D7C1683D1A3336B8008A887F /* RosyWriterOpenGLRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterOpenGLRenderer.swift; sourceTree = "<group>"; };
 		D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterAppDelegate.swift; sourceTree = "<group>"; };
 		D7F660F91A79199100C16933 /* CMTime+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMTime+.swift"; path = "Utilities/CMTime+.swift"; sourceTree = "<group>"; };
-		D7F660FA1A79199100C16933 /* empty_struct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = empty_struct.swift; path = Utilities/empty_struct.swift; sourceTree = "<group>"; };
 		D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FourCharCode+StringLiteralConvertible.swift"; path = "Utilities/FourCharCode+StringLiteralConvertible.swift"; sourceTree = "<group>"; };
 		D7F660FC1A79199100C16933 /* NSDictionaryConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSDictionaryConvertible.swift; path = Utilities/NSDictionaryConvertible.swift; sourceTree = "<group>"; };
 		D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NumTypes+Conversion.swift"; path = "Utilities/NumTypes+Conversion.swift"; sourceTree = "<group>"; };
@@ -242,7 +236,6 @@
 				1FCCE65919BA80A5009D7A6B /* CoreGraphics.framework in Frameworks */,
 				1FCCE65A19BA80A5009D7A6B /* OpenGLES.framework in Frameworks */,
 				1FCCE65C19BA80A5009D7A6B /* AVFoundation.framework in Frameworks */,
-				D7667A801A6FDC100028C007 /* AssetsLibrary.framework in Frameworks */,
 				1FCCE65D19BA80A5009D7A6B /* UIKit.framework in Frameworks */,
 				1FCCE65E19BA80A5009D7A6B /* Foundation.framework in Frameworks */,
 			);
@@ -397,7 +390,6 @@
 			isa = PBXGroup;
 			children = (
 				D7F660F91A79199100C16933 /* CMTime+.swift */,
-				D7F660FA1A79199100C16933 /* empty_struct.swift */,
 				D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */,
 				D7F660FC1A79199100C16933 /* NSDictionaryConvertible.swift */,
 				D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */,
@@ -487,7 +479,7 @@
 		6F90DDCC1395CAAA00125BDA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0630;
 			};
 			buildConfigurationList = 6F90DDCF1395CAAA00125BDA /* Build configuration list for PBXProject "RosyWriter" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -566,7 +558,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F661051A79199100C16933 /* empty_struct.swift in Sources */,
 				D70B9B291A6AD62500111A9B /* RosyWriterRenderer.swift in Sources */,
 				D7C0A2B31A6BF85A009BBAF1 /* RosyWriterViewController.swift in Sources */,
 				D7F661151A79199100C16933 /* ObjC.swift in Sources */,
@@ -587,7 +578,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F661041A79199100C16933 /* empty_struct.swift in Sources */,
 				D70B9B281A6AD62400111A9B /* RosyWriterRenderer.swift in Sources */,
 				D7C0A2B21A6BF859009BBAF1 /* RosyWriterViewController.swift in Sources */,
 				D7F661141A79199100C16933 /* ObjC.swift in Sources */,
@@ -608,7 +598,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F661061A79199100C16933 /* empty_struct.swift in Sources */,
 				D70B9B2A1A6AD62600111A9B /* RosyWriterRenderer.swift in Sources */,
 				D7C0A2B41A6BF85B009BBAF1 /* RosyWriterViewController.swift in Sources */,
 				D7F661161A79199100C16933 /* ObjC.swift in Sources */,
@@ -639,7 +628,6 @@
 				D7C1683E1A3336B8008A887F /* RosyWriterOpenGLRenderer.swift in Sources */,
 				D70B9B1A1A6A8D6100111A9B /* OpenGLPixelBufferView.swift in Sources */,
 				D74505881A63979C00A39FB7 /* ShaderUtilities.swift in Sources */,
-				D7F661031A79199100C16933 /* empty_struct.swift in Sources */,
 				D72F7DCE1A647935005F468E /* RosyWriterRenderer.swift in Sources */,
 				D7C0A2B51A6BF867009BBAF1 /* RosyWriterCapturePipeline.swift in Sources */,
 				D7F661071A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */,

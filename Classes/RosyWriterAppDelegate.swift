@@ -60,6 +60,6 @@ import UIKit
 @objc(RosyWriterAppDelegate)
 class RosyWriterAppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow!
+    var window: UIWindow?
 
 }

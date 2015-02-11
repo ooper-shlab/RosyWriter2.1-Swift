@@ -91,7 +91,7 @@ class OpenGLPixelBufferView: UIView {
     private var _program: GLuint = 0
     private var _frame: GLint = 0
     
-    class var layerClass: AnyClass {
+    override class func layerClass() -> AnyClass {
         return CAEAGLLayer.self
     }
     
@@ -112,7 +112,7 @@ class OpenGLPixelBufferView: UIView {
         }
         
         // Initialize OpenGL ES 2
-        let eaglLayer = self.layer as CAEAGLLayer
+        let eaglLayer = self.layer as! CAEAGLLayer
         eaglLayer.opaque = true
         eaglLayer.drawableProperties = [kEAGLDrawablePropertyRetainedBacking: false,
             kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8]
@@ -138,7 +138,7 @@ class OpenGLPixelBufferView: UIView {
         glGenRenderbuffers(1, &_colorBufferHandle)
         glBindRenderbuffer(GL_RENDERBUFFER.ui, _colorBufferHandle)
         
-        _oglContext.renderbufferStorage(GL_RENDERBUFFER.l, fromDrawable: self.layer as CAEAGLLayer)
+        _oglContext.renderbufferStorage(GL_RENDERBUFFER.l, fromDrawable: self.layer as! CAEAGLLayer)
         
         glGetRenderbufferParameteriv(GL_RENDERBUFFER.ui, GL_RENDERBUFFER_WIDTH.ui, &_width)
         glGetRenderbufferParameteriv(GL_RENDERBUFFER.ui, GL_RENDERBUFFER_HEIGHT.ui, &_height)

@@ -55,7 +55,7 @@
  */
 
 
-import UIkit
+import UIKit
 
 import CoreMedia
 
@@ -147,7 +147,7 @@ class MovieRecorder: NSObject {
     
     // Only one audio and video track each are allowed.
     // see AVVideoSettings.h for settings keys/values
-    func addVideoTrackWithSourceFormatDescription(formatDescription: CMFormatDescription, transform: CGAffineTransform, settings videoSettings: NSDictionary) {
+    func addVideoTrackWithSourceFormatDescription(formatDescription: CMFormatDescription, transform: CGAffineTransform, settings videoSettings: [NSObject : AnyObject]) {
         
         synchronized(self) {
             if self._status != .Idle {
@@ -165,7 +165,7 @@ class MovieRecorder: NSObject {
     }
     
     // see AVAudioSettings.h for settings keys/values
-    func addAudioTrackWithSourceFormatDescription(formatDescription: CMFormatDescription, settings audioSettings: NSDictionary) {
+    func addAudioTrackWithSourceFormatDescription(formatDescription: CMFormatDescription, settings audioSettings: [NSObject : AnyObject]) {
         
         synchronized(self) {
             if self._status != .Idle {
@@ -255,7 +255,7 @@ class MovieRecorder: NSObject {
         var umSampleBuffer: Unmanaged<CMSampleBuffer>? = nil
         var sampleBuffer: CMSampleBuffer? = nil
         
-        var timingInfo: CMSampleTimingInfo = empty_struct()
+        var timingInfo: CMSampleTimingInfo = CMSampleTimingInfo()
         timingInfo.duration = kCMTimeInvalid
         timingInfo.decodeTimeStamp = kCMTimeInvalid
         timingInfo.presentationTimeStamp = presentationTime
@@ -431,7 +431,7 @@ class MovieRecorder: NSObject {
     }
     
     
-    private func setupAssetWriterAudioInputWithSourceFormatDescription(audioFormatDescription: CMFormatDescription?, var settings audioSettings: NSDictionary?, error errorOut: NSErrorPointer) -> Bool {
+    private func setupAssetWriterAudioInputWithSourceFormatDescription(audioFormatDescription: CMFormatDescription?, var settings audioSettings: [NSObject : AnyObject]?, error errorOut: NSErrorPointer) -> Bool {
         if audioSettings == nil {
             NSLog("No audio settings provided, using default settings")
             audioSettings = [AVFormatIDKey : kAudioFormatMPEG4AAC]
@@ -513,7 +513,7 @@ class MovieRecorder: NSObject {
     private class func cannotSetupInputError() -> NSError {
         let localizedDescription = NSLocalizedString("Recording cannot be started", comment: "")
         let localizedFailureReason = NSLocalizedString("Cannot setup asset writer input.", comment: "")
-        let errorDict: NSDictionary = [NSLocalizedDescriptionKey : localizedDescription,
+        let errorDict: [NSObject : AnyObject] = [NSLocalizedDescriptionKey : localizedDescription,
             NSLocalizedFailureReasonErrorKey: localizedFailureReason]
         return NSError(domain: "com.apple.dts.samplecode", code: 0, userInfo: errorDict)
     }

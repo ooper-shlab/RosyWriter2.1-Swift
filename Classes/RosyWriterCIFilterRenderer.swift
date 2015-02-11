@@ -109,7 +109,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         let sourceImage = CIImage(CVPixelBuffer: pixelBuffer, options: nil)
         
         _rosyFilter.setValue(sourceImage, forKey: kCIInputImageKey)
-        let filteredImage = _rosyFilter.valueForKey(kCIOutputImageKey) as CIImage?
+        let filteredImage = _rosyFilter.valueForKey(kCIOutputImageKey) as! CIImage?
         
         let err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, _bufferPool, &umRenderedOutputPixelBuffer)
         if err != 0 {
@@ -124,7 +124,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         return renderedOutputPixelBuffer
     }
     
-    var outputFormatDescription: CMFormatDescriptionRef! {
+    var outputFormatDescription: CMFormatDescription? {
         return _outputFormatDescription
     }
     

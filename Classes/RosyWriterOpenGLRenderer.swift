@@ -260,7 +260,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
         return dstPixelBuffer
     }
     
-    func outputFormatDescription() -> CMFormatDescriptionRef! {
+    var outputFormatDescription: CMFormatDescription? {
         return _outputFormatDescription
     }
     

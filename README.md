@@ -2,6 +2,8 @@
 
 Translated by OOPer in cooperation with shlab.jp, on 2015/1/18.
 
+Adapted to Swift 1.2 reuquirements on 2015/2/11.
+
 Based on
 <https://developer.apple.com/library/ios/samplecode/RosyWriter/Introduction/Intro.html#//apple_ref/doc/uid/DTS40011110>
 2014-10-09.

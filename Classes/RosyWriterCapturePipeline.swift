@@ -381,7 +381,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             } else if notification.name == AVCaptureSessionRuntimeErrorNotification {
                 self.captureSessionDidStopRunning()
                 
-                let error = notification.userInfo![AVCaptureSessionErrorKey]! as NSError
+                let error = notification.userInfo![AVCaptureSessionErrorKey]! as! NSError
                 if error.code == AVError.DeviceIsNotAvailableInBackground.rawValue {
                     NSLog("device not available in background")
                     
@@ -417,7 +417,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         synchronized(self) {
             if self.delegate != nil {
-                dispatch_async(self._delegateCallbackQueue) {
+                dispatch_async(self._delegateCallbackQueue!) {
                     autoreleasepool {
                         self.delegate!.capturePipeline(self, didStopRunningWithError: error)
                     }
@@ -511,7 +511,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         // We have run out of buffers.
         // Tell the delegate so that it can flush any cached buffers.
         if self.delegate != nil {
-            dispatch_async(_delegateCallbackQueue) {
+            dispatch_async(_delegateCallbackQueue!) {
                 autoreleasepool {
                     self.delegate!.capturePipelineDidRunOutOfPreviewBuffers(self)
                 }
@@ -541,7 +541,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             // Keep preview latency low by dropping stale frames that have not been picked up by the delegate yet
             self.currentPreviewPixelBuffer = previewPixelBuffer
             
-            dispatch_async(_delegateCallbackQueue) {
+            dispatch_async(_delegateCallbackQueue!) {
                 autoreleasepool {
                     var currentPreviewPixelBuffer: CVPixelBuffer? = nil
                     synchronized(self) {
@@ -733,7 +733,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
         
         if delegateClosure != nil {
-            dispatch_async(_delegateCallbackQueue) {
+            dispatch_async(_delegateCallbackQueue!) {
                 autoreleasepool {
                     delegateClosure!()
                 }

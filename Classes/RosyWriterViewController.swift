@@ -147,11 +147,11 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         self.capturePipeline.stopRunning()
     }
     
-    var supportedInterfaceOrientations: UInt {
-        return UIInterfaceOrientationMask.Portrait.rawValue
+    override func supportedInterfaceOrientations() -> Int {
+        return UIInterfaceOrientationMask.Portrait.rawValue.l
     }
     
-    var prefersStatusBarHidden: Bool {
+    override func prefersStatusBarHidden() -> Bool {
         return true
     }
     
