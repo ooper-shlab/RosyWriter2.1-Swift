@@ -142,7 +142,7 @@ class RosyWriterOpenCVRenderer: NSObject, RosyWriterRenderer {
         let width = CVPixelBufferGetWidth(pixelBuffer)
         let height = CVPixelBufferGetHeight(pixelBuffer)
         let stride = CVPixelBufferGetBytesPerRow(pixelBuffer)
-        let extendedWidth = stride.l / sizeof(UInt32); // each pixel is 4 bytes/32 bits
+        let extendedWidth = stride / sizeof(UInt32); // each pixel is 4 bytes/32 bits
         
         // Since the OpenCV Mat is wrapping the CVPixelBuffer's pixel data, we must do all of our modifications while its base address is locked.
         // If we want to operate on the buffer later, we'll have to do an expensive deep copy of the pixel data, using memcpy or Mat::clone().
@@ -153,8 +153,8 @@ class RosyWriterOpenCVRenderer: NSObject, RosyWriterRenderer {
         var bgraImage = MyCvMat<CV_8UC4_BGRA>(height.i, extendedWidth.i, CV_8UC4, base)
         assert(bgraImage.data == base)
         
-        for y in 0 ..< height.l {
-            for x in 0 ..< width.l {
+        for y in 0 ..< height {
+            for x in 0 ..< width {
                 bgraImage[y, x].g = 0
             }
         }
