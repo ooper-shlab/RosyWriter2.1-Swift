@@ -85,7 +85,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         let dimensions = CMVideoFormatDescriptionGetDimensions(inputFormatDescription)
         
         self.deleteBuffers()
-        if !self.initializeBuffersWithOutputDimensions(dimensions, retainedBufferCountHint: outputRetainedBufferCountHint.ul) {
+        if !self.initializeBuffersWithOutputDimensions(dimensions, retainedBufferCountHint: outputRetainedBufferCountHint) {
             fatalError("Problem preparing renderer.")
         }
         
