@@ -575,7 +575,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             self.outputAudioFormatDescription = formatDescription
             
             synchronized(self) {
-                if self._recordingStatus == .Recording {
+                if _recordingStatus == .Recording {
                     self.recorder.appendAudioSampleBuffer(sampleBuffer)
                 }
             }
@@ -591,7 +591,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         // We must not use the GPU while running in the background.
         // setRenderingEnabled: takes the same lock so the caller can guarantee no GPU usage once the setter returns.
         let returnFlag: Bool = synchronized(_renderer) {
-            if self._renderingEnabled {
+            if _renderingEnabled {
                 let sourcePixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
                 renderedPixelBuffer = self._renderer.copyRenderedPixelBuffer(sourcePixelBuffer)
                 return false
@@ -605,7 +605,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             if renderedPixelBuffer != nil {
                 self.outputPreviewPixelBuffer(renderedPixelBuffer!)
                 
-                if self._recordingStatus == .Recording {
+                if _recordingStatus == .Recording {
                     self.recorder.appendVideoPixelBuffer(renderedPixelBuffer!, withPresentationTime: timestamp)
                 }
                 
@@ -621,7 +621,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     
     func startRecording() {
         synchronized(self) {
-            if self._recordingStatus != .Idle {
+            if _recordingStatus != .Idle {
                 fatalError("Already recording")
             }
             
@@ -649,7 +649,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     
     func stopRecording() {
         let returnFlag: Bool = synchronized(self) {
-            if self._recordingStatus != .Recording {
+            if _recordingStatus != .Recording {
                 return true
             }
             
@@ -665,7 +665,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     
     func movieRecorderDidFinishPreparing(recorder: MovieRecorder) {
         synchronized(self) {
-            if self._recordingStatus != .StartingRecording {
+            if _recordingStatus != .StartingRecording {
                 fatalError("Expected to be in StartingRecording state")
             }
             self.transitionToRecordingStatus(.Recording, error: nil)
@@ -681,7 +681,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     
     func movieRecorderDidFinishRecording(recorder: MovieRecorder) {
         synchronized(self) {
-            if self._recordingStatus != .StoppingRecording {
+            if _recordingStatus != .StoppingRecording {
                 fatalError("Expected to be in StoppingRecording state")
             }
             

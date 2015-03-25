@@ -150,11 +150,11 @@ class MovieRecorder: NSObject {
     func addVideoTrackWithSourceFormatDescription(formatDescription: CMFormatDescription, transform: CGAffineTransform, settings videoSettings: [NSObject : AnyObject]) {
         
         synchronized(self) {
-            if self._status != .Idle {
+            if _status != .Idle {
                 fatalError("Cannot add tracks while not idle")
             }
             
-            if self._videoTrackSourceFormatDescription != nil {
+            if _videoTrackSourceFormatDescription != nil {
                 fatalError("Cannot add more than one video track")
             }
             
@@ -168,11 +168,11 @@ class MovieRecorder: NSObject {
     func addAudioTrackWithSourceFormatDescription(formatDescription: CMFormatDescription, settings audioSettings: [NSObject : AnyObject]) {
         
         synchronized(self) {
-            if self._status != .Idle {
+            if _status != .Idle {
                 fatalError("Cannot add tracks while not idle")
             }
             
-            if self._audioTrackSourceFormatDescription != nil {
+            if _audioTrackSourceFormatDescription != nil {
                 fatalError("Cannot add more than one audio track")
             }
             
@@ -204,7 +204,7 @@ class MovieRecorder: NSObject {
     // Asynchronous, might take several hundred milliseconds. When finished the delegate's recorderDidFinishPreparing: or recorder:didFailWithError: method will be called.
     func prepareToRecord() {
         synchronized(self) {
-            if self._status != .Idle {
+            if _status != .Idle {
                 fatalError("Already prepared, cannot prepare again")
             }
             
@@ -277,7 +277,7 @@ class MovieRecorder: NSObject {
     func finishRecording() {
         synchronized(self) {
             var shouldFinishRecording = false
-            switch self._status {
+            switch _status {
             case .Idle,
             .PreparingToRecord,
             .FinishingRecordingPart1,
@@ -339,7 +339,7 @@ class MovieRecorder: NSObject {
     private func appendSampleBuffer(sampleBuffer: CMSampleBuffer, ofMediaType mediaType: String) {
         
         synchronized(self) {
-            if self._status.rawValue < MovieRecorderStatus.Recording.rawValue {
+            if _status.rawValue < MovieRecorderStatus.Recording.rawValue {
                 fatalError("Not ready to record yet")
             }
         }
