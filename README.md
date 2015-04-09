@@ -2,8 +2,6 @@
 
 Translated by OOPer in cooperation with shlab.jp, on 2015/1/18.
 
-Adapted to Swift 1.2 beta3 on 2015/3/14.
-
 Based on
 <https://developer.apple.com/library/ios/samplecode/RosyWriter/Introduction/Intro.html#//apple_ref/doc/uid/DTS40011110>
 2014-10-09.
@@ -16,5 +14,5 @@ You should not contact to Apple or SHLab(jp) about any faults caused by my trans
 
 ### Build
 
-iOS 8.3 SDK and Xcode 6.3 beta2 or later
+iOS 8.3 SDK and Xcode 6.3
 
