@@ -70,7 +70,7 @@ func CV_MAT_DEPTH(flags: Int32) -> Int32 {
 func CV_MAKETYPE(depth: Int32, cn: Int32) -> Int32 {
     return (CV_MAT_DEPTH(depth) + (((cn)-1) << CV_CN_SHIFT))
 }
-let CV_8UC4 = CV_MAKETYPE(CV_8U,4)
+let CV_8UC4 = CV_MAKETYPE(CV_8U,cn: 4)
 typealias CV_8UC4_BGRA = (b: UInt8, g: UInt8, r: UInt8, a: UInt8)
 
 struct MyCvMat<T> {
@@ -125,7 +125,7 @@ class RosyWriterOpenCVRenderer: NSObject, RosyWriterRenderer {
     
     let operatesInPlace: Bool = true
     
-    let inputPixelFormat: FourCharCode = kCVPixelFormatType_32BGRA.ui
+    let inputPixelFormat: FourCharCode = kCVPixelFormatType_32BGRA
     
     func prepareForInputWithFormatDescription(inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
         // nothing to do, we are stateless

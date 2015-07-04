@@ -83,7 +83,7 @@ private let ATTRIB_TEXTUREPOSITON: GLuint = 1
 @objc(OpenGLPixelBufferView)
 class OpenGLPixelBufferView: UIView {
     private var _oglContext: EAGLContext!
-    private var _textureCache: CVOpenGLESTextureCache!
+    private var _textureCache: CVOpenGLESTextureCache?
     private var _width: GLint = 0
     private var _height: GLint = 0
     private var _frameBufferHandle: GLuint = 0
@@ -105,7 +105,7 @@ class OpenGLPixelBufferView: UIView {
         // Using the native scale of the screen also allows us to render at full quality when using the display zoom feature on iPhone 6/6 Plus.
         
         // Only try to compile this code if we are using the 8.0 or later SDK.
-        if UIScreen.instancesRespondToSelector("nativeScale") {
+        if #available(iOS 8.0, *) {
             self.contentScaleFactor = UIScreen.mainScreen().nativeScale
         } else {
             self.contentScaleFactor = UIScreen.mainScreen().scale
@@ -143,7 +143,7 @@ class OpenGLPixelBufferView: UIView {
         glGetRenderbufferParameteriv(GL_RENDERBUFFER.ui, GL_RENDERBUFFER_WIDTH.ui, &_width)
         glGetRenderbufferParameteriv(GL_RENDERBUFFER.ui, GL_RENDERBUFFER_HEIGHT.ui, &_height)
         
-        bail: do {
+        bail: repeat {
             glFramebufferRenderbuffer(GL_FRAMEBUFFER.ui, GL_COLOR_ATTACHMENT0.ui, GL_RENDERBUFFER.ui, _colorBufferHandle)
             if glCheckFramebufferStatus(GL_FRAMEBUFFER.ui) != GL_FRAMEBUFFER_COMPLETE.ui {
                 NSLog("Failure with framebuffer generation")
@@ -152,20 +152,18 @@ class OpenGLPixelBufferView: UIView {
             }
             
             //  Create a new CVOpenGLESTexture cache
-            var textureCache: Unmanaged<CVOpenGLESTextureCache>? = nil
-            let err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, _oglContext, nil, &textureCache)
+            let err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, _oglContext as CVEAGLContext, nil, &_textureCache)
             if err != 0 {
                 NSLog("Error at CVOpenGLESTextureCacheCreate %d", err)
                 success = false
                 break bail
             }
-            _textureCache = textureCache!.takeRetainedValue()
             
             // attributes
             let attribLocation: [GLuint] = [
                 ATTRIB_VERTEX, ATTRIB_TEXTUREPOSITON,
             ]
-            var attribName: [String] = [
+            let attribName: [String] = [
                 "position", "texturecoordinate",
             ]
             
@@ -247,9 +245,9 @@ class OpenGLPixelBufferView: UIView {
         // Create a CVOpenGLESTexture from a CVPixelBufferRef
         let frameWidth = CVPixelBufferGetWidth(pixelBuffer)
         let frameHeight = CVPixelBufferGetHeight(pixelBuffer)
-        var umTexture: Unmanaged<CVOpenGLESTexture>? = nil
-        let err = CVOpenGLESTextureCacheCreateTextureFromImage( kCFAllocatorDefault,
-            _textureCache,
+        var texture: CVOpenGLESTexture? = nil
+        let err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+            _textureCache!,
             pixelBuffer,
             nil,
             GL_TEXTURE_2D.ui,
@@ -259,14 +257,13 @@ class OpenGLPixelBufferView: UIView {
             GL_BGRA.ui,
             GL_UNSIGNED_BYTE.ui,
             0,
-            &umTexture)
+            &texture)
         
         
-        if umTexture == nil || err != 0 {
+        if texture == nil || err != 0 {
             NSLog("CVOpenGLESTextureCacheCreateTextureFromImage failed (error: %d)", err)
             return
         }
-        var texture: CVOpenGLESTexture = umTexture!.takeRetainedValue()
         
         // Set the view port to the entire view
         glBindFramebuffer(GL_FRAMEBUFFER.ui, _frameBufferHandle)
@@ -274,7 +271,7 @@ class OpenGLPixelBufferView: UIView {
         
         glUseProgram(_program)
         glActiveTexture(GL_TEXTURE0.ui)
-        glBindTexture(CVOpenGLESTextureGetTarget(texture), CVOpenGLESTextureGetName(texture))
+        glBindTexture(CVOpenGLESTextureGetTarget(texture!), CVOpenGLESTextureGetName(texture!))
         glUniform1i(_frame, 0)
         
         // Set texture parameters
@@ -314,7 +311,7 @@ class OpenGLPixelBufferView: UIView {
         glBindRenderbuffer(GL_RENDERBUFFER.ui, _colorBufferHandle)
         _oglContext.presentRenderbuffer(GL_RENDERBUFFER.l)
         
-        glBindTexture(CVOpenGLESTextureGetTarget(texture), 0)
+        glBindTexture(CVOpenGLESTextureGetTarget(texture!), 0)
         glBindTexture(GL_TEXTURE_2D.ui, 0)
         
         if oldContext !== _oglContext {
@@ -324,7 +321,7 @@ class OpenGLPixelBufferView: UIView {
     
     func flushPixelBufferCache() {
         if _textureCache != nil {
-            CVOpenGLESTextureCacheFlush(_textureCache, 0)
+            CVOpenGLESTextureCacheFlush(_textureCache!, 0)
         }
     }
     

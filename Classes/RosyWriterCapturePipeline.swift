@@ -108,7 +108,7 @@ private enum RosyWriterRecordingStatus: Int {
 }
 
 #if LOG_STATUS_TRANSITIONS
-    extension RosyWriterRecordingStatus: Printable {
+    extension RosyWriterRecordingStatus: CustomStringConvertible {
         var description: String {
             switch self {
             case .Idle:
@@ -141,8 +141,8 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     private var _running: Bool = false
     private var _startCaptureSessionOnEnteringForeground: Bool = false
     private var _applicationWillEnterForegroundNotificationObserver: AnyObject?
-    private var _videoCompressionSettings: [NSObject: AnyObject] = [:]
-    private var _audioCompressionSettings: [NSObject: AnyObject] = [:]
+    private var _videoCompressionSettings: [String : AnyObject] = [:]
+    private var _audioCompressionSettings: [String : AnyObject] = [:]
     
     private var _sessionQueue: dispatch_queue_t
     private var _videoDataOutputQueue: dispatch_queue_t
@@ -172,7 +172,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     override init() {
         recordingOrientation = .Portrait
         
-        _recordingURL = NSURL(fileURLWithPath: String.pathWithComponents([NSTemporaryDirectory(), "Movie.MOV"]))!
+        _recordingURL = NSURL(fileURLWithPath: String.pathWithComponents([NSTemporaryDirectory(), "Movie.MOV"]))
         
         _sessionQueue = dispatch_queue_create("com.apple.sample.capturepipeline.session", DISPATCH_QUEUE_SERIAL)
         
@@ -269,7 +269,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         #if RECORD_AUDIO
             /* Audio */
             let audioDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
-            let audioIn = AVCaptureDeviceInput(device: audioDevice, error: nil)
+            let audioIn = try! AVCaptureDeviceInput(device: audioDevice)
             if _captureSession!.canAddInput(audioIn) {
                 _captureSession!.addInput(audioIn)
             }
@@ -291,7 +291,12 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             fatalError("AVCaptureDevice of type AVMediaTypeVideo unavailabel!")
         }
         _videoDevice = videoDevice
-        let videoIn = AVCaptureDeviceInput(device: videoDevice, error: nil)
+        let videoIn: AVCaptureDeviceInput!
+        do {
+            videoIn = try AVCaptureDeviceInput(device: videoDevice)
+        } catch _ {
+            videoIn = nil
+        }
         if _captureSession!.canAddInput(videoIn) {
             _captureSession!.addInput(videoIn)
         }
@@ -336,19 +341,21 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         frameDuration = CMTimeMake(1, frameRate)
         
         var error: NSError? = nil
-        if videoDevice.lockForConfiguration(&error) {
+        do {
+            try videoDevice.lockForConfiguration()
             videoDevice.activeVideoMaxFrameDuration = frameDuration
             videoDevice.activeVideoMinFrameDuration = frameDuration
             videoDevice.unlockForConfiguration()
-        } else {
+        } catch let error1 as NSError {
+            error = error1
             NSLog("videoDevice lockForConfiguration returned error %@", error!)
         }
         
         // Get the recommended compression settings after configuring the session/device.
         #if RECORD_AUDIO
-            _audioCompressionSettings = audioOut.recommendedAudioSettingsForAssetWriterWithOutputFileType(AVFileTypeQuickTimeMovie)
+            _audioCompressionSettings = audioOut.recommendedAudioSettingsForAssetWriterWithOutputFileType(AVFileTypeQuickTimeMovie) as! [String: AnyObject]
         #endif
-        _videoCompressionSettings = videoOut.recommendedVideoSettingsForAssetWriterWithOutputFileType(AVFileTypeQuickTimeMovie)
+        _videoCompressionSettings = videoOut.recommendedVideoSettingsForAssetWriterWithOutputFileType(AVFileTypeQuickTimeMovie) as! [String: AnyObject]
         
         self.videoOrientation = _videoConnection!.videoOrientation
         
@@ -567,7 +574,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
                 // Don't render the first sample buffer.
                 // This gives us one frame interval (33ms at 30fps) for setupVideoPipelineWithInputFormatDescription: to complete.
                 // Ideally this would be done asynchronously to ensure frames don't back up on slower devices.
-                self.setupVideoPipelineWithInputFormatDescription(formatDescription)
+                self.setupVideoPipelineWithInputFormatDescription(formatDescription!)
             } else {
                 self.renderVideoSampleBuffer(sampleBuffer)
             }
@@ -694,7 +701,10 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         let library = ALAssetsLibrary()
         library.writeVideoAtPathToSavedPhotosAlbum(_recordingURL) {assetURL, error in
             
-            NSFileManager.defaultManager().removeItemAtURL(self._recordingURL, error: nil)
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(self._recordingURL)
+            } catch _ {
+            }
             
             synchronized(self) {
                 if self._recordingStatus != .StoppingRecording {

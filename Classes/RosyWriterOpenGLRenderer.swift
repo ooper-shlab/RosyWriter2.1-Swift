@@ -138,7 +138,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
         }
         
         let srcDimensions = CMVideoDimensions(width: Int32(CVPixelBufferGetWidth(pixelBuffer)), height: Int32(CVPixelBufferGetHeight(pixelBuffer)))
-        let dstDimensions = CMVideoFormatDescriptionGetDimensions(_outputFormatDescription)
+        let dstDimensions = CMVideoFormatDescriptionGetDimensions(_outputFormatDescription!)
         if srcDimensions.width != dstDimensions.width || srcDimensions.height != dstDimensions.height {
             fatalError("Invalid pixel buffer dimensions")
         }
@@ -155,16 +155,13 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
         }
         
         var err: CVReturn = noErr
-        var uSrcTexture: Unmanaged<CVOpenGLESTexture>? = nil
         var srcTexture: CVOpenGLESTexture? = nil
-        var uDstTexture: Unmanaged<CVOpenGLESTexture>? = nil
         var dstTexture: CVOpenGLESTexture? = nil
-        var uDstPixelBuffer: Unmanaged<CVPixelBuffer>? = nil
         var dstPixelBuffer: CVPixelBuffer? = nil
         bail: do {
             
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                _textureCache,
+                _textureCache!,
                 pixelBuffer,
                 nil,
                 GL_TEXTURE_2D.ui,
@@ -174,32 +171,30 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
                 GL_BGRA.ui,
                 GL_UNSIGNED_BYTE.ui,
                 0,
-                &uSrcTexture)
-            if uSrcTexture == nil || err != 0 {
+                &srcTexture)
+            if srcTexture == nil || err != 0 {
                 NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err)
                 break bail
             }
-            srcTexture = uSrcTexture!.takeRetainedValue()
             
-            err = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool, _bufferPoolAuxAttributes, &uDstPixelBuffer)
-            if err == kCVReturnWouldExceedAllocationThreshold.value {
+            err = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool!, _bufferPoolAuxAttributes, &dstPixelBuffer)
+            if err == kCVReturnWouldExceedAllocationThreshold {
                 // Flush the texture cache to potentially release the retained buffers and try again to create a pixel buffer
-                CVOpenGLESTextureCacheFlush(_renderTextureCache, 0)
-                err = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool, _bufferPoolAuxAttributes, &uDstPixelBuffer)
+                CVOpenGLESTextureCacheFlush(_renderTextureCache!, 0)
+                err = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool!, _bufferPoolAuxAttributes, &dstPixelBuffer)
             }
             if err != 0 {
-                if err == kCVReturnWouldExceedAllocationThreshold.value {
+                if err == kCVReturnWouldExceedAllocationThreshold {
                     NSLog("Pool is out of buffers, dropping frame")
                 } else {
                     NSLog("Error at CVPixelBufferPoolCreatePixelBuffer %d", err)
                 }
                 break bail
             }
-            dstPixelBuffer = uDstPixelBuffer!.takeRetainedValue()
             
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                _renderTextureCache,
-                dstPixelBuffer,
+                _renderTextureCache!,
+                dstPixelBuffer!,
                 nil,
                 GL_TEXTURE_2D.ui,
                 GL_RGBA,
@@ -208,12 +203,11 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
                 GL_BGRA.ui,
                 GL_UNSIGNED_BYTE.ui,
                 0,
-                &uDstTexture)
-            if uDstTexture == nil || err != 0 {
+                &dstTexture)
+            if dstTexture == nil || err != 0 {
                 NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err)
                 break bail
             }
-            dstTexture = uDstTexture!.takeRetainedValue()
             
             glBindFramebuffer(GL_FRAMEBUFFER.ui, _offscreenBufferHandle)
             glViewport(0, 0, srcDimensions.width, srcDimensions.height)
@@ -222,17 +216,17 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             
             // Set up our destination pixel buffer as the framebuffer's render target.
             glActiveTexture(GL_TEXTURE0.ui)
-            glBindTexture(CVOpenGLESTextureGetTarget(dstTexture), CVOpenGLESTextureGetName(dstTexture))
+            glBindTexture(CVOpenGLESTextureGetTarget(dstTexture!), CVOpenGLESTextureGetName(dstTexture!))
             glTexParameteri(GL_TEXTURE_2D.ui, GL_TEXTURE_MIN_FILTER.ui, GL_LINEAR)
             glTexParameteri(GL_TEXTURE_2D.ui, GL_TEXTURE_MAG_FILTER.ui, GL_LINEAR)
             glTexParameteri(GL_TEXTURE_2D.ui, GL_TEXTURE_WRAP_S.ui, GL_CLAMP_TO_EDGE)
             glTexParameteri(GL_TEXTURE_2D.ui, GL_TEXTURE_WRAP_T.ui, GL_CLAMP_TO_EDGE)
-            glFramebufferTexture2D(GL_FRAMEBUFFER.ui, GL_COLOR_ATTACHMENT0.ui, CVOpenGLESTextureGetTarget(dstTexture), CVOpenGLESTextureGetName(dstTexture), 0)
+            glFramebufferTexture2D(GL_FRAMEBUFFER.ui, GL_COLOR_ATTACHMENT0.ui, CVOpenGLESTextureGetTarget(dstTexture!), CVOpenGLESTextureGetName(dstTexture!), 0)
             
             
             // Render our source pixel buffer.
             glActiveTexture(GL_TEXTURE1.ui)
-            glBindTexture(CVOpenGLESTextureGetTarget(srcTexture), CVOpenGLESTextureGetName(srcTexture))
+            glBindTexture(CVOpenGLESTextureGetTarget(srcTexture!), CVOpenGLESTextureGetName(srcTexture!))
             glUniform1i(_frame, 1)
             
             glTexParameteri(GL_TEXTURE_2D.ui, GL_TEXTURE_MIN_FILTER.ui, GL_LINEAR)
@@ -247,13 +241,13 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             
             glDrawArrays(GL_TRIANGLE_STRIP.ui, 0, 4)
             
-            glBindTexture(CVOpenGLESTextureGetTarget(srcTexture), 0)
-            glBindTexture(CVOpenGLESTextureGetTarget(dstTexture), 0)
+            glBindTexture(CVOpenGLESTextureGetTarget(srcTexture!), 0)
+            glBindTexture(CVOpenGLESTextureGetTarget(dstTexture!), 0)
             
             // Make sure that outstanding GL commands which render to the destination pixel buffer have been submitted.
             // AVAssetWriter, AVSampleBufferDisplayLayer, and GL will block until the rendering is complete when sourcing from this pixel buffer.
             glFlush()
-        } while false   //bail:
+        } //bail:
         if oldContext !== _oglContext {
             EAGLContext.setCurrentContext(oldContext)
         }
@@ -282,29 +276,25 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
         glBindFramebuffer(GL_FRAMEBUFFER.ui, _offscreenBufferHandle)
         
         bail: do { //breakable block
-            var uTextureCache: Unmanaged<CVOpenGLESTextureCache>? = nil
-            var err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, _oglContext, nil, &uTextureCache)
+            var err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, _oglContext, nil, &_textureCache)
             if err != 0 {
                 NSLog("Error at CVOpenGLESTextureCacheCreate %d", err)
                 success = false
                 break bail
             }
-            _textureCache = uTextureCache!.takeRetainedValue()
             
-            var uRenderTextureCache: Unmanaged<CVOpenGLESTextureCache>? = nil
-            err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, _oglContext, nil, &uRenderTextureCache)
+            err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, _oglContext, nil, &_renderTextureCache)
             if err != 0 {
                 NSLog("Error at CVOpenGLESTextureCacheCreate %d", err)
                 success = false
                 break bail
             }
-            _renderTextureCache = uRenderTextureCache!.takeRetainedValue()
             
             // Load vertex and fragment shaders
-            var attribLocation: [GLuint] = [
+            let attribLocation: [GLuint] = [
                 ATTRIB_VERTEX.ui, ATTRIB_TEXTUREPOSITON.ui,
             ]
-            var attribName: [String] = [
+            let attribName: [String] = [
                 "position", "texturecoordinate",
             ]
             var uniformLocations: [GLint] = []
@@ -336,17 +326,17 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             preallocatePixelBuffersInPool(_bufferPool!, _bufferPoolAuxAttributes!)
             
             var outputFormatDescription: Unmanaged<CMFormatDescription>? = nil
-            var testPixelBuffer: Unmanaged<CVPixelBuffer>? = nil
-            CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool, _bufferPoolAuxAttributes, &testPixelBuffer)
+            var testPixelBuffer: CVPixelBuffer? = nil
+            CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool!, _bufferPoolAuxAttributes, &testPixelBuffer)
             if testPixelBuffer == nil {
                 NSLog("Problem creating a pixel buffer.")
                 success = false
                 break bail
             }
-            CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, testPixelBuffer!.takeRetainedValue(), &outputFormatDescription)
+            CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, testPixelBuffer!, &outputFormatDescription)
             _outputFormatDescription = outputFormatDescription?.takeRetainedValue()
             
-        } while false //bail:
+        } //bail:
         if !success {
             self.deleteBuffers()
         }
@@ -394,13 +384,13 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
     private class func readFile(name: String) -> NSString {
         
         let path = NSBundle.mainBundle().pathForResource(name, ofType: nil)!
-        let source = NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)!
+        let source = try! NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
         return source
     }
     
 }
-private func createPixelBufferPool(width: Int32, height: Int32, pixelFormat: FourCharCode, maxBufferCount: Int32) -> CVPixelBufferPoolRef? {
-    var outputPool: Unmanaged<CVPixelBufferPool>? = nil
+private func createPixelBufferPool(width: Int32, _ height: Int32, _ pixelFormat: FourCharCode, _ maxBufferCount: Int32) -> CVPixelBufferPoolRef? {
+    var outputPool: CVPixelBufferPool? = nil
     
     let sourcePixelBufferOptions: NSDictionary = [kCVPixelBufferPixelFormatTypeKey.ns: pixelFormat.n,
         kCVPixelBufferWidthKey.ns: width.n,
@@ -412,7 +402,7 @@ private func createPixelBufferPool(width: Int32, height: Int32, pixelFormat: Fou
     
     CVPixelBufferPoolCreate(kCFAllocatorDefault, pixelBufferPoolOptions, sourcePixelBufferOptions, &outputPool)
     
-    return outputPool?.takeRetainedValue()
+    return outputPool
 }
 
 private func createPixelBufferPoolAuxAttributes(maxBufferCount: size_t) -> NSDictionary {
@@ -420,18 +410,18 @@ private func createPixelBufferPoolAuxAttributes(maxBufferCount: size_t) -> NSDic
     return [kCVPixelBufferPoolAllocationThresholdKey.ns: maxBufferCount]
 }
 
-private func preallocatePixelBuffersInPool(pool: CVPixelBufferPool, auxAttributes: NSDictionary) {
+private func preallocatePixelBuffersInPool(pool: CVPixelBufferPool, _ auxAttributes: NSDictionary) {
     // Preallocate buffers in the pool, since this is for real-time display/capture
     let pixelBuffers = NSMutableArray()
     while true {
-        var pixelBuffer: Unmanaged<CVPixelBuffer>? = nil
+        var pixelBuffer: CVPixelBuffer? = nil
         let err = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, pool, auxAttributes, &pixelBuffer)
         
-        if err == kCVReturnWouldExceedAllocationThreshold.value {
+        if err == kCVReturnWouldExceedAllocationThreshold {
             break
         }
         assert(err == noErr)
         
-        pixelBuffers.addObject(pixelBuffer!.takeRetainedValue())
+        pixelBuffers.addObject(pixelBuffer!)
     }
 }

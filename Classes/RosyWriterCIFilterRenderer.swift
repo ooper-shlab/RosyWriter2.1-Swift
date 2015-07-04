@@ -78,7 +78,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
     
     let operatesInPlace: Bool = false
     
-    let inputPixelFormat: FourCharCode = kCVPixelFormatType_32BGRA.ui
+    let inputPixelFormat: FourCharCode = kCVPixelFormatType_32BGRA
     
     func prepareForInputWithFormatDescription(inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
         // The input and output dimensions are the same. This renderer doesn't do any scaling.
@@ -103,7 +103,6 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
     }
     
     func copyRenderedPixelBuffer(pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer! {
-        var umRenderedOutputPixelBuffer: Unmanaged<CVPixelBuffer>? = nil
         var renderedOutputPixelBuffer: CVPixelBuffer? = nil
         
         let sourceImage = CIImage(CVPixelBuffer: pixelBuffer, options: nil)
@@ -111,14 +110,13 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         _rosyFilter.setValue(sourceImage, forKey: kCIInputImageKey)
         let filteredImage = _rosyFilter.valueForKey(kCIOutputImageKey) as! CIImage?
         
-        let err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, _bufferPool, &umRenderedOutputPixelBuffer)
+        let err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, _bufferPool, &renderedOutputPixelBuffer)
         if err != 0 {
             NSLog("Cannot obtain a pixel buffer from the buffer pool (%d)", Int(err))
         } else {
-            renderedOutputPixelBuffer = umRenderedOutputPixelBuffer!.takeRetainedValue()
             
             // render the filtered image out to a pixel buffer (no locking needed as CIContext's render method will do that)
-            _ciContext.render(filteredImage, toCVPixelBuffer: renderedOutputPixelBuffer, bounds: filteredImage!.extent(), colorSpace: _rgbColorSpace)
+            _ciContext.render(filteredImage!, toCVPixelBuffer: renderedOutputPixelBuffer!, bounds: filteredImage!.extent, colorSpace: _rgbColorSpace)
         }
         
         return renderedOutputPixelBuffer
@@ -135,7 +133,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         var success = true
         
         let maxRetainedBufferCount = clientRetainedBufferCountHint
-        _bufferPool = createPixelBufferPool(outputDimensions.width, outputDimensions.height, kCVPixelFormatType_32BGRA.ui, maxRetainedBufferCount.i)
+        _bufferPool = createPixelBufferPool(outputDimensions.width, outputDimensions.height, kCVPixelFormatType_32BGRA, maxRetainedBufferCount.i)
         if _bufferPool == nil {
             NSLog("Problem initializing a buffer pool.")
             success = false
@@ -145,13 +143,13 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
             preallocatePixelBuffersInPool(_bufferPool, _bufferPoolAuxAttributes)
             
             var outputFormatDescription: Unmanaged<CMFormatDescriptionRef>? = nil
-            var testPixelBuffer: Unmanaged<CVPixelBufferRef>? = nil
+            var testPixelBuffer: CVPixelBufferRef? = nil
             CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool, _bufferPoolAuxAttributes, &testPixelBuffer)
             if testPixelBuffer == nil {
                 NSLog("Problem creating a pixel buffer.")
                 success = false
             } else {
-                CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, testPixelBuffer!.takeRetainedValue(), &outputFormatDescription)
+                CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, testPixelBuffer!, &outputFormatDescription)
                 _outputFormatDescription = outputFormatDescription!.takeRetainedValue()
             }
         }
@@ -180,9 +178,9 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
     }
 }
 
-private func createPixelBufferPool(width: Int32, height: Int32, pixelFormat: OSType, maxBufferCount: Int32) -> CVPixelBufferPoolRef?
+private func createPixelBufferPool(width: Int32, _ height: Int32, _ pixelFormat: OSType, _ maxBufferCount: Int32) -> CVPixelBufferPoolRef?
 {
-    var outputPool: Unmanaged<CVPixelBufferPoolRef>? = nil
+    var outputPool: CVPixelBufferPoolRef? = nil
     
     let sourcePixelBufferOptions: NSDictionary = [kCVPixelBufferPixelFormatTypeKey.ns : pixelFormat.l,
         kCVPixelBufferWidthKey.ns : width.l,
@@ -194,7 +192,7 @@ private func createPixelBufferPool(width: Int32, height: Int32, pixelFormat: OST
     
     CVPixelBufferPoolCreate(kCFAllocatorDefault, pixelBufferPoolOptions, sourcePixelBufferOptions, &outputPool)
     
-    return outputPool?.takeRetainedValue()
+    return outputPool
 }
 
 private func createPixelBufferPoolAuxAttributes(maxBufferCount: Int32) -> NSDictionary {
@@ -203,17 +201,17 @@ private func createPixelBufferPoolAuxAttributes(maxBufferCount: Int32) -> NSDict
     return auxAttributes
 }
 
-private func preallocatePixelBuffersInPool(pool: CVPixelBufferPoolRef, auxAttributes: NSDictionary) {
+private func preallocatePixelBuffersInPool(pool: CVPixelBufferPoolRef, _ auxAttributes: NSDictionary) {
     // Preallocate buffers in the pool, since this is for real-time display/capture
     let pixelBuffers: NSMutableArray = []
     while true {
-        var pixelBuffer: Unmanaged<CVPixelBufferRef>? = nil
+        var pixelBuffer: CVPixelBufferRef? = nil
         let err = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, pool, auxAttributes, &pixelBuffer)
         
-        if err == kCVReturnWouldExceedAllocationThreshold.value {
+        if err == kCVReturnWouldExceedAllocationThreshold {
             break
         }
         assert(err == noErr)
-        pixelBuffers.addObject(pixelBuffer!.takeRetainedValue())
+        pixelBuffers.addObject(pixelBuffer!)
     }
 }

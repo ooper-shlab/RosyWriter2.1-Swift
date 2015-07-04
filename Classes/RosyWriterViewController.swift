@@ -147,8 +147,8 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         self.capturePipeline.stopRunning()
     }
     
-    override func supportedInterfaceOrientations() -> Int {
-        return UIInterfaceOrientationMask.Portrait.rawValue.l
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -192,7 +192,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
     private func setupPreviewView() {
         // Set up GL view
         self.previewView = OpenGLPixelBufferView(frame: CGRectZero)
-        self.previewView!.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        self.previewView!.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         
         let currentInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
         self.previewView!.transform = self.capturePipeline.transformFromVideoBufferOrientationToOrientation(AVCaptureVideoOrientation(rawValue: currentInterfaceOrientation.rawValue)!, withAutoMirroring: true) // Front camera preview should be mirrored
@@ -222,7 +222,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
     }
     
     private func showError(error: NSError) {
-        if objc_getClass("UIAlertController") != nil {
+        if #available(iOS 8.0, *) {
             let alert = UIAlertController(title: error.localizedDescription, message: error.localizedFailureReason, preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)

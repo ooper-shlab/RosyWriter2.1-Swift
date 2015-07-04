@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 extension FourCharCode: StringLiteralConvertible {
     public init(stringLiteral: StringLiteralType) {
-        if count(stringLiteral.utf16) != 4 {
+        if stringLiteral.utf16.count != 4 {
             fatalError("FourCharCode length must be 4!")
         }
         var code: FourCharCode = 0

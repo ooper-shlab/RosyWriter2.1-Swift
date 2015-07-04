@@ -69,7 +69,7 @@ class RosyWriterCPURenderer: NSObject, RosyWriterRenderer {
     }
     
     var inputPixelFormat: FourCharCode {
-        return kCVPixelFormatType_32BGRA.ui
+        return kCVPixelFormatType_32BGRA
     }
     
     func prepareForInputWithFormatDescription(inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
@@ -92,7 +92,7 @@ class RosyWriterCPURenderer: NSObject, RosyWriterRenderer {
         
         for row in 0..<bufferHeight {
             var pixel = baseAddress.advancedBy(Int(row * bytesPerRow))
-            for column in 0..<bufferWidth {
+            for _ in 0..<bufferWidth {
                 pixel[1] = 0 // De-green (second pixel in BGRA is green)
                 pixel += kBytesPerPixel
             }

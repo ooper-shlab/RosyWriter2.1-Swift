@@ -59,16 +59,16 @@ import UIKit
 import OpenGLES
 
 private func printf(format: String, args: [CVarArgType]) {
-    print(String(format: format, arguments: args))
+    print(String(format: format, arguments: args), appendNewline: false)
 }
 private func printf(format: String, args: CVarArgType...) {
-    printf(format, args)
+    printf(format, args: args)
 }
 func LogInfo(format: String, args: CVarArgType...) {
-    printf(format, args)
+    printf(format, args: args)
 }
 func LogError(format: String, args: CVarArgType...) {
-    printf(format, args)
+    printf(format, args: args)
 }
 
 public struct glue {
@@ -96,7 +96,7 @@ public struct glue {
             
             LogError("Failed to compile shader:\n")
             for i in 0..<count.l {
-                LogInfo("%s", COpaquePointer(sources[i]))
+                LogInfo("%s", args: COpaquePointer(sources[i]))
             }
         }
         
@@ -123,7 +123,7 @@ public struct glue {
         
         glGetProgramiv(program, GL_LINK_STATUS.ui, &status)
         if status == 0 {
-            LogError("Failed to link program %d", program)
+            LogError("Failed to link program %d", args: program)
         }
         
         return status
@@ -149,7 +149,7 @@ public struct glue {
         
         glGetProgramiv(program, GL_VALIDATE_STATUS.ui, &status)
         if status == 0 {
-            LogError("Failed to validate program %d", program)
+            LogError("Failed to validate program %d", args: program)
         }
         
         return status
