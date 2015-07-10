@@ -157,7 +157,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
     
     //MARK: - UI
     
-    @IBAction func toggleRecording(AnyObject) {
+    @IBAction func toggleRecording(_: AnyObject) {
         if _recording {
             self.capturePipeline.stopRecording()
         } else {

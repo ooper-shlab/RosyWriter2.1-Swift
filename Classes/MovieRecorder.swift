@@ -274,16 +274,16 @@ class MovieRecorder: NSObject {
     }
     
     func appendVideoPixelBuffer(pixelBuffer: CVPixelBuffer, withPresentationTime presentationTime: CMTime) {
-        var umSampleBuffer: Unmanaged<CMSampleBuffer>? = nil
+        var sampleBuffer: CMSampleBuffer? = nil
         
         var timingInfo: CMSampleTimingInfo = CMSampleTimingInfo()
         timingInfo.duration = kCMTimeInvalid
         timingInfo.decodeTimeStamp = kCMTimeInvalid
         timingInfo.presentationTimeStamp = presentationTime
         
-        let err = CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault, pixelBuffer, true, nil, nil, _videoTrackSourceFormatDescription!, &timingInfo, &umSampleBuffer)
-        if let sampleBuffer: CMSampleBuffer = umSampleBuffer?.takeRetainedValue() {
-            self.appendSampleBuffer(sampleBuffer, ofMediaType: AVMediaTypeVideo)
+        let err = CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault, pixelBuffer, true, nil, nil, _videoTrackSourceFormatDescription!, &timingInfo, &sampleBuffer)
+        if sampleBuffer != nil {
+            self.appendSampleBuffer(sampleBuffer!, ofMediaType: AVMediaTypeVideo)
         } else {
             let exceptionReason = "sample buffer create failed (\(err))"
             fatalError(exceptionReason)

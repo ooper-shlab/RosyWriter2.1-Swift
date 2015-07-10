@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RosyWriterOpenGLRenderer.swift"
-            timestampString = "443277460.627754"
+            timestampString = "457686397.508861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "480"
-            endingLineNumber = "480">
+            startingLineNumber = "470"
+            endingLineNumber = "470">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -24,13 +24,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RosyWriterCapturePipeline.swift"
-            timestampString = "443538980.465216"
+            timestampString = "457686397.508861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "439"
-            endingLineNumber = "439"
-            landmarkName = "applicationWillEnterForeground()"
-            landmarkType = "5">
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "RosyWriterRecordingStatus"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -40,13 +40,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RosyWriterCapturePipeline.swift"
-            timestampString = "444054914.529065"
+            timestampString = "457686397.508861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "451"
-            endingLineNumber = "451"
-            landmarkName = "setupVideoPipelineWithInputFormatDescription(_:)"
-            landmarkType = "5">
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "RosyWriterRecordingStatus"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -103,13 +103,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RosyWriterCapturePipeline.swift"
-            timestampString = "444054914.529065"
+            timestampString = "457686397.508861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "673"
-            endingLineNumber = "673"
-            landmarkName = "movieRecorderDidFinishPreparing(_:)"
-            landmarkType = "5">
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "RosyWriterRecordingStatus"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -119,13 +119,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RosyWriterCapturePipeline.swift"
-            timestampString = "444054914.529065"
+            timestampString = "457686397.508861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "656"
-            endingLineNumber = "656"
-            landmarkName = "stopRecording()"
-            landmarkType = "5">
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "RosyWriterRecordingStatus"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -167,13 +167,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RosyWriterCapturePipeline.swift"
-            timestampString = "443659212.08383"
+            timestampString = "457686397.508861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
-            landmarkName = "captureSessionNotification(_:)"
-            landmarkType = "5">
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "RosyWriterRecordingStatus"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
