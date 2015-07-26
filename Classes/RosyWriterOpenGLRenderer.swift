@@ -325,7 +325,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             _bufferPoolAuxAttributes = createPixelBufferPoolAuxAttributes(maxRetainedBufferCount)
             preallocatePixelBuffersInPool(_bufferPool!, _bufferPoolAuxAttributes!)
             
-            var outputFormatDescription: Unmanaged<CMFormatDescription>? = nil
+            var outputFormatDescription: CMFormatDescription? = nil
             var testPixelBuffer: CVPixelBuffer? = nil
             CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool!, _bufferPoolAuxAttributes, &testPixelBuffer)
             if testPixelBuffer == nil {
@@ -334,7 +334,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
                 break bail
             }
             CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, testPixelBuffer!, &outputFormatDescription)
-            _outputFormatDescription = outputFormatDescription?.takeRetainedValue()
+            _outputFormatDescription = outputFormatDescription
             
         } //bail:
         if !success {

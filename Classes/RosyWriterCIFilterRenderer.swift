@@ -142,7 +142,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
             _bufferPoolAuxAttributes = createPixelBufferPoolAuxAttributes(maxRetainedBufferCount.i)
             preallocatePixelBuffersInPool(_bufferPool, _bufferPoolAuxAttributes)
             
-            var outputFormatDescription: Unmanaged<CMFormatDescriptionRef>? = nil
+            var outputFormatDescription: CMFormatDescriptionRef? = nil
             var testPixelBuffer: CVPixelBufferRef? = nil
             CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool, _bufferPoolAuxAttributes, &testPixelBuffer)
             if testPixelBuffer == nil {
@@ -150,7 +150,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
                 success = false
             } else {
                 CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, testPixelBuffer!, &outputFormatDescription)
-                _outputFormatDescription = outputFormatDescription!.takeRetainedValue()
+                _outputFormatDescription = outputFormatDescription
             }
         }
         
