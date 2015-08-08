@@ -101,10 +101,6 @@
 		D7E2C5061A6985CE003BB161 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */; };
 		D7E2C5071A6985CF003BB161 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */; };
 		D7E500381A6BFD3F000B56EB /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B311A6B050700111A9B /* RosyWriterCapturePipeline.swift */; };
-		D7F660FF1A79199100C16933 /* CMTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660F91A79199100C16933 /* CMTime+.swift */; };
-		D7F661001A79199100C16933 /* CMTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660F91A79199100C16933 /* CMTime+.swift */; };
-		D7F661011A79199100C16933 /* CMTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660F91A79199100C16933 /* CMTime+.swift */; };
-		D7F661021A79199100C16933 /* CMTime+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660F91A79199100C16933 /* CMTime+.swift */; };
 		D7F661071A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
 		D7F661081A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
 		D7F661091A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
@@ -193,7 +189,6 @@
 		D7B915CA1A77C58B002949C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D7C1683D1A3336B8008A887F /* RosyWriterOpenGLRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterOpenGLRenderer.swift; sourceTree = "<group>"; };
 		D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterAppDelegate.swift; sourceTree = "<group>"; };
-		D7F660F91A79199100C16933 /* CMTime+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMTime+.swift"; path = "Utilities/CMTime+.swift"; sourceTree = "<group>"; };
 		D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FourCharCode+StringLiteralConvertible.swift"; path = "Utilities/FourCharCode+StringLiteralConvertible.swift"; sourceTree = "<group>"; };
 		D7F660FC1A79199100C16933 /* NSDictionaryConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSDictionaryConvertible.swift; path = Utilities/NSDictionaryConvertible.swift; sourceTree = "<group>"; };
 		D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NumTypes+Conversion.swift"; path = "Utilities/NumTypes+Conversion.swift"; sourceTree = "<group>"; };
@@ -381,7 +376,6 @@
 		AF052D151422BCEA00CD2D66 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				D7F660F91A79199100C16933 /* CMTime+.swift */,
 				D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */,
 				D7F660FC1A79199100C16933 /* NSDictionaryConvertible.swift */,
 				D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */,
@@ -567,7 +561,6 @@
 				D7F661091A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
 				D7F6610D1A79199100C16933 /* NSDictionaryConvertible.swift in Sources */,
 				D70B9B241A6AB40400111A9B /* MovieRecorder.swift in Sources */,
-				D7F661011A79199100C16933 /* CMTime+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,7 +580,6 @@
 				D7F661081A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
 				D7F6610C1A79199100C16933 /* NSDictionaryConvertible.swift in Sources */,
 				D70B9B231A6AB40400111A9B /* MovieRecorder.swift in Sources */,
-				D7F661001A79199100C16933 /* CMTime+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,7 +599,6 @@
 				D7F6610E1A79199100C16933 /* NSDictionaryConvertible.swift in Sources */,
 				D70B9B251A6AB40500111A9B /* MovieRecorder.swift in Sources */,
 				D745059E1A63CB7600A39FB7 /* RosyWriterOpenCVRenderer.swift in Sources */,
-				D7F661021A79199100C16933 /* CMTime+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,7 +606,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F660FF1A79199100C16933 /* CMTime+.swift in Sources */,
 				D7F661131A79199100C16933 /* ObjC.swift in Sources */,
 				D7E2939B1A6BF8350054C514 /* RosyWriterViewController.swift in Sources */,
 				D7F6610B1A79199100C16933 /* NSDictionaryConvertible.swift in Sources */,

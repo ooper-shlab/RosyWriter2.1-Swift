@@ -172,7 +172,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     override init() {
         recordingOrientation = .Portrait
         
-        _recordingURL = NSURL(fileURLWithPath: String.pathWithComponents([NSTemporaryDirectory(), "Movie.MOV"]))
+        _recordingURL = NSURL(fileURLWithPath: NSString.pathWithComponents([NSTemporaryDirectory(), "Movie.MOV"]) as String)
         
         _sessionQueue = dispatch_queue_create("com.apple.sample.capturepipeline.session", DISPATCH_QUEUE_SERIAL)
         
