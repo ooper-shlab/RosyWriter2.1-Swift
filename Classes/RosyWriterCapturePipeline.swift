@@ -259,7 +259,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         _captureSession = AVCaptureSession()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "captureSessionNotification:", name: nil, object: _captureSession)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RosyWriterCapturePipeline.captureSessionNotification(_:)), name: nil, object: _captureSession)
         _applicationWillEnterForegroundNotificationObserver = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication(), queue: nil) {note in
             // Retain self while the capture session is alive by referencing it in this observer block which is tied to the session lifetime
             // Client must stop us running before we can be deallocated
@@ -439,11 +439,11 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     }
     
     private func applicationWillEnterForeground() {
-        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), __FUNCTION__)
+        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), #function)
         
         dispatch_sync(_sessionQueue) {
             if self._startCaptureSessionOnEnteringForeground {
-                NSLog("-[%@ %@] manually restarting session", NSStringFromClass(self.dynamicType), __FUNCTION__)
+                NSLog("-[%@ %@] manually restarting session", NSStringFromClass(self.dynamicType), #function)
                 
                 self._startCaptureSessionOnEnteringForeground = false
                 if self._running {
@@ -456,15 +456,16 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     //MARK: Capture Pipeline
     
     private func setupVideoPipelineWithInputFormatDescription(inputFormatDescription: CMFormatDescription) {
-        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), __FUNCTION__)
+        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), #function)
         
         self.videoPipelineWillStartRunning()
         
         self.videoDimensions = CMVideoFormatDescriptionGetDimensions(inputFormatDescription)
         _renderer.prepareForInputWithFormatDescription(inputFormatDescription, outputRetainedBufferCountHint: RETAINED_BUFFER_COUNT)
         
-        if !_renderer.operatesInPlace && _renderer.respondsToSelector("outputFormatDescription") {
-            self.outputVideoFormatDescription = _renderer.outputFormatDescription!
+        if !_renderer.operatesInPlace,
+        let outputFormatDescription = _renderer.outputFormatDescription {
+            self.outputVideoFormatDescription = outputFormatDescription!
         } else {
             self.outputVideoFormatDescription = inputFormatDescription
         }
@@ -477,7 +478,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         // Synchronize with that queue to guarantee no more buffers are in flight.
         // Once the pipeline is drained we can tear it down safely.
         
-        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), __FUNCTION__)
+        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), #function)
         
         dispatch_sync(_videoDataOutputQueue) {
             if self.outputVideoFormatDescription == nil {
@@ -488,14 +489,14 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             self._renderer.reset()
             self.currentPreviewPixelBuffer = nil
             
-            NSLog("-[%@ %@] finished teardown", NSStringFromClass(self.dynamicType), __FUNCTION__)
+            NSLog("-[%@ %@] finished teardown", NSStringFromClass(self.dynamicType), #function)
             
             self.videoPipelineDidFinishRunning()
         }
     }
     
     private func videoPipelineWillStartRunning() {
-        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), __FUNCTION__)
+        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), #function)
         
         assert(_pipelineRunningTask == UIBackgroundTaskInvalid, "should not have a background task active before the video pipeline starts running")
         
@@ -505,7 +506,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     }
     
     private func videoPipelineDidFinishRunning() {
-        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), __FUNCTION__)
+        NSLog("-[%@ %@] called", NSStringFromClass(self.dynamicType), #function)
         
         assert(_pipelineRunningTask != UIBackgroundTaskInvalid, "should have a background task active when the video pipeline finishes running")
         

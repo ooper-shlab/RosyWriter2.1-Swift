@@ -455,7 +455,8 @@ class MovieRecorder: NSObject {
     }
     
     
-    private func setupAssetWriterAudioInputWithSourceFormatDescription(audioFormatDescription: CMFormatDescription?, var settings audioSettings: [String : AnyObject]?) throws {
+    private func setupAssetWriterAudioInputWithSourceFormatDescription(audioFormatDescription: CMFormatDescription?, settings _audioSettings: [String : AnyObject]?) throws {
+        var audioSettings = _audioSettings
         if audioSettings == nil {
             NSLog("No audio settings provided, using default settings")
             audioSettings = [AVFormatIDKey : kAudioFormatMPEG4AAC.ul]
@@ -475,7 +476,8 @@ class MovieRecorder: NSObject {
         }
     }
     
-    private func setupAssetWriterVideoInputWithSourceFormatDescription(videoFormatDescription: CMFormatDescription?, transform: CGAffineTransform, var settings videoSettings: [String: AnyObject]) throws {
+    private func setupAssetWriterVideoInputWithSourceFormatDescription(videoFormatDescription: CMFormatDescription?, transform: CGAffineTransform, settings _videoSettings: [String: AnyObject]) throws {
+        var videoSettings = _videoSettings
         if videoSettings.isEmpty {
             var bitsPerPixel: Float
             let dimensions = CMVideoFormatDescriptionGetDimensions(videoFormatDescription!)

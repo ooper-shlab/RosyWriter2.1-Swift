@@ -106,15 +106,15 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         self.capturePipeline.setDelegate(self, callbackQueue: dispatch_get_main_queue())
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "applicationDidEnterBackground",
+            selector: #selector(RosyWriterViewController.applicationDidEnterBackground),
             name: UIApplicationDidEnterBackgroundNotification,
             object: UIApplication.sharedApplication())
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "applicationWillEnterForeground",
+            selector: #selector(RosyWriterViewController.applicationWillEnterForeground),
             name: UIApplicationWillEnterForegroundNotification,
             object: UIApplication.sharedApplication())
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "deviceOrientationDidChange",
+            selector: #selector(RosyWriterViewController.deviceOrientationDidChange),
             name: UIDeviceOrientationDidChangeNotification,
             object: UIDevice.currentDevice())
         
@@ -135,7 +135,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         
         self.capturePipeline.startRunning()
         
-        self.labelTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "updateLabels", userInfo: nil, repeats: true)
+        self.labelTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(RosyWriterViewController.updateLabels), userInfo: nil, repeats: true)
     }
     
     override func viewDidDisappear(animated: Bool) {

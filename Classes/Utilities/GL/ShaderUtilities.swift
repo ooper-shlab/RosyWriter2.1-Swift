@@ -166,8 +166,8 @@ public struct glue {
     
     
     /* Convenience wrapper that compiles, links, enumerates uniforms and attribs */
-    public static func createProgram(var vertSource: UnsafePointer<GLchar>,
-        var _ fragSource: UnsafePointer<GLchar>,
+    public static func createProgram(_vertSource: UnsafePointer<GLchar>,
+        _ _fragSource: UnsafePointer<GLchar>,
         _ attribNames: [String],
         _ attribLocations: [GLuint],
         _ uniformNames: [String],
@@ -180,9 +180,11 @@ public struct glue {
         prog = glCreateProgram()
         
         // Create and compile vertex shader
+        var vertSource = _vertSource
         status *= compileShader(GL_VERTEX_SHADER.ui, 1, &vertSource, &vertShader)
         
         // Create and compile fragment shader
+        var fragSource = _fragSource
         status *= compileShader(GL_FRAGMENT_SHADER.ui, 1, &fragSource, &fragShader)
         
         // Attach vertex shader to program
