@@ -7,51 +7,11 @@
 //
 //
  /*
-     File: RosyWriterCapturePipeline.h
-     File: RosyWriterCapturePipeline.m
- Abstract: The class that creates and manages the AVCaptureSession
-  Version: 2.1
+ Copyright (C) 2016 Apple Inc. All Rights Reserved.
+ See LICENSE.txt for this sample’s licensing information
 
- Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
- Inc. ("Apple") in consideration of your agreement to the following
- terms, and your use, installation, modification or redistribution of
- this Apple software constitutes acceptance of these terms.  If you do
- not agree with these terms, please do not use, install, modify or
- redistribute this Apple software.
-
- In consideration of your agreement to abide by the following terms, and
- subject to these terms, Apple grants you a personal, non-exclusive
- license, under Apple's copyrights in this original Apple software (the
- "Apple Software"), to use, reproduce, modify and redistribute the Apple
- Software, with or without modifications, in source and/or binary forms;
- provided that if you redistribute the Apple Software in its entirety and
- without modifications, you must retain this notice and the following
- text and disclaimers in all such redistributions of the Apple Software.
- Neither the name, trademarks, service marks or logos of Apple Inc. may
- be used to endorse or promote products derived from the Apple Software
- without specific prior written permission from Apple.  Except as
- expressly stated in this notice, no other rights or licenses, express or
- implied, are granted by Apple herein, including but not limited to any
- patent rights that may be infringed by your derivative works or by other
- works in which the Apple Software may be incorporated.
-
- The Apple Software is provided by Apple on an "AS IS" basis.  APPLE
- MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION
- THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND
- OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
-
- IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL
- OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION,
- MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED
- AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
- STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
-
- Copyright (C) 2014 Apple Inc. All Rights Reserved.
-
+ Abstract:
+ The class that creates and manages the AVCaptureSession
  */
 
 
@@ -62,7 +22,7 @@ import AVFoundation
 @objc(RosyWriterCapturePipelineDelegate)
 protocol RosyWriterCapturePipelineDelegate: NSObjectProtocol {
     
-    func capturePipeline(_ capturePipeline: RosyWriterCapturePipeline, didStopRunningWithError error: NSError)
+    func capturePipeline(_ capturePipeline: RosyWriterCapturePipeline, didStopRunningWithError error: Error)
     
     // Preview
     func capturePipeline(_ capturePipeline: RosyWriterCapturePipeline, previewPixelBufferReadyForDisplay previewPixelBuffer: CVPixelBuffer)
@@ -71,7 +31,7 @@ protocol RosyWriterCapturePipelineDelegate: NSObjectProtocol {
     // Recording
     func capturePipelineRecordingDidStart(_ capturePipeline: RosyWriterCapturePipeline)
     // Can happen at any point after a startRecording call, for example: startRecording->didFail (without a didStart), willStop->didFail (without a didStop)
-    func capturePipeline(_ capturePipeline: RosyWriterCapturePipeline, recordingDidFailWithError error: NSError)
+    func capturePipeline(_ capturePipeline: RosyWriterCapturePipeline, recordingDidFailWithError error: Error)
     func capturePipelineRecordingWillStop(_ capturePipeline: RosyWriterCapturePipeline)
     func capturePipelineRecordingDidStop(_ capturePipeline: RosyWriterCapturePipeline)
     
@@ -127,17 +87,13 @@ private enum RosyWriterRecordingStatus: Int {
 
 @objc(RosyWriterCapturePipeline)
 class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, MovieRecorderDelegate {
-    // delegate is weak referenced
-    // __weak doesn't actually do anything under non-ARC
-    private weak var _delegate: RosyWriterCapturePipelineDelegate?
-    private var _delegateCallbackQueue: DispatchQueue?
-    
     private var _previousSecondTimestamps: [CMTime] = []
     
     private var _captureSession: AVCaptureSession?
     private var _videoDevice: AVCaptureDevice?
     private var _audioConnection: AVCaptureConnection?
     private var _videoConnection: AVCaptureConnection?
+    private var _videoBufferOrientation: AVCaptureVideoOrientation = .portrait
     private var _running: Bool = false
     private var _startCaptureSessionOnEnteringForeground: Bool = false
     private var _applicationWillEnterForegroundNotificationObserver: AnyObject?
@@ -149,27 +105,31 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     
     private var _renderer: RosyWriterRenderer
     // When set to false the GPU will not be used after the setRenderingEnabled: call returns.
-    private var _renderingEnabled: Bool = false
+    private /*atomic*/ var _renderingEnabled: Bool = false
+    
+    private var _recorder: MovieRecorder!
     // client can set the orientation for the recorded movie
-    var recordingOrientation: AVCaptureVideoOrientation = .portrait
+    var /*atomic*/ recordingOrientation: AVCaptureVideoOrientation = .portrait
     
     private var _recordingURL: URL
     private var _recordingStatus: RosyWriterRecordingStatus = .idle
     
     private var _pipelineRunningTask: UIBackgroundTaskIdentifier = 0
     
-    private var currentPreviewPixelBuffer: CVPixelBuffer?
+    // delegate is weak referenced
+    // __weak doesn't actually do anything under non-ARC
+    private weak var _delegate: RosyWriterCapturePipelineDelegate?
+    private var _delegateCallbackQueue: DispatchQueue?
     
     // Stats
-    private(set) var videoFrameRate: Float = 0.0
-    private(set) var videoDimensions: CMVideoDimensions = CMVideoDimensions(width: 0, height: 0)
-    private var videoOrientation: AVCaptureVideoOrientation = .portrait
+    private(set) /*atomic*/ var videoFrameRate: Float = 0.0
+    private(set) /*atomic*/ var videoDimensions: CMVideoDimensions = CMVideoDimensions(width: 0, height: 0)
     
+    private var currentPreviewPixelBuffer: CVPixelBuffer?
     private var outputVideoFormatDescription: CMFormatDescription?
     private var outputAudioFormatDescription: CMFormatDescription?
-    private var recorder: MovieRecorder!
     
-    override init() {
+    init(delegate: RosyWriterCapturePipelineDelegate, callbackQueue queue: DispatchQueue) {
         recordingOrientation = .portrait
         
         _recordingURL = URL(fileURLWithPath: NSString.path(withComponents: [NSTemporaryDirectory(), "Movie.MOV"]) as String)
@@ -199,6 +159,8 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         #endif
         
         _pipelineRunningTask = UIBackgroundTaskInvalid
+        _delegate = delegate
+        _delegateCallbackQueue = queue
         super.init()
     }
     
@@ -208,27 +170,6 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
     }
     
-    //MARK: Delegate
-    
-    func setDelegate(_ delegate: RosyWriterCapturePipelineDelegate?, callbackQueue delegateCallbackQueue: DispatchQueue?) {
-        if delegate != nil && delegateCallbackQueue == nil {
-            fatalError("Caller must provide a delegateCallbackQueue")
-        }
-        
-        synchronized(self) {
-            self._delegate = delegate
-            self._delegateCallbackQueue = delegateCallbackQueue
-        }
-    }
-    
-    var delegate: RosyWriterCapturePipelineDelegate? {
-        var myDelegate: RosyWriterCapturePipelineDelegate? = nil
-        synchronized(self) {
-            myDelegate = self._delegate
-        }
-        return myDelegate
-    }
-    
     //MARK: Capture Session
     // These methods are synchronous
     
@@ -236,8 +177,10 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         _sessionQueue.sync {
             self.setupCaptureSession()
             
-            self._captureSession!.startRunning()
-            self._running = true
+            if let captureSession = self._captureSession {
+                captureSession.startRunning()
+                self._running = true
+            }
         }
     }
     
@@ -256,6 +199,9 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
     }
     
+    enum PipelineError: Error {
+        case cannotAddInputVideo
+    }
     private func setupCaptureSession() {
         if _captureSession != nil {
             return
@@ -290,19 +236,20 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         #endif // RECORD_AUDIO
         
         /* Video */
-        let videoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
-        if videoDevice == nil {
-            fatalError("AVCaptureDevice of type AVMediaTypeVideo unavailabel!")
+        guard let videoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
+            fatalError("AVCaptureDevice of type AVMediaTypeVideo unavailable!")
         }
-        _videoDevice = videoDevice
-        let videoIn: AVCaptureDeviceInput!
         do {
-            videoIn = try AVCaptureDeviceInput(device: videoDevice)
-        } catch _ {
-            videoIn = nil
-        }
-        if _captureSession!.canAddInput(videoIn) {
-            _captureSession!.addInput(videoIn)
+            let videoIn = try AVCaptureDeviceInput(device: videoDevice)
+            if _captureSession!.canAddInput(videoIn) {
+                _captureSession!.addInput(videoIn)
+            } else {
+                throw PipelineError.cannotAddInputVideo
+            }
+            _videoDevice = videoDevice
+        } catch let videoDeviceError {
+            self.handleNonRecoverableCaptureSessionRuntimeError(videoDeviceError)
+            return;
         }
         
         let videoOut = AVCaptureVideoDataOutput()
@@ -344,15 +291,13 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         frameDuration = CMTimeMake(1, frameRate)
         
-        var error: NSError? = nil
         do {
-            try videoDevice?.lockForConfiguration()
-            videoDevice?.activeVideoMaxFrameDuration = frameDuration
-            videoDevice?.activeVideoMinFrameDuration = frameDuration
-            videoDevice?.unlockForConfiguration()
-        } catch let error1 as NSError {
-            error = error1
-            NSLog("videoDevice lockForConfiguration returned error %@", error!)
+            try videoDevice.lockForConfiguration()
+            videoDevice.activeVideoMaxFrameDuration = frameDuration
+            videoDevice.activeVideoMinFrameDuration = frameDuration
+            videoDevice.unlockForConfiguration()
+        } catch {
+            NSLog("videoDevice lockForConfiguration returned error \(error)")
         }
         
         // Get the recommended compression settings after configuring the session/device.
@@ -361,7 +306,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         #endif
         _videoCompressionSettings = videoOut.recommendedVideoSettingsForAssetWriter(withOutputFileType: AVFileTypeQuickTimeMovie) as! [String: AnyObject]
         
-        self.videoOrientation = _videoConnection!.videoOrientation
+        _videoBufferOrientation = _videoConnection!.videoOrientation
         
         return
     }
@@ -414,26 +359,20 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
     }
     
-    private func handleRecoverableCaptureSessionRuntimeError(_ error: NSError) {
+    private func handleRecoverableCaptureSessionRuntimeError(_ error: Error) {
         if _running {
             _captureSession?.startRunning()
         }
     }
     
-    private func handleNonRecoverableCaptureSessionRuntimeError(_ error: NSError) {
-        NSLog("fatal runtime error %@, code %i", error, Int32(error.code))
+    private func handleNonRecoverableCaptureSessionRuntimeError(_ error: Error) {
+        NSLog("fatal runtime error \(error), code \((error as NSError).code)")
         
         _running = false
         self.teardownCaptureSession()
         
-        synchronized(self) {
-            if self.delegate != nil {
-                self._delegateCallbackQueue!.async {
-                    autoreleasepool {
-                        self.delegate!.capturePipeline(self, didStopRunningWithError: error)
-                    }
-                }
-            }
+        self.invokeDelegateCallbackAsync {
+            self._delegate?.capturePipeline(self, didStopRunningWithError: error)
         }
     }
     
@@ -522,16 +461,12 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     func videoPipelineDidRunOutOfBuffers() {
         // We have run out of buffers.
         // Tell the delegate so that it can flush any cached buffers.
-        if self.delegate != nil {
-            _delegateCallbackQueue!.async {
-                autoreleasepool {
-                    self.delegate!.capturePipelineDidRunOutOfPreviewBuffers(self)
-                }
-            }
+        self.invokeDelegateCallbackAsync {
+            self._delegate?.capturePipelineDidRunOutOfPreviewBuffers(self)
         }
     }
     
-    var renderingEnabled: Bool {
+    var /*atomic*/ renderingEnabled: Bool {
         set {
             synchronized(_renderer) {
                 self._renderingEnabled = newValue
@@ -540,34 +475,10 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         get {
             var myRenderingEnabled = false
-            synchronized(self._renderer) {
+            synchronized(_renderer) {
                 myRenderingEnabled = self._renderingEnabled
             }
             return myRenderingEnabled
-        }
-    }
-    
-    // call under @synchronized( self )
-    private func outputPreviewPixelBuffer(_ previewPixelBuffer: CVPixelBuffer) {
-        if self.delegate != nil {
-            // Keep preview latency low by dropping stale frames that have not been picked up by the delegate yet
-            self.currentPreviewPixelBuffer = previewPixelBuffer
-            
-            _delegateCallbackQueue!.async {
-                autoreleasepool {
-                    var currentPreviewPixelBuffer: CVPixelBuffer? = nil
-                    synchronized(self) {
-                        currentPreviewPixelBuffer = self.currentPreviewPixelBuffer
-                        if currentPreviewPixelBuffer != nil {
-                            self.currentPreviewPixelBuffer = nil
-                        }
-                    }
-                    
-                    if currentPreviewPixelBuffer != nil {
-                        self.delegate!.capturePipeline(self, previewPixelBufferReadyForDisplay: currentPreviewPixelBuffer!)
-                    }
-                }
-            }
         }
     }
     
@@ -588,7 +499,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             
             synchronized(self) {
                 if _recordingStatus == .recording {
-                    self.recorder.appendAudioSampleBuffer(sampleBuffer)
+                    self._recorder.appendAudioSampleBuffer(sampleBuffer)
                 }
             }
         }
@@ -613,16 +524,37 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
         if returnFlag {return}
         
-        synchronized(self) {
-            if renderedPixelBuffer != nil {
-                self.outputPreviewPixelBuffer(renderedPixelBuffer!)
+        if let renderedPixelBuffer = renderedPixelBuffer {
+            synchronized(self) {
+                self.outputPreviewPixelBuffer(renderedPixelBuffer)
                 
                 if _recordingStatus == .recording {
-                    self.recorder.appendVideoPixelBuffer(renderedPixelBuffer!, withPresentationTime: timestamp)
+                    self._recorder.appendVideoPixelBuffer(renderedPixelBuffer, withPresentationTime: timestamp)
                 }
-                
-            } else {
-                self.videoPipelineDidRunOutOfBuffers()
+            }
+        } else {
+            self.videoPipelineDidRunOutOfBuffers()
+        }
+    }
+    
+    // call under @synchronized( self )
+    private func outputPreviewPixelBuffer(_ previewPixelBuffer: CVPixelBuffer) {
+        // Keep preview latency low by dropping stale frames that have not been picked up by the delegate yet
+        // Note that access to currentPreviewPixelBuffer is protected by the @synchronized lock
+        self.currentPreviewPixelBuffer = previewPixelBuffer
+        
+        self.invokeDelegateCallbackAsync {
+            
+            var currentPreviewPixelBuffer: CVPixelBuffer? = nil
+            synchronized(self) {
+                currentPreviewPixelBuffer = self.currentPreviewPixelBuffer
+                if currentPreviewPixelBuffer != nil {
+                    self.currentPreviewPixelBuffer = nil
+                }
+            }
+            
+            if currentPreviewPixelBuffer != nil {
+                self._delegate?.capturePipeline(self, previewPixelBufferReadyForDisplay: currentPreviewPixelBuffer!)
             }
         }
     }
@@ -640,7 +572,8 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             self.transitionToRecordingStatus(.startingRecording, error: nil)
         }
         
-        let recorder = MovieRecorder(URL: _recordingURL)
+        let callbackQueue = DispatchQueue(label: "com.apple.sample.capturepipeline.recordercallback", attributes: []); // guarantee ordering of callbacks with a serial queue
+        let recorder = MovieRecorder(url: _recordingURL, delegate: self, callbackQueue: callbackQueue)
         
         #if RECORD_AUDIO
             recorder.addAudioTrackWithSourceFormatDescription(self.outputAudioFormatDescription!, settings: _audioCompressionSettings)
@@ -651,9 +584,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         recorder.addVideoTrackWithSourceFormatDescription(self.outputVideoFormatDescription!, transform: videoTransform, settings: _videoCompressionSettings)
         
-        let callbackQueue = DispatchQueue(label: "com.apple.sample.capturepipeline.recordercallback", attributes: []); // guarantee ordering of callbacks with a serial queue
-        recorder.setDelegate(self, callbackQueue: callbackQueue)
-        self.recorder = recorder
+        _recorder = recorder
         
         // asynchronous, will call us back with recorderDidFinishPreparing: or recorder:didFailWithError: when done
         recorder.prepareToRecord()
@@ -670,7 +601,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
         if returnFlag {return}
         
-        self.recorder.finishRecording() // asynchronous, will call us back with recorderDidFinishRecording: or recorder:didFailWithError: when done
+        _recorder.finishRecording() // asynchronous, will call us back with recorderDidFinishRecording: or recorder:didFailWithError: when done
     }
     
     //MARK: MovieRecorder Delegate
@@ -684,9 +615,9 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
     }
     
-    func movieRecorder(_ recorder: MovieRecorder, didFailWithError error: NSError) {
+    func movieRecorder(_ recorder: MovieRecorder, didFailWithError error: Error) {
         synchronized(self) {
-            self.recorder = nil
+            _recorder = nil
             self.transitionToRecordingStatus(.idle, error: error)
         }
     }
@@ -701,7 +632,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             // We will be stopped once we save to the assets library.
         }
         
-        self.recorder = nil
+        _recorder = nil
         
         let library = ALAssetsLibrary()
         library.writeVideoAtPath(toSavedPhotosAlbum: _recordingURL) {assetURL, error in
@@ -715,7 +646,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
                 if self._recordingStatus != .stoppingRecording {
                     fatalError("Expected to be in StoppingRecording state")
                 }
-                self.transitionToRecordingStatus(.idle, error: error as NSError?)
+                self.transitionToRecordingStatus(.idle, error: error)
             }
         }
     }
@@ -723,8 +654,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     //MARK: Recording State Machine
     
     // call under @synchonized( self )
-    private func transitionToRecordingStatus(_ newStatus: RosyWriterRecordingStatus, error: NSError?) {
-        var delegateClosure: (() -> Void)? = nil
+    private func transitionToRecordingStatus(_ newStatus: RosyWriterRecordingStatus, error: Error?) {
         let oldStatus = _recordingStatus
         _recordingStatus = newStatus
         
@@ -732,31 +662,39 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             NSLog("RosyWriterCapturePipeline recording state transition: %@->%@", oldStatus.description, newStatus.description)
         #endif
         
-        if newStatus != oldStatus && delegate != nil {
-            if error != nil && newStatus == .idle {
-                delegateClosure = {self.delegate!.capturePipeline(self, recordingDidFailWithError: error!)}
+        if newStatus != oldStatus {
+            var delegateCallbackBlock: (()->Void)? = nil;
+            
+            if let error = error, newStatus == .idle {
+                delegateCallbackBlock = {self._delegate?.capturePipeline(self, recordingDidFailWithError: error)}
             } else {
                 // only the above delegate method takes an error
                 if oldStatus == .startingRecording && newStatus == .recording {
-                    delegateClosure = {self.delegate!.capturePipelineRecordingDidStart(self)}
+                    delegateCallbackBlock = {self._delegate?.capturePipelineRecordingDidStart(self)}
                 } else if oldStatus == .recording && newStatus == .stoppingRecording {
-                    delegateClosure = {self.delegate!.capturePipelineRecordingWillStop(self)}
+                    delegateCallbackBlock = {self._delegate?.capturePipelineRecordingWillStop(self)}
                 } else if oldStatus == .stoppingRecording && newStatus == .idle {
-                    delegateClosure = {self.delegate!.capturePipelineRecordingDidStop(self)}
+                    delegateCallbackBlock = {self._delegate?.capturePipelineRecordingDidStop(self)}
                 }
             }
-        }
-        
-        if delegateClosure != nil {
-            _delegateCallbackQueue!.async {
-                autoreleasepool {
-                    delegateClosure!()
+            
+            if let delegateCallbackBlock = delegateCallbackBlock {
+                self.invokeDelegateCallbackAsync {
+                        delegateCallbackBlock()
                 }
             }
         }
     }
     
     //MARK: Utilities
+    
+    private func invokeDelegateCallbackAsync(_ callbackBlock: @escaping ()->Void) {
+    	_delegateCallbackQueue?.async {
+            autoreleasepool {
+                callbackBlock()
+            }
+    	}
+    }
     
     // Auto mirroring: Front camera is mirrored; back camera isn't
     // only valid after startRunning has been called
@@ -765,7 +703,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         // Calculate offsets from an arbitrary reference orientation (portrait)
         let orientationAngleOffset = angleOffsetFromPortraitOrientationToOrientation(orientation)
-        let videoOrientationAngleOffset = angleOffsetFromPortraitOrientationToOrientation(self.videoOrientation)
+        let videoOrientationAngleOffset = angleOffsetFromPortraitOrientationToOrientation(_videoBufferOrientation)
         
         // Find the difference in angle between the desired orientation and the video orientation
         let angleOffset = orientationAngleOffset - videoOrientationAngleOffset

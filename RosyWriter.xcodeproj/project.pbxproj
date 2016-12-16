@@ -14,6 +14,7 @@
 		1756C9E619BE5E1F0080DD55 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE061395CCE000125BDA /* CoreVideo.framework */; };
 		1756C9E719BE5E1F0080DD55 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDD1395CAAA00125BDA /* CoreGraphics.framework */; };
 		1756C9E819BE5E1F0080DD55 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE041395CCD100125BDA /* OpenGLES.framework */; };
+		1756C9E919BE5E1F0080DD55 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE001395CCBE00125BDA /* AssetsLibrary.framework */; };
 		1756C9EA19BE5E1F0080DD55 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDFE1395CCB600125BDA /* AVFoundation.framework */; };
 		1756C9EB19BE5E1F0080DD55 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDD91395CAAA00125BDA /* UIKit.framework */; };
 		1756C9EC19BE5E1F0080DD55 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDB1395CAAA00125BDA /* Foundation.framework */; };
@@ -27,6 +28,7 @@
 		1FCCE65819BA80A5009D7A6B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE061395CCE000125BDA /* CoreVideo.framework */; };
 		1FCCE65919BA80A5009D7A6B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDD1395CAAA00125BDA /* CoreGraphics.framework */; };
 		1FCCE65A19BA80A5009D7A6B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE041395CCD100125BDA /* OpenGLES.framework */; };
+		1FCCE65B19BA80A5009D7A6B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE001395CCBE00125BDA /* AssetsLibrary.framework */; };
 		1FCCE65C19BA80A5009D7A6B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDFE1395CCB600125BDA /* AVFoundation.framework */; };
 		1FCCE65D19BA80A5009D7A6B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDD91395CAAA00125BDA /* UIKit.framework */; };
 		1FCCE65E19BA80A5009D7A6B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDB1395CAAA00125BDA /* Foundation.framework */; };
@@ -46,6 +48,7 @@
 		696D281819CA539900A23D81 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE061395CCE000125BDA /* CoreVideo.framework */; };
 		696D281919CA539900A23D81 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDD1395CAAA00125BDA /* CoreGraphics.framework */; };
 		696D281A19CA539900A23D81 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE041395CCD100125BDA /* OpenGLES.framework */; };
+		696D281B19CA539900A23D81 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE001395CCBE00125BDA /* AssetsLibrary.framework */; };
 		696D281C19CA539900A23D81 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDFE1395CCB600125BDA /* AVFoundation.framework */; };
 		696D281D19CA539900A23D81 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDD91395CAAA00125BDA /* UIKit.framework */; };
 		696D281E19CA539900A23D81 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDB1395CAAA00125BDA /* Foundation.framework */; };
@@ -60,93 +63,57 @@
 		6F90DDDE1395CAAA00125BDA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDD1395CAAA00125BDA /* CoreGraphics.framework */; };
 		6F90DDE41395CAAA00125BDA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F90DDE21395CAAA00125BDA /* InfoPlist.strings */; };
 		6F90DDFF1395CCB600125BDA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDFE1395CCB600125BDA /* AVFoundation.framework */; };
+		6F90DE011395CCBE00125BDA /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE001395CCBE00125BDA /* AssetsLibrary.framework */; };
 		6F90DE051395CCD100125BDA /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE041395CCD100125BDA /* OpenGLES.framework */; };
 		6F90DE071395CCE000125BDA /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE061395CCE000125BDA /* CoreVideo.framework */; };
 		6F90DE091395CCEA00125BDA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE081395CCEA00125BDA /* QuartzCore.framework */; };
 		6F90DE0B1395CCF500125BDA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE0A1395CCF500125BDA /* CoreMedia.framework */; };
 		7214DBCE182AEF8900EA3F99 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7214DBCD182AEF8900EA3F99 /* Images.xcassets */; };
-		D70B9B1A1A6A8D6100111A9B /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B191A6A8D6100111A9B /* OpenGLPixelBufferView.swift */; };
-		D70B9B1B1A6A8F5D00111A9B /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B191A6A8D6100111A9B /* OpenGLPixelBufferView.swift */; };
-		D70B9B1C1A6A8F5E00111A9B /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B191A6A8D6100111A9B /* OpenGLPixelBufferView.swift */; };
-		D70B9B1D1A6A8F5F00111A9B /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B191A6A8D6100111A9B /* OpenGLPixelBufferView.swift */; };
-		D70B9B201A6AA8A000111A9B /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B1F1A6AA8A000111A9B /* MovieRecorder.swift */; };
-		D70B9B231A6AB40400111A9B /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B1F1A6AA8A000111A9B /* MovieRecorder.swift */; };
-		D70B9B241A6AB40400111A9B /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B1F1A6AA8A000111A9B /* MovieRecorder.swift */; };
-		D70B9B251A6AB40500111A9B /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B1F1A6AA8A000111A9B /* MovieRecorder.swift */; };
-		D70B9B281A6AD62400111A9B /* RosyWriterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F7DCD1A647935005F468E /* RosyWriterRenderer.swift */; };
-		D70B9B291A6AD62500111A9B /* RosyWriterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F7DCD1A647935005F468E /* RosyWriterRenderer.swift */; };
-		D70B9B2A1A6AD62600111A9B /* RosyWriterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F7DCD1A647935005F468E /* RosyWriterRenderer.swift */; };
-		D70B9B341A6B0A9300111A9B /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B311A6B050700111A9B /* RosyWriterCapturePipeline.swift */; };
-		D70B9B351A6B0A9400111A9B /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B311A6B050700111A9B /* RosyWriterCapturePipeline.swift */; };
-		D72F7DCE1A647935005F468E /* RosyWriterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F7DCD1A647935005F468E /* RosyWriterRenderer.swift */; };
-		D74505881A63979C00A39FB7 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74505871A63979C00A39FB7 /* ShaderUtilities.swift */; };
-		D74505891A6397A900A39FB7 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74505871A63979C00A39FB7 /* ShaderUtilities.swift */; };
-		D745058A1A6397AB00A39FB7 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74505871A63979C00A39FB7 /* ShaderUtilities.swift */; };
-		D745058B1A6397AC00A39FB7 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74505871A63979C00A39FB7 /* ShaderUtilities.swift */; };
-		D745059B1A63CB0000A39FB7 /* RosyWriterCIFilterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74505991A63BE7500A39FB7 /* RosyWriterCIFilterRenderer.swift */; };
-		D745059C1A63CB0C00A39FB7 /* RosyWriterCPURenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74505951A63B0F100A39FB7 /* RosyWriterCPURenderer.swift */; };
-		D745059E1A63CB7600A39FB7 /* RosyWriterOpenCVRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D745059D1A63CB7600A39FB7 /* RosyWriterOpenCVRenderer.swift */; };
-		D78DE0D41B47C3B3005E5216 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D78DE0D31B47C3B3005E5216 /* Default-568h@2x.png */; };
-		D78DE0D51B47C3B3005E5216 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D78DE0D31B47C3B3005E5216 /* Default-568h@2x.png */; };
-		D78DE0D61B47C3B3005E5216 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D78DE0D31B47C3B3005E5216 /* Default-568h@2x.png */; };
-		D78DE0D71B47C3B3005E5216 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D78DE0D31B47C3B3005E5216 /* Default-568h@2x.png */; };
-		D7C0A2B21A6BF859009BBAF1 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B6E1A6BC1CD00111A9B /* RosyWriterViewController.swift */; };
-		D7C0A2B31A6BF85A009BBAF1 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B6E1A6BC1CD00111A9B /* RosyWriterViewController.swift */; };
-		D7C0A2B41A6BF85B009BBAF1 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B6E1A6BC1CD00111A9B /* RosyWriterViewController.swift */; };
-		D7C0A2B51A6BF867009BBAF1 /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B311A6B050700111A9B /* RosyWriterCapturePipeline.swift */; };
-		D7C1683E1A3336B8008A887F /* RosyWriterOpenGLRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C1683D1A3336B8008A887F /* RosyWriterOpenGLRenderer.swift */; };
-		D7E2939B1A6BF8350054C514 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B6E1A6BC1CD00111A9B /* RosyWriterViewController.swift */; };
-		D7E2C5041A69853F003BB161 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */; };
-		D7E2C5051A6985CD003BB161 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */; };
-		D7E2C5061A6985CE003BB161 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */; };
-		D7E2C5071A6985CF003BB161 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */; };
-		D7E500381A6BFD3F000B56EB /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70B9B311A6B050700111A9B /* RosyWriterCapturePipeline.swift */; };
-		D7F661071A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
-		D7F661081A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
-		D7F661091A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
-		D7F6610A1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */; };
-		D7F6610F1A79199100C16933 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */; };
-		D7F661101A79199100C16933 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */; };
-		D7F661111A79199100C16933 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */; };
-		D7F661121A79199100C16933 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */; };
-		D7F661131A79199100C16933 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FE1A79199100C16933 /* ObjC.swift */; };
-		D7F661141A79199100C16933 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FE1A79199100C16933 /* ObjC.swift */; };
-		D7F661151A79199100C16933 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FE1A79199100C16933 /* ObjC.swift */; };
-		D7F661161A79199100C16933 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F660FE1A79199100C16933 /* ObjC.swift */; };
+		D7F9F9561E0376EE009F43D5 /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */; };
+		D7F9F9571E0376EE009F43D5 /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */; };
+		D7F9F9591E037705009F43D5 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */; };
+		D7F9F95D1E037744009F43D5 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95A1E037744009F43D5 /* RosyWriterAppDelegate.swift */; };
+		D7F9F95E1E037744009F43D5 /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95B1E037744009F43D5 /* RosyWriterCapturePipeline.swift */; };
+		D7F9F95F1E037744009F43D5 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95C1E037744009F43D5 /* RosyWriterViewController.swift */; };
+		D7F9F9681E03776D009F43D5 /* RosyWriterOpenGLRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9631E03776D009F43D5 /* RosyWriterOpenGLRenderer.swift */; };
+		D7F9F9691E03776D009F43D5 /* RosyWriterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9641E03776D009F43D5 /* RosyWriterRenderer.swift */; };
+		D7F9F96A1E0377AC009F43D5 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95C1E037744009F43D5 /* RosyWriterViewController.swift */; };
+		D7F9F96B1E0377AD009F43D5 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95C1E037744009F43D5 /* RosyWriterViewController.swift */; };
+		D7F9F96C1E0377AE009F43D5 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95C1E037744009F43D5 /* RosyWriterViewController.swift */; };
+		D7F9F96D1E0377B6009F43D5 /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95B1E037744009F43D5 /* RosyWriterCapturePipeline.swift */; };
+		D7F9F96E1E0377B7009F43D5 /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95B1E037744009F43D5 /* RosyWriterCapturePipeline.swift */; };
+		D7F9F96F1E0377B8009F43D5 /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95B1E037744009F43D5 /* RosyWriterCapturePipeline.swift */; };
+		D7F9F9701E0377BE009F43D5 /* RosyWriterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9641E03776D009F43D5 /* RosyWriterRenderer.swift */; };
+		D7F9F9711E0377BF009F43D5 /* RosyWriterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9641E03776D009F43D5 /* RosyWriterRenderer.swift */; };
+		D7F9F9721E0377C0009F43D5 /* RosyWriterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9641E03776D009F43D5 /* RosyWriterRenderer.swift */; };
+		D7F9F9731E0377CC009F43D5 /* RosyWriterCPURenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9611E03776D009F43D5 /* RosyWriterCPURenderer.swift */; };
+		D7F9F9741E0377E4009F43D5 /* RosyWriterOpenCVRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9621E03776D009F43D5 /* RosyWriterOpenCVRenderer.swift */; };
+		D7F9F9751E0377ED009F43D5 /* RosyWriterCIFilterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9601E03776D009F43D5 /* RosyWriterCIFilterRenderer.swift */; };
+		D7F9F9761E0377F2009F43D5 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95A1E037744009F43D5 /* RosyWriterAppDelegate.swift */; };
+		D7F9F9771E0377F3009F43D5 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95A1E037744009F43D5 /* RosyWriterAppDelegate.swift */; };
+		D7F9F9781E0377F4009F43D5 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95A1E037744009F43D5 /* RosyWriterAppDelegate.swift */; };
+		D7F9F9791E0377FC009F43D5 /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */; };
+		D7F9F97A1E0377FD009F43D5 /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */; };
+		D7F9F97B1E0377FE009F43D5 /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */; };
+		D7F9F97C1E037805009F43D5 /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */; };
+		D7F9F97D1E037805009F43D5 /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */; };
+		D7F9F97E1E037806009F43D5 /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */; };
+		D7F9F97F1E03780D009F43D5 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */; };
+		D7F9F9801E03780F009F43D5 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */; };
+		D7F9F9811E037810009F43D5 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */; };
+		D7F9F9861E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9831E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift */; };
+		D7F9F9871E037911009F43D5 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9841E037911009F43D5 /* NumTypes+Conversion.swift */; };
+		D7F9F9881E037911009F43D5 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9851E037911009F43D5 /* ObjC.swift */; };
+		D7F9F9891E03791D009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9831E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift */; };
+		D7F9F98A1E03791E009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9831E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift */; };
+		D7F9F98B1E03791F009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9831E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift */; };
+		D7F9F98C1E037923009F43D5 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9841E037911009F43D5 /* NumTypes+Conversion.swift */; };
+		D7F9F98D1E037924009F43D5 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9841E037911009F43D5 /* NumTypes+Conversion.swift */; };
+		D7F9F98E1E037925009F43D5 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9841E037911009F43D5 /* NumTypes+Conversion.swift */; };
+		D7F9F98F1E037929009F43D5 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9851E037911009F43D5 /* ObjC.swift */; };
+		D7F9F9901E037929009F43D5 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9851E037911009F43D5 /* ObjC.swift */; };
+		D7F9F9911E03792A009F43D5 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9851E037911009F43D5 /* ObjC.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		D7667A821A6FDC100028C007 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D7B915C61A77BFCE002949C6 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D7B915C91A77C3BE002949C6 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		171999D919C7695800A719B5 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -167,27 +134,28 @@
 		6F90DDE11395CAAA00125BDA /* RosyWriter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "RosyWriter-Info.plist"; path = "../RosyWriter-Info.plist"; sourceTree = "<group>"; };
 		6F90DDE31395CAAA00125BDA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6F90DDFE1395CCB600125BDA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6F90DE001395CCBE00125BDA /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		6F90DE041395CCD100125BDA /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		6F90DE061395CCE000125BDA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		6F90DE081395CCEA00125BDA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		6F90DE0A1395CCF500125BDA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		7214DBCD182AEF8900EA3F99 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Resources/Images.xcassets; sourceTree = SOURCE_ROOT; };
-		D70B9B191A6A8D6100111A9B /* OpenGLPixelBufferView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenGLPixelBufferView.swift; sourceTree = "<group>"; };
-		D70B9B1F1A6AA8A000111A9B /* MovieRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieRecorder.swift; sourceTree = "<group>"; };
-		D70B9B311A6B050700111A9B /* RosyWriterCapturePipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterCapturePipeline.swift; sourceTree = "<group>"; };
-		D70B9B6E1A6BC1CD00111A9B /* RosyWriterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterViewController.swift; sourceTree = "<group>"; };
-		D72F7DCD1A647935005F468E /* RosyWriterRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterRenderer.swift; sourceTree = "<group>"; };
-		D74505871A63979C00A39FB7 /* ShaderUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShaderUtilities.swift; path = Utilities/GL/ShaderUtilities.swift; sourceTree = "<group>"; };
-		D74505951A63B0F100A39FB7 /* RosyWriterCPURenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterCPURenderer.swift; sourceTree = "<group>"; };
-		D74505991A63BE7500A39FB7 /* RosyWriterCIFilterRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterCIFilterRenderer.swift; sourceTree = "<group>"; };
-		D745059D1A63CB7600A39FB7 /* RosyWriterOpenCVRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterOpenCVRenderer.swift; sourceTree = "<group>"; };
-		D78DE0D31B47C3B3005E5216 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Images.xcassets/LaunchImage.launchimage/Default-568h@2x.png"; sourceTree = SOURCE_ROOT; };
-		D7B915CA1A77C58B002949C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		D7C1683D1A3336B8008A887F /* RosyWriterOpenGLRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterOpenGLRenderer.swift; sourceTree = "<group>"; };
-		D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterAppDelegate.swift; sourceTree = "<group>"; };
-		D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FourCharCode+StringLiteralConvertible.swift"; path = "Utilities/FourCharCode+StringLiteralConvertible.swift"; sourceTree = "<group>"; };
-		D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NumTypes+Conversion.swift"; path = "Utilities/NumTypes+Conversion.swift"; sourceTree = "<group>"; };
-		D7F660FE1A79199100C16933 /* ObjC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjC.swift; path = Utilities/ObjC.swift; sourceTree = "<group>"; };
+		D7F9F9501E0376A9009F43D5 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		D7F9F9511E0376A9009F43D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieRecorder.swift; path = Utilities/MovieRecorder.swift; sourceTree = "<group>"; };
+		D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenGLPixelBufferView.swift; path = Utilities/OpenGLPixelBufferView.swift; sourceTree = "<group>"; };
+		D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShaderUtilities.swift; path = Utilities/GL/ShaderUtilities.swift; sourceTree = "<group>"; };
+		D7F9F95A1E037744009F43D5 /* RosyWriterAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterAppDelegate.swift; sourceTree = "<group>"; };
+		D7F9F95B1E037744009F43D5 /* RosyWriterCapturePipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterCapturePipeline.swift; sourceTree = "<group>"; };
+		D7F9F95C1E037744009F43D5 /* RosyWriterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterViewController.swift; sourceTree = "<group>"; };
+		D7F9F9601E03776D009F43D5 /* RosyWriterCIFilterRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterCIFilterRenderer.swift; sourceTree = "<group>"; };
+		D7F9F9611E03776D009F43D5 /* RosyWriterCPURenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterCPURenderer.swift; sourceTree = "<group>"; };
+		D7F9F9621E03776D009F43D5 /* RosyWriterOpenCVRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterOpenCVRenderer.swift; sourceTree = "<group>"; };
+		D7F9F9631E03776D009F43D5 /* RosyWriterOpenGLRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterOpenGLRenderer.swift; sourceTree = "<group>"; };
+		D7F9F9641E03776D009F43D5 /* RosyWriterRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosyWriterRenderer.swift; sourceTree = "<group>"; };
+		D7F9F9831E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FourCharCode+StringLiteralConvertible.swift"; sourceTree = "<group>"; };
+		D7F9F9841E037911009F43D5 /* NumTypes+Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumTypes+Conversion.swift"; sourceTree = "<group>"; };
+		D7F9F9851E037911009F43D5 /* ObjC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +169,7 @@
 				1756C9E619BE5E1F0080DD55 /* CoreVideo.framework in Frameworks */,
 				1756C9E719BE5E1F0080DD55 /* CoreGraphics.framework in Frameworks */,
 				1756C9E819BE5E1F0080DD55 /* OpenGLES.framework in Frameworks */,
+				1756C9E919BE5E1F0080DD55 /* AssetsLibrary.framework in Frameworks */,
 				1756C9EA19BE5E1F0080DD55 /* AVFoundation.framework in Frameworks */,
 				1756C9EB19BE5E1F0080DD55 /* UIKit.framework in Frameworks */,
 				1756C9EC19BE5E1F0080DD55 /* Foundation.framework in Frameworks */,
@@ -218,6 +187,7 @@
 				1FCCE65819BA80A5009D7A6B /* CoreVideo.framework in Frameworks */,
 				1FCCE65919BA80A5009D7A6B /* CoreGraphics.framework in Frameworks */,
 				1FCCE65A19BA80A5009D7A6B /* OpenGLES.framework in Frameworks */,
+				1FCCE65B19BA80A5009D7A6B /* AssetsLibrary.framework in Frameworks */,
 				1FCCE65C19BA80A5009D7A6B /* AVFoundation.framework in Frameworks */,
 				1FCCE65D19BA80A5009D7A6B /* UIKit.framework in Frameworks */,
 				1FCCE65E19BA80A5009D7A6B /* Foundation.framework in Frameworks */,
@@ -234,6 +204,7 @@
 				696D281819CA539900A23D81 /* CoreVideo.framework in Frameworks */,
 				696D281919CA539900A23D81 /* CoreGraphics.framework in Frameworks */,
 				696D281A19CA539900A23D81 /* OpenGLES.framework in Frameworks */,
+				696D281B19CA539900A23D81 /* AssetsLibrary.framework in Frameworks */,
 				696D281C19CA539900A23D81 /* AVFoundation.framework in Frameworks */,
 				696D281D19CA539900A23D81 /* UIKit.framework in Frameworks */,
 				696D281E19CA539900A23D81 /* Foundation.framework in Frameworks */,
@@ -250,6 +221,7 @@
 				6F90DE071395CCE000125BDA /* CoreVideo.framework in Frameworks */,
 				6F90DDDE1395CAAA00125BDA /* CoreGraphics.framework in Frameworks */,
 				6F90DE051395CCD100125BDA /* OpenGLES.framework in Frameworks */,
+				6F90DE011395CCBE00125BDA /* AssetsLibrary.framework in Frameworks */,
 				6F90DDFF1395CCB600125BDA /* AVFoundation.framework in Frameworks */,
 				6F90DDDA1395CAAA00125BDA /* UIKit.framework in Frameworks */,
 				6F90DDDC1395CAAA00125BDA /* Foundation.framework in Frameworks */,
@@ -271,11 +243,11 @@
 		5DC09BF119B7F51B0025A16E /* Renderers */ = {
 			isa = PBXGroup;
 			children = (
-				D72F7DCD1A647935005F468E /* RosyWriterRenderer.swift */,
-				D7C1683D1A3336B8008A887F /* RosyWriterOpenGLRenderer.swift */,
-				D74505951A63B0F100A39FB7 /* RosyWriterCPURenderer.swift */,
-				D745059D1A63CB7600A39FB7 /* RosyWriterOpenCVRenderer.swift */,
-				D74505991A63BE7500A39FB7 /* RosyWriterCIFilterRenderer.swift */,
+				D7F9F9641E03776D009F43D5 /* RosyWriterRenderer.swift */,
+				D7F9F9631E03776D009F43D5 /* RosyWriterOpenGLRenderer.swift */,
+				D7F9F9611E03776D009F43D5 /* RosyWriterCPURenderer.swift */,
+				D7F9F9621E03776D009F43D5 /* RosyWriterOpenCVRenderer.swift */,
+				D7F9F9601E03776D009F43D5 /* RosyWriterCIFilterRenderer.swift */,
 			);
 			name = Renderers;
 			sourceTree = "<group>";
@@ -283,11 +255,12 @@
 		6F90DDCA1395CAAA00125BDA = {
 			isa = PBXGroup;
 			children = (
-				D7B915CA1A77C58B002949C6 /* README.md */,
+				D7F9F9501E0376A9009F43D5 /* LICENSE.txt */,
+				D7F9F9511E0376A9009F43D5 /* README.md */,
 				28365598139FE71B00D09100 /* ReadMe.txt */,
 				6F90DDDF1395CAAA00125BDA /* Classes */,
 				6FF11C8616A8778500E14D71 /* Utilities */,
-				AF052D151422BCEA00CD2D66 /* Other Sources */,
+				D7F9F9821E037911009F43D5 /* OOPUtils */,
 				6F90DDE01395CAAA00125BDA /* Resources */,
 				6F90DDD81395CAAA00125BDA /* Frameworks */,
 				6F90DDD61395CAAA00125BDA /* Products */,
@@ -309,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				171999D919C7695800A719B5 /* CoreImage.framework */,
+				6F90DE001395CCBE00125BDA /* AssetsLibrary.framework */,
 				6F90DDFE1395CCB600125BDA /* AVFoundation.framework */,
 				6F90DDDD1395CAAA00125BDA /* CoreGraphics.framework */,
 				6F90DE0A1395CCF500125BDA /* CoreMedia.framework */,
@@ -326,10 +300,10 @@
 		6F90DDDF1395CAAA00125BDA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D70B9B6E1A6BC1CD00111A9B /* RosyWriterViewController.swift */,
-				D70B9B311A6B050700111A9B /* RosyWriterCapturePipeline.swift */,
+				D7F9F95C1E037744009F43D5 /* RosyWriterViewController.swift */,
+				D7F9F95B1E037744009F43D5 /* RosyWriterCapturePipeline.swift */,
 				5DC09BF119B7F51B0025A16E /* Renderers */,
-				D7E2C5031A69853F003BB161 /* RosyWriterAppDelegate.swift */,
+				D7F9F95A1E037744009F43D5 /* RosyWriterAppDelegate.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -337,7 +311,6 @@
 		6F90DDE01395CAAA00125BDA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D78DE0D31B47C3B3005E5216 /* Default-568h@2x.png */,
 				7214DBCD182AEF8900EA3F99 /* Images.xcassets */,
 				5DBA2A9719C232E200530F7A /* Launch.storyboard */,
 				281FB47D176694640071511D /* Main.storyboard */,
@@ -352,8 +325,8 @@
 		6FF11C8616A8778500E14D71 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				D70B9B1F1A6AA8A000111A9B /* MovieRecorder.swift */,
-				D70B9B191A6A8D6100111A9B /* OpenGLPixelBufferView.swift */,
+				D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */,
+				D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */,
 				6FF11C9016A877A100E14D71 /* GL */,
 			);
 			name = Utilities;
@@ -363,20 +336,20 @@
 		6FF11C9016A877A100E14D71 /* GL */ = {
 			isa = PBXGroup;
 			children = (
-				D74505871A63979C00A39FB7 /* ShaderUtilities.swift */,
+				D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */,
 			);
 			name = GL;
 			sourceTree = "<group>";
 		};
-		AF052D151422BCEA00CD2D66 /* Other Sources */ = {
+		D7F9F9821E037911009F43D5 /* OOPUtils */ = {
 			isa = PBXGroup;
 			children = (
-				D7F660FB1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift */,
-				D7F660FD1A79199100C16933 /* NumTypes+Conversion.swift */,
-				D7F660FE1A79199100C16933 /* ObjC.swift */,
+				D7F9F9831E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift */,
+				D7F9F9841E037911009F43D5 /* NumTypes+Conversion.swift */,
+				D7F9F9851E037911009F43D5 /* ObjC.swift */,
 			);
-			name = "Other Sources";
-			path = Classes;
+			name = OOPUtils;
+			path = Classes/OOPUtils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -389,7 +362,6 @@
 				1756C9D519BE5E1F0080DD55 /* Sources */,
 				1756C9E119BE5E1F0080DD55 /* Frameworks */,
 				1756C9ED19BE5E1F0080DD55 /* Resources */,
-				D7B915C61A77BFCE002949C6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -407,7 +379,6 @@
 				1FCCE64719BA80A5009D7A6B /* Sources */,
 				1FCCE65319BA80A5009D7A6B /* Frameworks */,
 				1FCCE65F19BA80A5009D7A6B /* Resources */,
-				D7667A821A6FDC100028C007 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -425,7 +396,6 @@
 				696D280A19CA539900A23D81 /* Sources */,
 				696D281319CA539900A23D81 /* Frameworks */,
 				696D281F19CA539900A23D81 /* Resources */,
-				D7B915C91A77C3BE002949C6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -459,13 +429,19 @@
 		6F90DDCC1395CAAA00125BDA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0820;
 				TargetAttributes = {
 					1756C9D419BE5E1F0080DD55 = {
-						LastSwiftMigration = 0820;
+						CreatedOnToolsVersion = 8.0;
+					};
+					1FCCE64619BA80A5009D7A6B = {
+						CreatedOnToolsVersion = 8.0;
+					};
+					696D280919CA539900A23D81 = {
+						CreatedOnToolsVersion = 8.0;
 					};
 					6F90DDD41395CAAA00125BDA = {
+						CreatedOnToolsVersion = 8.0;
 						LastSwiftMigration = 0820;
 					};
 				};
@@ -498,7 +474,6 @@
 				1756C9EF19BE5E1F0080DD55 /* InfoPlist.strings in Resources */,
 				1756C9F019BE5E1F0080DD55 /* Main.storyboard in Resources */,
 				1756C9F319BE5E1F0080DD55 /* ReadMe.txt in Resources */,
-				D78DE0D61B47C3B3005E5216 /* Default-568h@2x.png in Resources */,
 				1756C9F419BE5E1F0080DD55 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -512,7 +487,6 @@
 				5DBA2A9A19C232E200530F7A /* Launch.storyboard in Resources */,
 				1FCCE66619BA80A5009D7A6B /* ReadMe.txt in Resources */,
 				1FCCE66819BA80A5009D7A6B /* Images.xcassets in Resources */,
-				D78DE0D51B47C3B3005E5216 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,7 +499,6 @@
 				696D282219CA539900A23D81 /* Launch.storyboard in Resources */,
 				696D282419CA539900A23D81 /* ReadMe.txt in Resources */,
 				696D282519CA539900A23D81 /* Images.xcassets in Resources */,
-				D78DE0D71B47C3B3005E5216 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,7 +511,6 @@
 				281FB47F176694640071511D /* Main.storyboard in Resources */,
 				5DBA2A9919C232E200530F7A /* Launch.storyboard in Resources */,
 				262F9EB919A7CA8D001BB393 /* myFilter.fsh in Resources */,
-				D78DE0D41B47C3B3005E5216 /* Default-568h@2x.png in Resources */,
 				28365599139FE71B00D09100 /* ReadMe.txt in Resources */,
 				7214DBCE182AEF8900EA3F99 /* Images.xcassets in Resources */,
 			);
@@ -551,17 +523,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D70B9B291A6AD62500111A9B /* RosyWriterRenderer.swift in Sources */,
-				D7C0A2B31A6BF85A009BBAF1 /* RosyWriterViewController.swift in Sources */,
-				D7F661151A79199100C16933 /* ObjC.swift in Sources */,
-				D7F661111A79199100C16933 /* NumTypes+Conversion.swift in Sources */,
-				D70B9B1C1A6A8F5E00111A9B /* OpenGLPixelBufferView.swift in Sources */,
-				D7E2C5061A6985CE003BB161 /* RosyWriterAppDelegate.swift in Sources */,
-				D70B9B341A6B0A9300111A9B /* RosyWriterCapturePipeline.swift in Sources */,
-				D745059B1A63CB0000A39FB7 /* RosyWriterCIFilterRenderer.swift in Sources */,
-				D745058A1A6397AB00A39FB7 /* ShaderUtilities.swift in Sources */,
-				D7F661091A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
-				D70B9B241A6AB40400111A9B /* MovieRecorder.swift in Sources */,
+				D7F9F9801E03780F009F43D5 /* ShaderUtilities.swift in Sources */,
+				D7F9F97D1E037805009F43D5 /* OpenGLPixelBufferView.swift in Sources */,
+				D7F9F97A1E0377FD009F43D5 /* MovieRecorder.swift in Sources */,
+				D7F9F9711E0377BF009F43D5 /* RosyWriterRenderer.swift in Sources */,
+				D7F9F9771E0377F3009F43D5 /* RosyWriterAppDelegate.swift in Sources */,
+				D7F9F96B1E0377AD009F43D5 /* RosyWriterViewController.swift in Sources */,
+				D7F9F98A1E03791E009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
+				D7F9F9901E037929009F43D5 /* ObjC.swift in Sources */,
+				D7F9F9751E0377ED009F43D5 /* RosyWriterCIFilterRenderer.swift in Sources */,
+				D7F9F98D1E037924009F43D5 /* NumTypes+Conversion.swift in Sources */,
+				D7F9F96E1E0377B7009F43D5 /* RosyWriterCapturePipeline.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,17 +541,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D70B9B281A6AD62400111A9B /* RosyWriterRenderer.swift in Sources */,
-				D7C0A2B21A6BF859009BBAF1 /* RosyWriterViewController.swift in Sources */,
-				D7F661141A79199100C16933 /* ObjC.swift in Sources */,
-				D7F661101A79199100C16933 /* NumTypes+Conversion.swift in Sources */,
-				D70B9B1B1A6A8F5D00111A9B /* OpenGLPixelBufferView.swift in Sources */,
-				D7E2C5051A6985CD003BB161 /* RosyWriterAppDelegate.swift in Sources */,
-				D7E500381A6BFD3F000B56EB /* RosyWriterCapturePipeline.swift in Sources */,
-				D745059C1A63CB0C00A39FB7 /* RosyWriterCPURenderer.swift in Sources */,
-				D74505891A6397A900A39FB7 /* ShaderUtilities.swift in Sources */,
-				D7F661081A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
-				D70B9B231A6AB40400111A9B /* MovieRecorder.swift in Sources */,
+				D7F9F97F1E03780D009F43D5 /* ShaderUtilities.swift in Sources */,
+				D7F9F97C1E037805009F43D5 /* OpenGLPixelBufferView.swift in Sources */,
+				D7F9F9791E0377FC009F43D5 /* MovieRecorder.swift in Sources */,
+				D7F9F9701E0377BE009F43D5 /* RosyWriterRenderer.swift in Sources */,
+				D7F9F9761E0377F2009F43D5 /* RosyWriterAppDelegate.swift in Sources */,
+				D7F9F96A1E0377AC009F43D5 /* RosyWriterViewController.swift in Sources */,
+				D7F9F9891E03791D009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
+				D7F9F98F1E037929009F43D5 /* ObjC.swift in Sources */,
+				D7F9F98C1E037923009F43D5 /* NumTypes+Conversion.swift in Sources */,
+				D7F9F96D1E0377B6009F43D5 /* RosyWriterCapturePipeline.swift in Sources */,
+				D7F9F9731E0377CC009F43D5 /* RosyWriterCPURenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,17 +559,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D70B9B2A1A6AD62600111A9B /* RosyWriterRenderer.swift in Sources */,
-				D7C0A2B41A6BF85B009BBAF1 /* RosyWriterViewController.swift in Sources */,
-				D7F661161A79199100C16933 /* ObjC.swift in Sources */,
-				D7F661121A79199100C16933 /* NumTypes+Conversion.swift in Sources */,
-				D70B9B1D1A6A8F5F00111A9B /* OpenGLPixelBufferView.swift in Sources */,
-				D7E2C5071A6985CF003BB161 /* RosyWriterAppDelegate.swift in Sources */,
-				D70B9B351A6B0A9400111A9B /* RosyWriterCapturePipeline.swift in Sources */,
-				D745058B1A6397AC00A39FB7 /* ShaderUtilities.swift in Sources */,
-				D7F6610A1A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
-				D70B9B251A6AB40500111A9B /* MovieRecorder.swift in Sources */,
-				D745059E1A63CB7600A39FB7 /* RosyWriterOpenCVRenderer.swift in Sources */,
+				D7F9F9811E037810009F43D5 /* ShaderUtilities.swift in Sources */,
+				D7F9F97E1E037806009F43D5 /* OpenGLPixelBufferView.swift in Sources */,
+				D7F9F97B1E0377FE009F43D5 /* MovieRecorder.swift in Sources */,
+				D7F9F9721E0377C0009F43D5 /* RosyWriterRenderer.swift in Sources */,
+				D7F9F9781E0377F4009F43D5 /* RosyWriterAppDelegate.swift in Sources */,
+				D7F9F96C1E0377AE009F43D5 /* RosyWriterViewController.swift in Sources */,
+				D7F9F98B1E03791F009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
+				D7F9F9911E03792A009F43D5 /* ObjC.swift in Sources */,
+				D7F9F98E1E037925009F43D5 /* NumTypes+Conversion.swift in Sources */,
+				D7F9F9741E0377E4009F43D5 /* RosyWriterOpenCVRenderer.swift in Sources */,
+				D7F9F96F1E0377B8009F43D5 /* RosyWriterCapturePipeline.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,17 +577,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F661131A79199100C16933 /* ObjC.swift in Sources */,
-				D7E2939B1A6BF8350054C514 /* RosyWriterViewController.swift in Sources */,
-				D7E2C5041A69853F003BB161 /* RosyWriterAppDelegate.swift in Sources */,
-				D7F6610F1A79199100C16933 /* NumTypes+Conversion.swift in Sources */,
-				D70B9B201A6AA8A000111A9B /* MovieRecorder.swift in Sources */,
-				D7C1683E1A3336B8008A887F /* RosyWriterOpenGLRenderer.swift in Sources */,
-				D70B9B1A1A6A8D6100111A9B /* OpenGLPixelBufferView.swift in Sources */,
-				D74505881A63979C00A39FB7 /* ShaderUtilities.swift in Sources */,
-				D72F7DCE1A647935005F468E /* RosyWriterRenderer.swift in Sources */,
-				D7C0A2B51A6BF867009BBAF1 /* RosyWriterCapturePipeline.swift in Sources */,
-				D7F661071A79199100C16933 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
+				D7F9F95F1E037744009F43D5 /* RosyWriterViewController.swift in Sources */,
+				D7F9F9881E037911009F43D5 /* ObjC.swift in Sources */,
+				D7F9F9571E0376EE009F43D5 /* OpenGLPixelBufferView.swift in Sources */,
+				D7F9F9871E037911009F43D5 /* NumTypes+Conversion.swift in Sources */,
+				D7F9F95D1E037744009F43D5 /* RosyWriterAppDelegate.swift in Sources */,
+				D7F9F9561E0376EE009F43D5 /* MovieRecorder.swift in Sources */,
+				D7F9F95E1E037744009F43D5 /* RosyWriterCapturePipeline.swift in Sources */,
+				D7F9F9591E037705009F43D5 /* ShaderUtilities.swift in Sources */,
+				D7F9F9691E03776D009F43D5 /* RosyWriterRenderer.swift in Sources */,
+				D7F9F9681E03776D009F43D5 /* RosyWriterOpenGLRenderer.swift in Sources */,
+				D7F9F9861E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -662,13 +634,12 @@
 				GCC_PREFIX_HEADER = "RosyWriter-Prefix.pch";
 				INFOPLIST_FILE = "RosyWriter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				OTHER_CFLAGS = "-DUSE_CIFILTER_RENDERER=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DUSE_CIFILTER_RENDERER -DRECORD_AUDIO";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-DUSE_CIFILTER_RENDERER -DRECORD_AUDIO";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RosyWriterCIFilter;
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -686,13 +657,12 @@
 				GCC_PREFIX_HEADER = "RosyWriter-Prefix.pch";
 				INFOPLIST_FILE = "RosyWriter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				OTHER_CFLAGS = "-DUSE_CIFILTER_RENDERER=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DUSE_CIFILTER_RENDERER -DRECORD_AUDIO";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-DUSE_CIFILTER_RENDERER -DRECORD_AUDIO";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RosyWriterCIFilter;
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -701,7 +671,6 @@
 		1FCCE66B19BA80A5009D7A6B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -711,14 +680,13 @@
 				GCC_PREFIX_HEADER = "RosyWriter-Prefix.pch";
 				INFOPLIST_FILE = "RosyWriter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				KEEP_PRIVATE_EXTERNS = NO;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				OTHER_CFLAGS = "-DUSE_CPU_RENDERER=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DUSE_CPU_RENDERER -DRECORD_AUDIO";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-DUSE_CPU_RENDERER -DRECORD_AUDIO";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RosyWriterCPU;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -727,7 +695,6 @@
 		1FCCE66C19BA80A5009D7A6B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -737,11 +704,10 @@
 				GCC_PREFIX_HEADER = "RosyWriter-Prefix.pch";
 				INFOPLIST_FILE = "RosyWriter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				KEEP_PRIVATE_EXTERNS = NO;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				OTHER_CFLAGS = "-DUSE_CPU_RENDERER=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DUSE_CPU_RENDERER -DRECORD_AUDIO";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-DUSE_CPU_RENDERER -DRECORD_AUDIO";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RosyWriterCPU;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -757,18 +723,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/dev/Projects/experimental,
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RosyWriter-Prefix.pch";
 				INFOPLIST_FILE = "RosyWriter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				OTHER_CFLAGS = "-DUSE_OPENCV_RENDERER=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DUSE_OPENCV_RENDERER -DRECORD_AUDIO";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-DUSE_OPENCV_RENDERER -DRECORD_AUDIO";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RosyWriterOpenCV;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -784,18 +746,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/dev/Projects/experimental,
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RosyWriter-Prefix.pch";
 				INFOPLIST_FILE = "RosyWriter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				OTHER_CFLAGS = "-DUSE_OPENCV_RENDERER=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DUSE_OPENCV_RENDERER -DRECORD_AUDIO";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-DUSE_OPENCV_RENDERER -DRECORD_AUDIO";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RosyWriterOpenCV;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -806,9 +764,9 @@
 		6F90DDF51395CAAA00125BDA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_OBJC_ARC = NO;
+				ASSETCATALOG_COMPRESSION = lossless;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -841,12 +799,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DRECORD_AUDIO";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -855,9 +811,9 @@
 		6F90DDF61395CAAA00125BDA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_OBJC_ARC = NO;
+				ASSETCATALOG_COMPRESSION = "respect-asset-catalog";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -883,7 +839,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DRECORD_AUDIO";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -910,8 +865,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = "-DUSE_OPENGL_RENDERER=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DUSE_OPENGL_RENDERER -DRECORD_AUDIO";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-DUSE_OPENGL_RENDERER -DRECORD_AUDIO";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RosyWriterOpenGL;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -936,8 +891,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = "-DUSE_OPENGL_RENDERER=1";
-				OTHER_SWIFT_FLAGS = "-DLOG_STATUS_TRANSITIONS -DUSE_OPENGL_RENDERER -DRECORD_AUDIO";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-DUSE_OPENGL_RENDERER -DRECORD_AUDIO";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = RosyWriterOpenGL;
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 3.0;
