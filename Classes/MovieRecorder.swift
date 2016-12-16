@@ -61,9 +61,9 @@ import CoreMedia
 
 @objc(MovieRecorderDelegate)
 protocol MovieRecorderDelegate: NSObjectProtocol {
-    func movieRecorderDidFinishPreparing(recorder: MovieRecorder)
-    func movieRecorder(recorder: MovieRecorder, didFailWithError error: NSError)
-    func movieRecorderDidFinishRecording(recorder: MovieRecorder)
+    func movieRecorderDidFinishPreparing(_ recorder: MovieRecorder)
+    func movieRecorder(_ recorder: MovieRecorder, didFailWithError error: NSError)
+    func movieRecorderDidFinishRecording(_ recorder: MovieRecorder)
 }
 
 
@@ -73,36 +73,36 @@ import AVFoundation
 //Build Settings>Swift Compiler - Custom Flags>Other Swift Flags
 
 private enum MovieRecorderStatus: Int {
-    case Idle = 0
-    case PreparingToRecord
-    case Recording
+    case idle = 0
+    case preparingToRecord
+    case recording
     // waiting for inflight buffers to be appended
-    case FinishingRecordingPart1
+    case finishingRecordingPart1
     // calling finish writing on the asset writer
-    case FinishingRecordingPart2
+    case finishingRecordingPart2
     // terminal state
-    case Finished
+    case finished
     // terminal state
-    case Failed
+    case failed
 }   // internal state machine
 
 #if LOG_STATUS_TRANSITIONS
     extension MovieRecorderStatus: CustomStringConvertible {
         var description: String {
             switch self {
-            case .Idle:
+            case .idle:
                 return "Idle"
-            case .PreparingToRecord:
+            case .preparingToRecord:
                 return "PreparingToRecord"
-            case .Recording:
+            case .recording:
                 return "Recording"
-            case .FinishingRecordingPart1:
+            case .finishingRecordingPart1:
                 return "FinishingRecordingPart1"
-            case .FinishingRecordingPart2:
+            case .finishingRecordingPart2:
                 return "FinishingRecordingPart2"
-            case .Finished:
+            case .finished:
                 return "Finished"
-            case .Failed:
+            case .failed:
                 return "Failed"
             }
         }
@@ -112,15 +112,15 @@ private enum MovieRecorderStatus: Int {
 
 @objc(MovieRecorder)
 class MovieRecorder: NSObject {
-    private var _status: MovieRecorderStatus = .Idle
+    private var _status: MovieRecorderStatus = .idle
     
     // __weak doesn't actually do anything under non-ARC
     private weak var _delegate: MovieRecorderDelegate?
-    private var _delegateCallbackQueue: dispatch_queue_t!
+    private var _delegateCallbackQueue: DispatchQueue!
     
-    private var _writingQueue: dispatch_queue_t
+    private var _writingQueue: DispatchQueue
     
-    private var _URL: NSURL
+    private var _URL: URL
     
     private var _assetWriter: AVAssetWriter?
     private var _haveStartedSession: Bool = false
@@ -137,20 +137,20 @@ class MovieRecorder: NSObject {
     //MARK: -
     //MARK: API
     
-    init(URL: NSURL) {
+    init(URL: Foundation.URL) {
         
-        _writingQueue = dispatch_queue_create("com.apple.sample.movierecorder.writing", DISPATCH_QUEUE_SERIAL)
-        _videoTrackTransform = CGAffineTransformIdentity
+        _writingQueue = DispatchQueue(label: "com.apple.sample.movierecorder.writing", attributes: [])
+        _videoTrackTransform = CGAffineTransform.identity
         _URL = URL
         super.init()
     }
     
     // Only one audio and video track each are allowed.
     // see AVVideoSettings.h for settings keys/values
-    func addVideoTrackWithSourceFormatDescription(formatDescription: CMFormatDescription, transform: CGAffineTransform, settings videoSettings: [String : AnyObject]) {
+    func addVideoTrackWithSourceFormatDescription(_ formatDescription: CMFormatDescription, transform: CGAffineTransform, settings videoSettings: [String : AnyObject]) {
         
         synchronized(self) {
-            if _status != .Idle {
+            if _status != .idle {
                 fatalError("Cannot add tracks while not idle")
             }
             
@@ -165,10 +165,10 @@ class MovieRecorder: NSObject {
     }
     
     // see AVAudioSettings.h for settings keys/values
-    func addAudioTrackWithSourceFormatDescription(formatDescription: CMFormatDescription, settings audioSettings: [String : AnyObject]) {
+    func addAudioTrackWithSourceFormatDescription(_ formatDescription: CMFormatDescription, settings audioSettings: [String : AnyObject]) {
         
         synchronized(self) {
-            if _status != .Idle {
+            if _status != .idle {
                 fatalError("Cannot add tracks while not idle")
             }
             
@@ -190,7 +190,7 @@ class MovieRecorder: NSObject {
     }
     
     // delegate is weak referenced
-    func setDelegate(delegate: MovieRecorderDelegate?, callbackQueue delegateCallbackQueue: dispatch_queue_t?) {
+    func setDelegate(_ delegate: MovieRecorderDelegate?, callbackQueue delegateCallbackQueue: DispatchQueue?) {
         if delegate != nil && delegateCallbackQueue == nil {
             fatalError("Caller must provide a delegateCallbackQueue")
         }
@@ -204,25 +204,26 @@ class MovieRecorder: NSObject {
     // Asynchronous, might take several hundred milliseconds. When finished the delegate's recorderDidFinishPreparing: or recorder:didFailWithError: method will be called.
     func prepareToRecord() {
         synchronized(self) {
-            if _status != .Idle {
+            if _status != .idle {
                 fatalError("Already prepared, cannot prepare again")
             }
             
-            self.transitionToStatus(.PreparingToRecord, error: nil)
+            self.transitionToStatus(.preparingToRecord, error: nil)
         }
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) {
+        DispatchQueue.global(qos: .background).async {
+        //DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.low).async {
             
             autoreleasepool {
                 var error: NSError? = nil
                 do {
                     // AVAssetWriter will not write over an existing file.
-                    try NSFileManager.defaultManager().removeItemAtURL(self._URL)
+                    try FileManager.default.removeItem(at: self._URL)
                 } catch _ {
                 }
                 
                 do {
-                    self._assetWriter = try AVAssetWriter(URL: self._URL, fileType: AVFileTypeQuickTimeMovie)
+                    self._assetWriter = try AVAssetWriter(outputURL: self._URL, fileType: AVFileTypeQuickTimeMovie)
                 } catch let error1 as NSError {
                     error = error1
                     self._assetWriter = nil
@@ -254,26 +255,26 @@ class MovieRecorder: NSObject {
                 if error == nil {
                     let success = self._assetWriter?.startWriting() ?? false
                     if success {
-                        error = self._assetWriter?.error
+                        error = self._assetWriter?.error as NSError?
                     }
                 }
                 
                 synchronized(self) {
                     if error != nil {
-                        self.transitionToStatus(.Failed, error: error)
+                        self.transitionToStatus(.failed, error: error)
                     } else {
-                        self.transitionToStatus(.Recording, error: nil)
+                        self.transitionToStatus(.recording, error: nil)
                     }
                 }
             }
         }
     }
     
-    func appendVideoSampleBuffer(sampleBuffer: CMSampleBuffer) {
+    func appendVideoSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
         self.appendSampleBuffer(sampleBuffer, ofMediaType: AVMediaTypeVideo)
     }
     
-    func appendVideoPixelBuffer(pixelBuffer: CVPixelBuffer, withPresentationTime presentationTime: CMTime) {
+    func appendVideoPixelBuffer(_ pixelBuffer: CVPixelBuffer, withPresentationTime presentationTime: CMTime) {
         var sampleBuffer: CMSampleBuffer? = nil
         
         var timingInfo: CMSampleTimingInfo = CMSampleTimingInfo()
@@ -290,7 +291,7 @@ class MovieRecorder: NSObject {
         }
     }
     
-    func appendAudioSampleBuffer(sampleBuffer: CMSampleBuffer) {
+    func appendAudioSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
         self.appendSampleBuffer(sampleBuffer, ofMediaType: AVMediaTypeAudio)
     }
     
@@ -299,48 +300,48 @@ class MovieRecorder: NSObject {
         synchronized(self) {
             var shouldFinishRecording = false
             switch _status {
-            case .Idle,
-            .PreparingToRecord,
-            .FinishingRecordingPart1,
-            .FinishingRecordingPart2,
-            .Finished:
+            case .idle,
+            .preparingToRecord,
+            .finishingRecordingPart1,
+            .finishingRecordingPart2,
+            .finished:
                 fatalError("Not recording")
-            case .Failed:
+            case .failed:
                 // From the client's perspective the movie recorder can asynchronously transition to an error state as the result of an append.
                 // Because of this we are lenient when finishRecording is called and we are in an error state.
                 NSLog("Recording has failed, nothing to do")
-            case .Recording:
+            case .recording:
                 shouldFinishRecording = true
             }
             
             if shouldFinishRecording {
-                self.transitionToStatus(.FinishingRecordingPart1, error: nil)
+                self.transitionToStatus(.finishingRecordingPart1, error: nil)
             } else {
                 return
             }
         }
         
-        dispatch_async(_writingQueue) {
+        _writingQueue.async {
             
             autoreleasepool {
                 synchronized(self) {
                     // We may have transitioned to an error state as we appended inflight buffers. In that case there is nothing to do now.
-                    if self._status != .FinishingRecordingPart1 {
+                    if self._status != .finishingRecordingPart1 {
                         return
                     }
                     
                     // It is not safe to call -[AVAssetWriter finishWriting*] concurrently with -[AVAssetWriterInput appendSampleBuffer:]
                     // We transition to MovieRecorderStatusFinishingRecordingPart2 while on _writingQueue, which guarantees that no more buffers will be appended.
-                    self.transitionToStatus(.FinishingRecordingPart2, error: nil)
+                    self.transitionToStatus(.finishingRecordingPart2, error: nil)
                 }
                 
-                self._assetWriter?.finishWritingWithCompletionHandler {
+                self._assetWriter?.finishWriting {
                     synchronized(self) {
                         let error = self._assetWriter?.error
                         if error != nil {
-                            self.transitionToStatus(.Failed, error: error)
+                            self.transitionToStatus(.failed, error: error as NSError?)
                         } else {
-                            self.transitionToStatus(.Finished, error: nil)
+                            self.transitionToStatus(.finished, error: nil)
                         }
                     }
                 }
@@ -357,39 +358,39 @@ class MovieRecorder: NSObject {
     //MARK: -
     //MARK: Internal
     
-    private func appendSampleBuffer(sampleBuffer: CMSampleBuffer, ofMediaType mediaType: String) {
+    private func appendSampleBuffer(_ sampleBuffer: CMSampleBuffer, ofMediaType mediaType: String) {
         
         synchronized(self) {
-            if _status.rawValue < MovieRecorderStatus.Recording.rawValue {
+            if _status.rawValue < MovieRecorderStatus.recording.rawValue {
                 fatalError("Not ready to record yet")
             }
         }
         
-        dispatch_async(_writingQueue) {
+        _writingQueue.async {
             
             autoreleasepool {
                 synchronized(self) {
                     // From the client's perspective the movie recorder can asynchronously transition to an error state as the result of an append.
                     // Because of this we are lenient when samples are appended and we are no longer recording.
                     // Instead of throwing an exception we just release the sample buffers and return.
-                    if self._status.rawValue > MovieRecorderStatus.FinishingRecordingPart1.rawValue {
+                    if self._status.rawValue > MovieRecorderStatus.finishingRecordingPart1.rawValue {
                         return
                     }
                 }
                 
                 if !self._haveStartedSession {
-                    self._assetWriter?.startSessionAtSourceTime(CMSampleBufferGetPresentationTimeStamp(sampleBuffer))
+                    self._assetWriter?.startSession(atSourceTime: CMSampleBufferGetPresentationTimeStamp(sampleBuffer))
                     self._haveStartedSession = true
                 }
                 
                 let input = (mediaType == AVMediaTypeVideo) ? self._videoInput : self._audioInput
                 
-                if input?.readyForMoreMediaData ?? false {
-                    let success = input!.appendSampleBuffer(sampleBuffer)
+                if input?.isReadyForMoreMediaData ?? false {
+                    let success = input!.append(sampleBuffer)
                     if !success {
                         let error = self._assetWriter?.error
                         synchronized(self) {
-                            self.transitionToStatus(.Failed, error: error)
+                            self.transitionToStatus(.failed, error: error as NSError?)
                         }
                     }
                 } else {
@@ -400,7 +401,7 @@ class MovieRecorder: NSObject {
     }
     
     // call under @synchonized( self )
-    private func transitionToStatus(newStatus: MovieRecorderStatus, error: NSError?) {
+    private func transitionToStatus(_ newStatus: MovieRecorderStatus, error: NSError?) {
         var shouldNotifyDelegate = false
         
         #if LOG_STATUS_TRANSITIONS
@@ -409,15 +410,15 @@ class MovieRecorder: NSObject {
         
         if newStatus != _status {
             // terminal states
-            if newStatus == .Finished || newStatus == .Failed {
+            if newStatus == .finished || newStatus == .failed {
                 shouldNotifyDelegate = true
                 // make sure there are no more sample buffers in flight before we tear down the asset writer and inputs
                 
-                dispatch_async(_writingQueue){
+                _writingQueue.async{
                     self.teardownAssetWriterAndInputs()
-                    if newStatus == .Failed {
+                    if newStatus == .failed {
                         do {
-                            try NSFileManager.defaultManager().removeItemAtURL(self._URL)
+                            try FileManager.default.removeItem(at: self._URL)
                         } catch _ {
                         }
                     }
@@ -428,7 +429,7 @@ class MovieRecorder: NSObject {
                         NSLog("MovieRecorder error: %@, code: %i", error!, Int32(error!.code))
                     }
                 #endif
-            } else if newStatus == .Recording {
+            } else if newStatus == .recording {
                 shouldNotifyDelegate = true
             }
             
@@ -436,15 +437,15 @@ class MovieRecorder: NSObject {
         }
         
         if shouldNotifyDelegate && self.delegate != nil {
-            dispatch_async(_delegateCallbackQueue) {
+            _delegateCallbackQueue.async {
                 
                 autoreleasepool {
                     switch newStatus {
-                    case .Recording:
+                    case .recording:
                         self.delegate!.movieRecorderDidFinishPreparing(self)
-                    case .Finished:
+                    case .finished:
                         self.delegate!.movieRecorderDidFinishRecording(self)
-                    case .Failed:
+                    case .failed:
                         self.delegate!.movieRecorder(self, didFailWithError: error!)
                     default:
                         break
@@ -455,28 +456,28 @@ class MovieRecorder: NSObject {
     }
     
     
-    private func setupAssetWriterAudioInputWithSourceFormatDescription(audioFormatDescription: CMFormatDescription?, settings _audioSettings: [String : AnyObject]?) throws {
+    private func setupAssetWriterAudioInputWithSourceFormatDescription(_ audioFormatDescription: CMFormatDescription?, settings _audioSettings: [String : AnyObject]?) throws {
         var audioSettings = _audioSettings
         if audioSettings == nil {
             NSLog("No audio settings provided, using default settings")
-            audioSettings = [AVFormatIDKey : kAudioFormatMPEG4AAC.ul]
+            audioSettings = [AVFormatIDKey : kAudioFormatMPEG4AAC.ul as AnyObject]
         }
         
-        if _assetWriter?.canApplyOutputSettings(audioSettings!, forMediaType: AVMediaTypeAudio) ?? false {
+        if _assetWriter?.canApply(outputSettings: audioSettings!, forMediaType: AVMediaTypeAudio) ?? false {
             _audioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio, outputSettings: audioSettings, sourceFormatHint: audioFormatDescription)
             _audioInput!.expectsMediaDataInRealTime = true
             
-            if _assetWriter?.canAddInput(_audioInput!) ?? false {
-                _assetWriter!.addInput(_audioInput!)
+            if _assetWriter?.canAdd(_audioInput!) ?? false {
+                _assetWriter!.add(_audioInput!)
             } else {
-                throw self.dynamicType.cannotSetupInputError()
+                throw type(of: self).cannotSetupInputError()
             }
         } else {
-            throw self.dynamicType.cannotSetupInputError()
+            throw type(of: self).cannotSetupInputError()
         }
     }
     
-    private func setupAssetWriterVideoInputWithSourceFormatDescription(videoFormatDescription: CMFormatDescription?, transform: CGAffineTransform, settings _videoSettings: [String: AnyObject]) throws {
+    private func setupAssetWriterVideoInputWithSourceFormatDescription(_ videoFormatDescription: CMFormatDescription?, transform: CGAffineTransform, settings _videoSettings: [String: Any]) throws {
         var videoSettings = _videoSettings
         if videoSettings.isEmpty {
             var bitsPerPixel: Float
@@ -500,30 +501,30 @@ class MovieRecorder: NSObject {
                 AVVideoMaxKeyFrameIntervalKey : 30]
             
             videoSettings = [AVVideoCodecKey : AVVideoCodecH264,
-                AVVideoWidthKey : dimensions.width.n,
-                AVVideoHeightKey : dimensions.height.n,
+                AVVideoWidthKey : dimensions.width,
+                AVVideoHeightKey : dimensions.height,
                 AVVideoCompressionPropertiesKey : compressionProperties]
         }
         
-        if _assetWriter?.canApplyOutputSettings(videoSettings, forMediaType: AVMediaTypeVideo) ?? false {
+        if _assetWriter?.canApply(outputSettings: videoSettings, forMediaType: AVMediaTypeVideo) ?? false {
             _videoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: videoSettings, sourceFormatHint: videoFormatDescription)
             _videoInput!.expectsMediaDataInRealTime = true
             _videoInput!.transform = transform
             
-            if _assetWriter?.canAddInput(_videoInput!) ?? false {
-                _assetWriter!.addInput(_videoInput!)
+            if _assetWriter?.canAdd(_videoInput!) ?? false {
+                _assetWriter!.add(_videoInput!)
             } else {
-                throw self.dynamicType.cannotSetupInputError()
+                throw type(of: self).cannotSetupInputError()
             }
         } else {
-            throw self.dynamicType.cannotSetupInputError()
+            throw type(of: self).cannotSetupInputError()
         }
     }
     
     private class func cannotSetupInputError() -> NSError {
         let localizedDescription = NSLocalizedString("Recording cannot be started", comment: "")
         let localizedFailureReason = NSLocalizedString("Cannot setup asset writer input.", comment: "")
-        let errorDict: [NSObject : AnyObject] = [NSLocalizedDescriptionKey : localizedDescription,
+        let errorDict: [AnyHashable: Any] = [NSLocalizedDescriptionKey : localizedDescription,
             NSLocalizedFailureReasonErrorKey: localizedFailureReason]
         return NSError(domain: "com.apple.dts.samplecode", code: 0, userInfo: errorDict)
     }

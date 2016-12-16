@@ -63,10 +63,10 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
     
     private var _ciContext: CIContext!
     private var _rosyFilter: CIFilter!
-    private var _rgbColorSpace: CGColorSpaceRef!
-    private var _bufferPool: CVPixelBufferPoolRef!
+    private var _rgbColorSpace: CGColorSpace!
+    private var _bufferPool: CVPixelBufferPool!
     private var _bufferPoolAuxAttributes: NSDictionary = [:]
-    private var _outputFormatDescription: CMFormatDescriptionRef!
+    private var _outputFormatDescription: CMFormatDescription!
     
     //MARK: API
     
@@ -80,7 +80,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
     
     let inputPixelFormat: FourCharCode = kCVPixelFormatType_32BGRA
     
-    func prepareForInputWithFormatDescription(inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
+    func prepareForInputWithFormatDescription(_ inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
         // The input and output dimensions are the same. This renderer doesn't do any scaling.
         let dimensions = CMVideoFormatDescriptionGetDimensions(inputFormatDescription)
         
@@ -90,8 +90,8 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         }
         
         _rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-        let eaglContext = EAGLContext(API: .OpenGLES2)
-        _ciContext = CIContext(EAGLContext: eaglContext, options: [kCIContextWorkingColorSpace : NSNull()])
+        let eaglContext = EAGLContext(api: .openGLES2)
+        _ciContext = CIContext(eaglContext: eaglContext!, options: [kCIContextWorkingColorSpace : NSNull()])
         
         _rosyFilter = CIFilter(name: "CIColorMatrix")
         let greenCoefficients: [CGFloat] = [0, 0, 0, 0]
@@ -102,13 +102,13 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         self.deleteBuffers()
     }
     
-    func copyRenderedPixelBuffer(pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer! {
+    func copyRenderedPixelBuffer(_ pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer! {
         var renderedOutputPixelBuffer: CVPixelBuffer? = nil
         
-        let sourceImage = CIImage(CVPixelBuffer: pixelBuffer, options: nil)
+        let sourceImage = CIImage(cvPixelBuffer: pixelBuffer, options: nil)
         
         _rosyFilter.setValue(sourceImage, forKey: kCIInputImageKey)
-        let filteredImage = _rosyFilter.valueForKey(kCIOutputImageKey) as! CIImage?
+        let filteredImage = _rosyFilter.value(forKey: kCIOutputImageKey) as! CIImage?
         
         let err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, _bufferPool, &renderedOutputPixelBuffer)
         if err != 0 {
@@ -116,7 +116,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         } else {
             
             // render the filtered image out to a pixel buffer (no locking needed as CIContext's render method will do that)
-            _ciContext.render(filteredImage!, toCVPixelBuffer: renderedOutputPixelBuffer!, bounds: filteredImage!.extent, colorSpace: _rgbColorSpace)
+            _ciContext.render(filteredImage!, to: renderedOutputPixelBuffer!, bounds: filteredImage!.extent, colorSpace: _rgbColorSpace)
         }
         
         return renderedOutputPixelBuffer
@@ -128,7 +128,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
     
     //MARK: Internal
     
-    private func initializeBuffersWithOutputDimensions(outputDimensions: CMVideoDimensions, retainedBufferCountHint clientRetainedBufferCountHint: size_t) -> Bool
+    private func initializeBuffersWithOutputDimensions(_ outputDimensions: CMVideoDimensions, retainedBufferCountHint clientRetainedBufferCountHint: size_t) -> Bool
     {
         var success = true
         
@@ -142,8 +142,8 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
             _bufferPoolAuxAttributes = createPixelBufferPoolAuxAttributes(maxRetainedBufferCount.i)
             preallocatePixelBuffersInPool(_bufferPool, _bufferPoolAuxAttributes)
             
-            var outputFormatDescription: CMFormatDescriptionRef? = nil
-            var testPixelBuffer: CVPixelBufferRef? = nil
+            var outputFormatDescription: CMFormatDescription? = nil
+            var testPixelBuffer: CVPixelBuffer? = nil
             CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, _bufferPool, _bufferPoolAuxAttributes, &testPixelBuffer)
             if testPixelBuffer == nil {
                 NSLog("Problem creating a pixel buffer.")
@@ -178,40 +178,40 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
     }
 }
 
-private func createPixelBufferPool(width: Int32, _ height: Int32, _ pixelFormat: OSType, _ maxBufferCount: Int32) -> CVPixelBufferPoolRef?
+private func createPixelBufferPool(_ width: Int32, _ height: Int32, _ pixelFormat: OSType, _ maxBufferCount: Int32) -> CVPixelBufferPool?
 {
-    var outputPool: CVPixelBufferPoolRef? = nil
+    var outputPool: CVPixelBufferPool? = nil
     
-    let sourcePixelBufferOptions: NSDictionary = [kCVPixelBufferPixelFormatTypeKey.ns : pixelFormat.l,
-        kCVPixelBufferWidthKey.ns : width.l,
-        kCVPixelBufferHeightKey.ns : height.l,
-        kCVPixelFormatOpenGLESCompatibility.ns : true,
-        kCVPixelBufferIOSurfacePropertiesKey.ns : NSDictionary()]
+    let sourcePixelBufferOptions: NSDictionary = [kCVPixelBufferPixelFormatTypeKey : pixelFormat,
+        kCVPixelBufferWidthKey : width,
+        kCVPixelBufferHeightKey : height,
+        kCVPixelFormatOpenGLESCompatibility : true,
+        kCVPixelBufferIOSurfacePropertiesKey : NSDictionary()]
     
-    let pixelBufferPoolOptions: NSDictionary = [kCVPixelBufferPoolMinimumBufferCountKey.ns : maxBufferCount.l]
+    let pixelBufferPoolOptions: NSDictionary = [kCVPixelBufferPoolMinimumBufferCountKey : maxBufferCount]
     
     CVPixelBufferPoolCreate(kCFAllocatorDefault, pixelBufferPoolOptions, sourcePixelBufferOptions, &outputPool)
     
     return outputPool
 }
 
-private func createPixelBufferPoolAuxAttributes(maxBufferCount: Int32) -> NSDictionary {
+private func createPixelBufferPoolAuxAttributes(_ maxBufferCount: Int32) -> NSDictionary {
     // CVPixelBufferPoolCreatePixelBufferWithAuxAttributes() will return kCVReturnWouldExceedAllocationThreshold if we have already vended the max number of buffers
-    let auxAttributes: NSDictionary = [kCVPixelBufferPoolAllocationThresholdKey.ns : maxBufferCount.l]
+    let auxAttributes: NSDictionary = [kCVPixelBufferPoolAllocationThresholdKey : maxBufferCount]
     return auxAttributes
 }
 
-private func preallocatePixelBuffersInPool(pool: CVPixelBufferPoolRef, _ auxAttributes: NSDictionary) {
+private func preallocatePixelBuffersInPool(_ pool: CVPixelBufferPool, _ auxAttributes: NSDictionary) {
     // Preallocate buffers in the pool, since this is for real-time display/capture
     let pixelBuffers: NSMutableArray = []
     while true {
-        var pixelBuffer: CVPixelBufferRef? = nil
+        var pixelBuffer: CVPixelBuffer? = nil
         let err = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, pool, auxAttributes, &pixelBuffer)
         
         if err == kCVReturnWouldExceedAllocationThreshold {
             break
         }
         assert(err == noErr)
-        pixelBuffers.addObject(pixelBuffer!)
+        pixelBuffers.add(pixelBuffer!)
     }
 }

@@ -36,12 +36,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import Foundation
-func synchronized(object: AnyObject, @noescape block: () -> Void) {
+func synchronized(_ object: AnyObject, block: () -> Void) {
     objc_sync_enter(object)
     block()
     objc_sync_exit(object)
 }
-func synchronized<T>(object: AnyObject, @noescape block: () -> T) -> T {
+func synchronized<T>(_ object: AnyObject, block: () -> T) -> T {
     objc_sync_enter(object)
     let result: T = block()
     objc_sync_exit(object)

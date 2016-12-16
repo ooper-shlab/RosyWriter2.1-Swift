@@ -36,7 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import Foundation
-extension FourCharCode: StringLiteralConvertible {
+extension FourCharCode: ExpressibleByStringLiteral {
     public init(stringLiteral: StringLiteralType) {
         if stringLiteral.utf16.count != 4 {
             fatalError("FourCharCode length must be 4!")
@@ -71,6 +71,6 @@ extension FourCharCode: StringLiteralConvertible {
             CChar(self & 0xFF),
             0
         ]
-        return String.fromCString(bytes)!
+        return String(cString: bytes)
     }
 }

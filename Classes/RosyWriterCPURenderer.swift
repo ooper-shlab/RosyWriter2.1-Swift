@@ -72,7 +72,7 @@ class RosyWriterCPURenderer: NSObject, RosyWriterRenderer {
         return kCVPixelFormatType_32BGRA
     }
     
-    func prepareForInputWithFormatDescription(inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
+    func prepareForInputWithFormatDescription(_ inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
         // nothing to do, we are stateless
     }
     
@@ -80,25 +80,25 @@ class RosyWriterCPURenderer: NSObject, RosyWriterRenderer {
         // nothing to do, we are stateless
     }
     
-    func copyRenderedPixelBuffer(pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer! {
+    func copyRenderedPixelBuffer(_ pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer! {
         let kBytesPerPixel = 4
         
-        CVPixelBufferLockBaseAddress(pixelBuffer, 0)
+        CVPixelBufferLockBaseAddress(pixelBuffer, [])
         
         let bufferWidth = CVPixelBufferGetWidth(pixelBuffer)
         let bufferHeight = CVPixelBufferGetHeight(pixelBuffer)
         let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
-        let baseAddress = UnsafeMutablePointer<UInt8>(CVPixelBufferGetBaseAddress(pixelBuffer))
+        let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer)!.assumingMemoryBound(to: UInt8.self)
         
         for row in 0..<bufferHeight {
-            var pixel = baseAddress.advancedBy(Int(row * bytesPerRow))
+            var pixel = baseAddress.advanced(by: Int(row * bytesPerRow))
             for _ in 0..<bufferWidth {
                 pixel[1] = 0 // De-green (second pixel in BGRA is green)
                 pixel += kBytesPerPixel
             }
         }
         
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0)
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, [])
         
         return pixelBuffer
     }

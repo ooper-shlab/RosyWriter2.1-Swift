@@ -58,22 +58,23 @@
 import UIKit
 import OpenGLES
 
-private func printf(format: String, args: [CVarArgType]) {
+private func printf(_ format: String, args: [CVarArg]) {
     print(String(format: format, arguments: args), terminator: "")
 }
-private func printf(format: String, args: CVarArgType...) {
+private func printf(_ format: String, args: CVarArg...) {
     printf(format, args: args)
 }
-func LogInfo(format: String, args: CVarArgType...) {
+func LogInfo(_ format: String, args: CVarArg...) {
     printf(format, args: args)
 }
-func LogError(format: String, args: CVarArgType...) {
+func LogError(_ format: String, args: CVarArg...) {
     printf(format, args: args)
 }
 
 public struct glue {
     /* Compile a shader from the provided source(s) */
-    public static func compileShader(target: GLenum, _ count: GLsizei, _ sources: UnsafePointer<UnsafePointer<GLchar>>, inout _ shader: GLuint) -> GLint
+    @discardableResult
+    public static func compileShader(_ target: GLenum, _ count: GLsizei, _ sources: UnsafePointer<UnsafePointer<GLchar>?>, _ shader: inout GLuint) -> GLint
     {
         var status: GLint = 0
         
@@ -96,7 +97,7 @@ public struct glue {
             
             LogError("Failed to compile shader:\n")
             for i in 0..<count.l {
-                LogInfo("%s", args: COpaquePointer(sources[i]))
+                LogInfo("%s", args: OpaquePointer(sources[i]!))
             }
         }
         
@@ -105,7 +106,7 @@ public struct glue {
     
     
     /* Link a program with all currently attached shaders */
-    public static func linkProgram(program: GLuint) -> GLint {
+    public static func linkProgram(_ program: GLuint) -> GLint {
         var status: GLint = 0
         
         glLinkProgram(program)
@@ -131,7 +132,7 @@ public struct glue {
     
     
     /* Validate a program (for i.e. inconsistent samplers) */
-    public static func validateProgram(program: GLuint) -> GLint {
+    public static func validateProgram(_ program: GLuint) -> GLint {
         var status: GLint = 0
         
         glValidateProgram(program)
@@ -157,7 +158,7 @@ public struct glue {
     
     
     /* Return named uniform location after linking */
-    public static func getUniformLocation(program: GLuint, _ uniformName: String) -> GLint {
+    public static func getUniformLocation(_ program: GLuint, _ uniformName: String) -> GLint {
         
         let loc = glGetUniformLocation(program, uniformName)
         
@@ -166,13 +167,14 @@ public struct glue {
     
     
     /* Convenience wrapper that compiles, links, enumerates uniforms and attribs */
-    public static func createProgram(_vertSource: UnsafePointer<GLchar>,
-        _ _fragSource: UnsafePointer<GLchar>,
+    @discardableResult
+    public static func createProgram(_ _vertSource: UnsafePointer<GLchar>?,
+        _ _fragSource: UnsafePointer<GLchar>?,
         _ attribNames: [String],
         _ attribLocations: [GLuint],
         _ uniformNames: [String],
-        inout _ uniformLocations: [GLint],
-        inout _ program: GLuint) -> GLint
+        _ uniformLocations: inout [GLint],
+        _ program: inout GLuint) -> GLint
     {
         var vertShader: GLuint = 0, fragShader: GLuint = 0, prog: GLuint = 0, status: GLint = 1
         

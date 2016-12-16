@@ -69,7 +69,7 @@ protocol RosyWriterRenderer: NSObjectProtocol {
     // Prepare and destroy expensive resources inside these callbacks.
     // The outputRetainedBufferCountHint tells out of place renderers how many of their output buffers will be held onto by the downstream pipeline at one time.
     // This can be used by the renderer to size and preallocate their pools.
-    func prepareForInputWithFormatDescription(inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int)
+    func prepareForInputWithFormatDescription(_ inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int)
     func reset()
     
     /* Rendering */
@@ -77,10 +77,10 @@ protocol RosyWriterRenderer: NSObjectProtocol {
     // Renderers which operate out of place should create a pixel buffer to return from a pool they own.
     // When rendering to a pixel buffer with the GPU it is not necessary to block until rendering has completed before returning.
     // It is sufficient to call glFlush() to ensure that the commands have been flushed to the GPU.
-    func copyRenderedPixelBuffer(pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer!
+    func copyRenderedPixelBuffer(_ pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer!
     
     // This property must be implemented if operatesInPlace is NO and the output pixel buffers have a different format description than the input.
     // If implemented a non-NULL value must be returned once the renderer has been prepared (can be NULL after being reset).
-    optional var outputFormatDescription: CMFormatDescription? {get}
+    @objc optional var outputFormatDescription: CMFormatDescription? {get}
     
 }

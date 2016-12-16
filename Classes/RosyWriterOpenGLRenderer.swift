@@ -66,11 +66,11 @@ private let NUM_ATTRIBUTES = 2
 @objc(RosyWriterOpenGLRenderer)
 class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
     private var _oglContext: EAGLContext!
-    private var _textureCache: CVOpenGLESTextureCacheRef?
-    private var _renderTextureCache: CVOpenGLESTextureCacheRef?
-    private var _bufferPool: CVPixelBufferPoolRef?
-    private var _bufferPoolAuxAttributes: CFDictionaryRef?
-    private var _outputFormatDescription: CMFormatDescriptionRef?
+    private var _textureCache: CVOpenGLESTextureCache?
+    private var _renderTextureCache: CVOpenGLESTextureCache?
+    private var _bufferPool: CVPixelBufferPool?
+    private var _bufferPoolAuxAttributes: CFDictionary?
+    private var _outputFormatDescription: CMFormatDescription?
     private var _program: GLuint = 0
     private var _frame: GLint = 0
     private var _offscreenBufferHandle: GLuint = 0
@@ -78,7 +78,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
     //MARK: API
     
     override init() {
-        _oglContext = EAGLContext(API: .OpenGLES2)
+        _oglContext = EAGLContext(api: .openGLES2)
         if _oglContext == nil {
             fatalError("Problem with OpenGL context.")
         }
@@ -99,7 +99,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
         return FourCharCode(kCVPixelFormatType_32BGRA)
     }
     
-    func prepareForInputWithFormatDescription(inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
+    func prepareForInputWithFormatDescription(_ inputFormatDescription: CMFormatDescription!, outputRetainedBufferCountHint: Int) {
         // The input and output dimensions are the same. This renderer doesn't do any scaling.
         let dimensions = CMVideoFormatDescriptionGetDimensions(inputFormatDescription)
         
@@ -113,7 +113,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
         self.deleteBuffers()
     }
     
-    func copyRenderedPixelBuffer(pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer! {
+    func copyRenderedPixelBuffer(_ pixelBuffer: CVPixelBuffer!) -> CVPixelBuffer! {
         struct Const {
             static let squareVertices: [GLfloat] = [
                 -1.0, -1.0, // bottom left
@@ -147,9 +147,9 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             fatalError("Invalid pixel buffer format")
         }
         
-        let oldContext = EAGLContext.currentContext()
+        let oldContext = EAGLContext.current()
         if oldContext !== _oglContext {
-            if !EAGLContext.setCurrentContext(_oglContext) {
+            if !EAGLContext.setCurrent(_oglContext) {
                 fatalError("Problem with OpenGL context")
             }
         }
@@ -249,7 +249,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             glFlush()
         } //bail:
         if oldContext !== _oglContext {
-            EAGLContext.setCurrentContext(oldContext)
+            EAGLContext.setCurrent(oldContext)
         }
         return dstPixelBuffer
     }
@@ -260,12 +260,12 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
     
     //MARK: Internal
     
-    private func initializeBuffersWithOutputDimensions(outputDimensions: CMVideoDimensions, retainedBufferCountHint clientRetainedBufferCountHint: size_t) -> Bool {
+    private func initializeBuffersWithOutputDimensions(_ outputDimensions: CMVideoDimensions, retainedBufferCountHint clientRetainedBufferCountHint: size_t) -> Bool {
         var success = true
         
-        let oldContext = EAGLContext.currentContext()
+        let oldContext = EAGLContext.current()
         if oldContext !== _oglContext {
-            if !EAGLContext.setCurrentContext(_oglContext) {
+            if !EAGLContext.setCurrent(_oglContext) {
                 fatalError("Problem with OpenGL context")
             }
         }
@@ -303,7 +303,7 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             let fragSrc = RosyWriterOpenGLRenderer.readFile("myFilter.fsh")
             
             // shader program
-            glue.createProgram(vertSrc.UTF8String, fragSrc.UTF8String,
+            glue.createProgram(vertSrc, fragSrc,
                 attribName, attribLocation,
                 [], &uniformLocations,
                 &_program)
@@ -341,15 +341,15 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             self.deleteBuffers()
         }
         if oldContext !== _oglContext {
-            EAGLContext.setCurrentContext(oldContext)
+            _ = EAGLContext.setCurrent(oldContext)
         }
         return success
     }
     
     private func deleteBuffers() {
-        let oldContext = EAGLContext.currentContext()
+        let oldContext = EAGLContext.current()
         if oldContext != _oglContext {
-            if !EAGLContext.setCurrentContext(_oglContext) {
+            if !EAGLContext.setCurrent(_oglContext) {
                 fatalError("Problem with OpenGL context")
             }
         }
@@ -377,40 +377,40 @@ class RosyWriterOpenGLRenderer: NSObject, RosyWriterRenderer {
             _outputFormatDescription = nil
         }
         if oldContext !== _oglContext {
-            EAGLContext.setCurrentContext(oldContext)
+            _ = EAGLContext.setCurrent(oldContext)
         }
     }
     
-    private class func readFile(name: String) -> NSString {
+    private class func readFile(_ name: String) -> String {
         
-        let path = NSBundle.mainBundle().pathForResource(name, ofType: nil)!
-        let source = try! NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+        let path = Bundle.main.path(forResource: name, ofType: nil)!
+        let source = try! String(contentsOfFile: path, encoding: .utf8)
         return source
     }
     
 }
-private func createPixelBufferPool(width: Int32, _ height: Int32, _ pixelFormat: FourCharCode, _ maxBufferCount: Int32) -> CVPixelBufferPoolRef? {
+private func createPixelBufferPool(_ width: Int32, _ height: Int32, _ pixelFormat: FourCharCode, _ maxBufferCount: Int32) -> CVPixelBufferPool? {
     var outputPool: CVPixelBufferPool? = nil
     
-    let sourcePixelBufferOptions: NSDictionary = [kCVPixelBufferPixelFormatTypeKey.ns: pixelFormat.n,
-        kCVPixelBufferWidthKey.ns: width.n,
-        kCVPixelBufferHeightKey.ns: height.n,
-        kCVPixelFormatOpenGLESCompatibility.ns: true,
-        kCVPixelBufferIOSurfacePropertiesKey.ns: NSDictionary()]
+    let sourcePixelBufferOptions: NSDictionary = [kCVPixelBufferPixelFormatTypeKey: pixelFormat,
+        kCVPixelBufferWidthKey: width,
+        kCVPixelBufferHeightKey: height,
+        kCVPixelFormatOpenGLESCompatibility: true,
+        kCVPixelBufferIOSurfacePropertiesKey: NSDictionary()]
     
-    let pixelBufferPoolOptions: NSDictionary = [kCVPixelBufferPoolMinimumBufferCountKey.ns: maxBufferCount.n]
+    let pixelBufferPoolOptions: NSDictionary = [kCVPixelBufferPoolMinimumBufferCountKey: maxBufferCount]
     
     CVPixelBufferPoolCreate(kCFAllocatorDefault, pixelBufferPoolOptions, sourcePixelBufferOptions, &outputPool)
     
     return outputPool
 }
 
-private func createPixelBufferPoolAuxAttributes(maxBufferCount: size_t) -> NSDictionary {
+private func createPixelBufferPoolAuxAttributes(_ maxBufferCount: size_t) -> NSDictionary {
     // CVPixelBufferPoolCreatePixelBufferWithAuxAttributes() will return kCVReturnWouldExceedAllocationThreshold if we have already vended the max number of buffers
-    return [kCVPixelBufferPoolAllocationThresholdKey.ns: maxBufferCount]
+    return [kCVPixelBufferPoolAllocationThresholdKey: maxBufferCount]
 }
 
-private func preallocatePixelBuffersInPool(pool: CVPixelBufferPool, _ auxAttributes: NSDictionary) {
+private func preallocatePixelBuffersInPool(_ pool: CVPixelBufferPool, _ auxAttributes: NSDictionary) {
     // Preallocate buffers in the pool, since this is for real-time display/capture
     let pixelBuffers = NSMutableArray()
     while true {
@@ -422,6 +422,6 @@ private func preallocatePixelBuffersInPool(pool: CVPixelBufferPool, _ auxAttribu
         }
         assert(err == noErr)
         
-        pixelBuffers.addObject(pixelBuffer!)
+        pixelBuffers.add(pixelBuffer!)
     }
 }
