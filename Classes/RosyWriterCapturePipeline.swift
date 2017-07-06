@@ -714,7 +714,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
                 transform = transform.scaledBy(x: -1, y: 1)
             } else {
                 if UIInterfaceOrientationIsPortrait(UIInterfaceOrientation(rawValue: orientation.rawValue)!) {
-                    transform = transform.rotated(by: M_PI.g)
+                    transform = transform.rotated(by: .pi)
                 }
             }
         }
@@ -729,11 +729,11 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         case .portrait:
             angle = 0.0
         case .portraitUpsideDown:
-            angle = M_PI.g
+            angle = .pi
         case .landscapeRight:
-            angle = -M_PI_2.g
+            angle = -CGFloat.pi/2
         case .landscapeLeft:
-            angle = M_PI_2.g
+            angle = .pi/2
         }
         
         return angle
