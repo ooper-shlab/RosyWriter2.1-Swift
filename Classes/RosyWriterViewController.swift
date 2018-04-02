@@ -46,7 +46,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
     
     //MARK: - View lifecycle
     
-    func applicationDidEnterBackground() {
+    @objc func applicationDidEnterBackground() {
         // Avoid using the GPU in the background
         _allowedToUseGPU = false
         _capturePipeline?.renderingEnabled = false
@@ -57,7 +57,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         _previewView?.reset()
     }
     
-    func applicationWillEnterForeground() {
+    @objc func applicationWillEnterForeground() {
         _allowedToUseGPU = true
         _capturePipeline?.renderingEnabled = true
     }
@@ -66,15 +66,15 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         _capturePipeline = RosyWriterCapturePipeline(delegate: self, callbackQueue: DispatchQueue.main)
         
         NotificationCenter.default.addObserver(self,
-            selector: #selector(RosyWriterViewController.applicationDidEnterBackground),
+            selector: #selector(self.applicationDidEnterBackground),
             name: NSNotification.Name.UIApplicationDidEnterBackground,
             object: UIApplication.shared)
         NotificationCenter.default.addObserver(self,
-            selector: #selector(RosyWriterViewController.applicationWillEnterForeground),
+            selector: #selector(self.applicationWillEnterForeground),
             name: NSNotification.Name.UIApplicationWillEnterForeground,
             object: UIApplication.shared)
         NotificationCenter.default.addObserver(self,
-            selector: #selector(RosyWriterViewController.deviceOrientationDidChange),
+            selector: #selector(self.deviceOrientationDidChange),
             name: NSNotification.Name.UIDeviceOrientationDidChange,
             object: UIDevice.current)
         
@@ -95,7 +95,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         
         _capturePipeline.startRunning()
         
-        _labelTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(RosyWriterViewController.updateLabels), userInfo: nil, repeats: true)
+        _labelTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.updateLabels), userInfo: nil, repeats: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -117,7 +117,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
     
     //MARK: - UI
     
-    @IBAction func toggleRecording(_: AnyObject) {
+    @IBAction func toggleRecording(_: Any) {
         if _recording {
             _capturePipeline.stopRecording()
         } else {
@@ -164,7 +164,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         _previewView!.center = CGPoint(x: self.view.bounds.size.width/2.0, y: self.view.bounds.size.height/2.0)
     }
     
-    func deviceOrientationDidChange() {
+    @objc func deviceOrientationDidChange() {
         let deviceOrientation = UIDevice.current.orientation
         
         // Update recording orientation if device changes to portrait or landscape orientation (but not face up/down)
@@ -173,7 +173,7 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         }
     }
     
-    func updateLabels() {
+    @objc func updateLabels() {
         let frameRateString = "\(Int(roundf(_capturePipeline.videoFrameRate))) FPS"
         self.framerateLabel.text = frameRateString
         

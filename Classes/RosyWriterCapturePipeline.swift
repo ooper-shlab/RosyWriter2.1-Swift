@@ -97,8 +97,8 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     private var _running: Bool = false
     private var _startCaptureSessionOnEnteringForeground: Bool = false
     private var _applicationWillEnterForegroundNotificationObserver: AnyObject?
-    private var _videoCompressionSettings: [String : AnyObject] = [:]
-    private var _audioCompressionSettings: [String : AnyObject] = [:]
+    private var _videoCompressionSettings: [String : Any] = [:]
+    private var _audioCompressionSettings: [String : Any] = [:]
     
     private var _sessionQueue: DispatchQueue
     private var _videoDataOutputQueue: DispatchQueue
@@ -209,7 +209,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         _captureSession = AVCaptureSession()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(RosyWriterCapturePipeline.captureSessionNotification(_:)), name: nil, object: _captureSession)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.captureSessionNotification(_:)), name: nil, object: _captureSession)
         _applicationWillEnterForegroundNotificationObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared, queue: nil) {note in
             // Retain self while the capture session is alive by referencing it in this observer block which is tied to the session lifetime
             // Client must stop us running before we can be deallocated
@@ -218,7 +218,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         #if RECORD_AUDIO
             /* Audio */
-            let audioDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeAudio)
+            let audioDevice = AVCaptureDevice.default(for: .audio)!
             let audioIn = try! AVCaptureDeviceInput(device: audioDevice)
             if _captureSession!.canAddInput(audioIn) {
                 _captureSession!.addInput(audioIn)
@@ -232,11 +232,11 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             if _captureSession!.canAddOutput(audioOut) {
                 _captureSession!.addOutput(audioOut)
             }
-            _audioConnection = audioOut.connection(withMediaType: AVMediaTypeAudio)
+            _audioConnection = audioOut.connection(with: AVMediaType.audio)
         #endif // RECORD_AUDIO
         
         /* Video */
-        guard let videoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
+        guard let videoDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
             fatalError("AVCaptureDevice of type AVMediaTypeVideo unavailable!")
         }
         do {
@@ -253,7 +253,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
         
         let videoOut = AVCaptureVideoDataOutput()
-        videoOut.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable : _renderer.inputPixelFormat]
+        videoOut.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: _renderer.inputPixelFormat]
         videoOut.setSampleBufferDelegate(self, queue: _videoDataOutputQueue)
         
         // RosyWriter records videos and we prefer not to have any dropped frames in the video recording.
@@ -265,22 +265,22 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         if _captureSession!.canAddOutput(videoOut) {
             _captureSession!.addOutput(videoOut)
         }
-        _videoConnection = videoOut.connection(withMediaType: AVMediaTypeVideo)
+        _videoConnection = videoOut.connection(with: AVMediaType.video)
         
         var frameRate: Int32
-        var sessionPreset = AVCaptureSessionPresetHigh
+        var sessionPreset = AVCaptureSession.Preset.high
         var frameDuration = kCMTimeInvalid
         // For single core systems like iPhone 4 and iPod Touch 4th Generation we use a lower resolution and framerate to maintain real-time performance.
         if ProcessInfo.processInfo.processorCount == 1 {
-            if _captureSession!.canSetSessionPreset(AVCaptureSessionPreset640x480) {
-                sessionPreset = AVCaptureSessionPreset640x480
+            if _captureSession!.canSetSessionPreset(AVCaptureSession.Preset.vga640x480) {
+                sessionPreset = AVCaptureSession.Preset.vga640x480
             }
             frameRate = 15
         } else {
             #if !USE_OPENGL_RENDERER
                 // When using the CPU renderers or the CoreImage renderer we lower the resolution to 720p so that all devices can maintain real-time performance (this is primarily for A5 based devices like iPhone 4s and iPod Touch 5th Generation).
-                if _captureSession!.canSetSessionPreset(AVCaptureSessionPreset1280x720) {
-                    sessionPreset = AVCaptureSessionPreset1280x720
+                if _captureSession!.canSetSessionPreset(AVCaptureSession.Preset.hd1280x720) {
+                    sessionPreset = AVCaptureSession.Preset.hd1280x720
                 }
             #endif // !USE_OPENGL_RENDERER
             
@@ -302,9 +302,9 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         // Get the recommended compression settings after configuring the session/device.
         #if RECORD_AUDIO
-            _audioCompressionSettings = audioOut.recommendedAudioSettingsForAssetWriter(withOutputFileType: AVFileTypeQuickTimeMovie) as! [String: AnyObject]
+        _audioCompressionSettings = audioOut.recommendedAudioSettingsForAssetWriter(writingTo: AVFileType.mov) as! [String: Any]
         #endif
-        _videoCompressionSettings = videoOut.recommendedVideoSettingsForAssetWriter(withOutputFileType: AVFileTypeQuickTimeMovie) as! [String: AnyObject]
+        _videoCompressionSettings = videoOut.recommendedVideoSettingsForAssetWriter(writingTo: AVFileType.mov)!
         
         _videoBufferOrientation = _videoConnection!.videoOrientation
         
@@ -325,7 +325,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
     }
     
-    func captureSessionNotification(_ notification: Notification) {
+    @objc func captureSessionNotification(_ notification: Notification) {
         _sessionQueue.async {
             
             if notification.name == NSNotification.Name.AVCaptureSessionWasInterrupted {
@@ -482,7 +482,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         }
     }
     
-    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
+    func captureOutput(_ captureOutput: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         let formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer)
         
         if connection === _videoConnection {

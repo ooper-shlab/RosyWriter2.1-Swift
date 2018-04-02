@@ -21,7 +21,7 @@ import CoreVideo
 // To use the RosyWriterOpenCVRenderer, import this header in RosyWriterCapturePipeline.m
 // and intialize _renderer to a RosyWriterOpenCVRenderer.
 let CV_CN_SHIFT: Int32 = 3
-let CV_DEPTH_MAX = (1 << CV_CN_SHIFT)
+let CV_DEPTH_MAX = Int32(1 << CV_CN_SHIFT)
 let CV_8U: Int32 = 0
 let CV_MAT_DEPTH_MASK = (CV_DEPTH_MAX - 1)
 func CV_MAT_DEPTH(_ flags: Int32) -> Int32 {
