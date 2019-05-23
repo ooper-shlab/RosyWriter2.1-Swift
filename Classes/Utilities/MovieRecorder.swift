@@ -204,11 +204,11 @@ class MovieRecorder: NSObject {
         var sampleBuffer: CMSampleBuffer? = nil
         
         var timingInfo: CMSampleTimingInfo = CMSampleTimingInfo()
-        timingInfo.duration = kCMTimeInvalid
-        timingInfo.decodeTimeStamp = kCMTimeInvalid
+        timingInfo.duration = .invalid
+        timingInfo.decodeTimeStamp = .invalid
         timingInfo.presentationTimeStamp = presentationTime
         
-        let err = CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault, pixelBuffer, true, nil, nil, _videoTrackSourceFormatDescription!, &timingInfo, &sampleBuffer)
+        let err = CMSampleBufferCreateForImageBuffer(allocator: kCFAllocatorDefault, imageBuffer: pixelBuffer, dataReady: true, makeDataReadyCallback: nil, refcon: nil, formatDescription: _videoTrackSourceFormatDescription!, sampleTiming: &timingInfo, sampleBufferOut: &sampleBuffer)
         if sampleBuffer != nil {
             self.appendSampleBuffer(sampleBuffer!, ofMediaType: AVMediaType.video)
         } else {

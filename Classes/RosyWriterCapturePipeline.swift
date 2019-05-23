@@ -114,7 +114,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     private var _recordingURL: URL
     private var _recordingStatus: RosyWriterRecordingStatus = .idle
     
-    private var _pipelineRunningTask: UIBackgroundTaskIdentifier = 0
+    private var _pipelineRunningTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
     
     // delegate is weak referenced
     // __weak doesn't actually do anything under non-ARC
@@ -158,7 +158,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             _renderer = RosyWriterOpenCVRenderer()
         #endif
         
-        _pipelineRunningTask = UIBackgroundTaskInvalid
+        _pipelineRunningTask = .invalid
         _delegate = delegate
         _delegateCallbackQueue = queue
         super.init()
@@ -210,7 +210,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         _captureSession = AVCaptureSession()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.captureSessionNotification(_:)), name: nil, object: _captureSession)
-        _applicationWillEnterForegroundNotificationObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared, queue: nil) {note in
+        _applicationWillEnterForegroundNotificationObserver = NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: UIApplication.shared, queue: nil) {note in
             // Retain self while the capture session is alive by referencing it in this observer block which is tied to the session lifetime
             // Client must stop us running before we can be deallocated
             self.applicationWillEnterForeground()
@@ -269,7 +269,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         var frameRate: Int32
         var sessionPreset = AVCaptureSession.Preset.high
-        var frameDuration = kCMTimeInvalid
+        var frameDuration = CMTime.invalid
         // For single core systems like iPhone 4 and iPod Touch 4th Generation we use a lower resolution and framerate to maintain real-time performance.
         if ProcessInfo.processInfo.processorCount == 1 {
             if _captureSession!.canSetSessionPreset(AVCaptureSession.Preset.vga640x480) {
@@ -289,7 +289,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         _captureSession!.sessionPreset = sessionPreset
         
-        frameDuration = CMTimeMake(1, frameRate)
+        frameDuration = CMTimeMake(value: 1, timescale: frameRate)
         
         do {
             try videoDevice.lockForConfiguration()
@@ -441,7 +441,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     private func videoPipelineWillStartRunning() {
         NSLog("-[%@ %@] called", NSStringFromClass(type(of: self)), #function)
         
-        assert(_pipelineRunningTask == UIBackgroundTaskInvalid, "should not have a background task active before the video pipeline starts running")
+        assert(_pipelineRunningTask == .invalid, "should not have a background task active before the video pipeline starts running")
         
         _pipelineRunningTask = UIApplication.shared.beginBackgroundTask (expirationHandler: {
             NSLog("video capture pipeline background task expired")
@@ -451,10 +451,10 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     private func videoPipelineDidFinishRunning() {
         NSLog("-[%@ %@] called", NSStringFromClass(type(of: self)), #function)
         
-        assert(_pipelineRunningTask != UIBackgroundTaskInvalid, "should have a background task active when the video pipeline finishes running")
+        assert(_pipelineRunningTask != .invalid, "should have a background task active when the video pipeline finishes running")
         
         UIApplication.shared.endBackgroundTask(_pipelineRunningTask)
-        _pipelineRunningTask = UIBackgroundTaskInvalid
+        _pipelineRunningTask = .invalid
     }
     
     // call under @synchronized( self )
@@ -713,7 +713,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             if mirror {
                 transform = transform.scaledBy(x: -1, y: 1)
             } else {
-                if UIInterfaceOrientationIsPortrait(UIInterfaceOrientation(rawValue: orientation.rawValue)!) {
+                if UIInterfaceOrientation(rawValue: orientation.rawValue)!.isPortrait {
                     transform = transform.rotated(by: .pi)
                 }
             }
@@ -734,6 +734,8 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
             angle = -CGFloat.pi/2
         case .landscapeLeft:
             angle = .pi/2
+        @unknown default:
+            break
         }
         
         return angle
@@ -742,7 +744,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     private func calculateFramerateAtTimestamp(_ timestamp: CMTime) {
         _previousSecondTimestamps.append(timestamp)
         
-        let oneSecond = CMTimeMake(1, 1)
+        let oneSecond = CMTimeMake(value: 1, timescale: 1)
         let oneSecondAgo = CMTimeSubtract(timestamp, oneSecond)
         
         while _previousSecondTimestamps[0] < oneSecondAgo {

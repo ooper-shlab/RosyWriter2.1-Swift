@@ -51,7 +51,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
         
         _rgbColorSpace = CGColorSpaceCreateDeviceRGB()
         let eaglContext = EAGLContext(api: .openGLES2)
-        _ciContext = CIContext(eaglContext: eaglContext!, options: [kCIContextWorkingColorSpace : NSNull()])
+        _ciContext = CIContext(eaglContext: eaglContext!, options: [.workingColorSpace : NSNull()])
         
         _rosyFilter = CIFilter(name: "CIColorMatrix")
         let greenCoefficients: [CGFloat] = [0, 0, 0, 0]
@@ -109,7 +109,7 @@ class RosyWriterCIFilterRenderer: NSObject, RosyWriterRenderer {
                 NSLog("Problem creating a pixel buffer.")
                 success = false
             } else {
-                CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, testPixelBuffer!, &outputFormatDescription)
+                CMVideoFormatDescriptionCreateForImageBuffer(allocator: kCFAllocatorDefault, imageBuffer: testPixelBuffer!, formatDescriptionOut: &outputFormatDescription)
                 _outputFormatDescription = outputFormatDescription
             }
         }
