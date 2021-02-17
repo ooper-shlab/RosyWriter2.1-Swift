@@ -17,7 +17,7 @@
 
 import UIKit
 import AVFoundation
-
+import Photos
 
 @objc(RosyWriterCapturePipelineDelegate)
 protocol RosyWriterCapturePipelineDelegate: NSObjectProtocol {
@@ -338,14 +338,14 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
                 self.captureSessionDidStopRunning()
                 
                 let error = notification.userInfo![AVCaptureSessionErrorKey]! as! NSError
-                if error.code == AVError.Code.deviceIsNotAvailableInBackground.rawValue {
+                /*if error.code == AVError.Code.deviceIsNotAvailableInBackground.rawValue {
                     NSLog("device not available in background")
                     
                     // Since we can't resume running while in the background we need to remember this for next time we come to the foreground
                     if self._running {
                         self._startCaptureSessionOnEnteringForeground = true
                     }
-                } else if error.code == AVError.Code.mediaServicesWereReset.rawValue {
+                } else*/ if error.code == AVError.Code.mediaServicesWereReset.rawValue {
                     NSLog("media services were reset")
                     self.handleRecoverableCaptureSessionRuntimeError(error)
                 } else {
@@ -634,8 +634,10 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
         
         _recorder = nil
         
-        let library = ALAssetsLibrary()
-        library.writeVideoAtPath(toSavedPhotosAlbum: _recordingURL) {assetURL, error in
+        let phLibrary = PHPhotoLibrary.shared()
+        phLibrary.performChanges({
+            PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: self._recordingURL)
+        }, completionHandler: {success, error in
             
             do {
                 try FileManager.default.removeItem(at: self._recordingURL)
@@ -648,7 +650,7 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
                 }
                 self.transitionToRecordingStatus(.idle, error: error)
             }
-        }
+        })
     }
     
     //MARK: Recording State Machine
