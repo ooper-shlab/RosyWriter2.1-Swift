@@ -91,8 +91,10 @@ class RosyWriterCapturePipeline: NSObject, AVCaptureAudioDataOutputSampleBufferD
     
     private var _captureSession: AVCaptureSession?
     private var _videoDevice: AVCaptureDevice?
+    var videoDevice: AVCaptureDevice? {_videoDevice}
     private var _audioConnection: AVCaptureConnection?
     private var _videoConnection: AVCaptureConnection?
+    var videoConnection: AVCaptureConnection? {_videoConnection}
     private var _videoBufferOrientation: AVCaptureVideoOrientation = .portrait
     private var _running: Bool = false
     private var _startCaptureSessionOnEnteringForeground: Bool = false

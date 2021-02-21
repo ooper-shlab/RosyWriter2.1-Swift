@@ -19,3 +19,14 @@ iOS 14 SDK and Xcode 12.4
 ### Target Device
 
 iOS 9.0+
+
+---
+#### An experimental migration to use Metal.
+
+- Only RosyWriterCPU (hardly practical?) and RosyWriterCIFilter are available
+
+Some parts of this project utilizes files in [AVCamFilter](https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/avcamfilter_applying_filters_to_a_capture_stream).
+See the original license terms in `AVCamFilter-LICENSE/LICENSE.txt`.
+
+AVCamFilter is the newer sample code and may be containing better coding styles.
+Starting with it and add some recording feature would be a preferrable way.

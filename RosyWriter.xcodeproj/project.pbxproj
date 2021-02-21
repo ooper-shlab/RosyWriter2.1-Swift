@@ -13,7 +13,6 @@
 		1756C9E519BE5E1F0080DD55 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE081395CCEA00125BDA /* QuartzCore.framework */; };
 		1756C9E619BE5E1F0080DD55 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE061395CCE000125BDA /* CoreVideo.framework */; };
 		1756C9E719BE5E1F0080DD55 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDD1395CAAA00125BDA /* CoreGraphics.framework */; };
-		1756C9E819BE5E1F0080DD55 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE041395CCD100125BDA /* OpenGLES.framework */; };
 		1756C9EA19BE5E1F0080DD55 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDFE1395CCB600125BDA /* AVFoundation.framework */; };
 		1756C9EB19BE5E1F0080DD55 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDD91395CAAA00125BDA /* UIKit.framework */; };
 		1756C9EC19BE5E1F0080DD55 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDB1395CAAA00125BDA /* Foundation.framework */; };
@@ -26,7 +25,6 @@
 		1FCCE65719BA80A5009D7A6B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE081395CCEA00125BDA /* QuartzCore.framework */; };
 		1FCCE65819BA80A5009D7A6B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE061395CCE000125BDA /* CoreVideo.framework */; };
 		1FCCE65919BA80A5009D7A6B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDD1395CAAA00125BDA /* CoreGraphics.framework */; };
-		1FCCE65A19BA80A5009D7A6B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE041395CCD100125BDA /* OpenGLES.framework */; };
 		1FCCE65C19BA80A5009D7A6B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDFE1395CCB600125BDA /* AVFoundation.framework */; };
 		1FCCE65D19BA80A5009D7A6B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDD91395CAAA00125BDA /* UIKit.framework */; };
 		1FCCE65E19BA80A5009D7A6B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DDDB1395CAAA00125BDA /* Foundation.framework */; };
@@ -65,9 +63,12 @@
 		6F90DE091395CCEA00125BDA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE081395CCEA00125BDA /* QuartzCore.framework */; };
 		6F90DE0B1395CCF500125BDA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F90DE0A1395CCF500125BDA /* CoreMedia.framework */; };
 		7214DBCE182AEF8900EA3F99 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7214DBCD182AEF8900EA3F99 /* Images.xcassets */; };
+		D7A447BD25E20B0E00AE3C5D /* PassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = D7B2BF8D25E1FC3A00E4CD58 /* PassThrough.metal */; };
+		D7A447C225E20B0F00AE3C5D /* PassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = D7B2BF8D25E1FC3A00E4CD58 /* PassThrough.metal */; };
+		D7B2BFBD25E1FD7100E4CD58 /* PreviewMetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B2BF9325E1FC9D00E4CD58 /* PreviewMetalView.swift */; };
+		D7B2BFC225E1FD7200E4CD58 /* PreviewMetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B2BF9325E1FC9D00E4CD58 /* PreviewMetalView.swift */; };
+		D7B2BFCD25E2017D00E4CD58 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = D7B2BFCC25E2017D00E4CD58 /* LICENSE.txt */; };
 		D7F9F9561E0376EE009F43D5 /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */; };
-		D7F9F9571E0376EE009F43D5 /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */; };
-		D7F9F9591E037705009F43D5 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */; };
 		D7F9F95D1E037744009F43D5 /* RosyWriterAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95A1E037744009F43D5 /* RosyWriterAppDelegate.swift */; };
 		D7F9F95E1E037744009F43D5 /* RosyWriterCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95B1E037744009F43D5 /* RosyWriterCapturePipeline.swift */; };
 		D7F9F95F1E037744009F43D5 /* RosyWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F95C1E037744009F43D5 /* RosyWriterViewController.swift */; };
@@ -91,12 +92,6 @@
 		D7F9F9791E0377FC009F43D5 /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */; };
 		D7F9F97A1E0377FD009F43D5 /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */; };
 		D7F9F97B1E0377FE009F43D5 /* MovieRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */; };
-		D7F9F97C1E037805009F43D5 /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */; };
-		D7F9F97D1E037805009F43D5 /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */; };
-		D7F9F97E1E037806009F43D5 /* OpenGLPixelBufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */; };
-		D7F9F97F1E03780D009F43D5 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */; };
-		D7F9F9801E03780F009F43D5 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */; };
-		D7F9F9811E037810009F43D5 /* ShaderUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */; };
 		D7F9F9861E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9831E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift */; };
 		D7F9F9871E037911009F43D5 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9841E037911009F43D5 /* NumTypes+Conversion.swift */; };
 		D7F9F9881E037911009F43D5 /* ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9F9851E037911009F43D5 /* ObjC.swift */; };
@@ -134,6 +129,9 @@
 		6F90DE081395CCEA00125BDA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		6F90DE0A1395CCF500125BDA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		7214DBCD182AEF8900EA3F99 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Resources/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		D7B2BF8D25E1FC3A00E4CD58 /* PassThrough.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PassThrough.metal; sourceTree = "<group>"; };
+		D7B2BF9325E1FC9D00E4CD58 /* PreviewMetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewMetalView.swift; sourceTree = "<group>"; };
+		D7B2BFCC25E2017D00E4CD58 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		D7DE27AD229684820008D0C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../Resources/Base.lproj/Launch.storyboard; sourceTree = "<group>"; };
 		D7DE27AE229684820008D0C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../Resources/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D7F9F9501E0376A9009F43D5 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -164,7 +162,6 @@
 				1756C9E519BE5E1F0080DD55 /* QuartzCore.framework in Frameworks */,
 				1756C9E619BE5E1F0080DD55 /* CoreVideo.framework in Frameworks */,
 				1756C9E719BE5E1F0080DD55 /* CoreGraphics.framework in Frameworks */,
-				1756C9E819BE5E1F0080DD55 /* OpenGLES.framework in Frameworks */,
 				1756C9EA19BE5E1F0080DD55 /* AVFoundation.framework in Frameworks */,
 				1756C9EB19BE5E1F0080DD55 /* UIKit.framework in Frameworks */,
 				1756C9EC19BE5E1F0080DD55 /* Foundation.framework in Frameworks */,
@@ -181,7 +178,6 @@
 				1FCCE65719BA80A5009D7A6B /* QuartzCore.framework in Frameworks */,
 				1FCCE65819BA80A5009D7A6B /* CoreVideo.framework in Frameworks */,
 				1FCCE65919BA80A5009D7A6B /* CoreGraphics.framework in Frameworks */,
-				1FCCE65A19BA80A5009D7A6B /* OpenGLES.framework in Frameworks */,
 				1FCCE65C19BA80A5009D7A6B /* AVFoundation.framework in Frameworks */,
 				1FCCE65D19BA80A5009D7A6B /* UIKit.framework in Frameworks */,
 				1FCCE65E19BA80A5009D7A6B /* Foundation.framework in Frameworks */,
@@ -226,6 +222,7 @@
 		262D247E17177837000E1DBA /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				D7B2BF8D25E1FC3A00E4CD58 /* PassThrough.metal */,
 				262F9EB519A7CA8D001BB393 /* myFilter.fsh */,
 				262F9EB619A7CA8D001BB393 /* myFilter.vsh */,
 			);
@@ -254,6 +251,7 @@
 				6FF11C8616A8778500E14D71 /* Utilities */,
 				D7F9F9821E037911009F43D5 /* OOPUtils */,
 				6F90DDE01395CAAA00125BDA /* Resources */,
+				D7B2BFCB25E2017D00E4CD58 /* AVCamFilter-LICENSE */,
 				6F90DDD81395CAAA00125BDA /* Frameworks */,
 				6F90DDD61395CAAA00125BDA /* Products */,
 			);
@@ -319,6 +317,7 @@
 			children = (
 				D7F9F9541E0376EE009F43D5 /* MovieRecorder.swift */,
 				D7F9F9551E0376EE009F43D5 /* OpenGLPixelBufferView.swift */,
+				D7B2BF9325E1FC9D00E4CD58 /* PreviewMetalView.swift */,
 				6FF11C9016A877A100E14D71 /* GL */,
 			);
 			name = Utilities;
@@ -331,6 +330,14 @@
 				D7F9F9581E037705009F43D5 /* ShaderUtilities.swift */,
 			);
 			name = GL;
+			sourceTree = "<group>";
+		};
+		D7B2BFCB25E2017D00E4CD58 /* AVCamFilter-LICENSE */ = {
+			isa = PBXGroup;
+			children = (
+				D7B2BFCC25E2017D00E4CD58 /* LICENSE.txt */,
+			);
+			path = "AVCamFilter-LICENSE";
 			sourceTree = "<group>";
 		};
 		D7F9F9821E037911009F43D5 /* OOPUtils */ = {
@@ -505,6 +512,7 @@
 				6F90DDE41395CAAA00125BDA /* InfoPlist.strings in Resources */,
 				281FB47F176694640071511D /* Main.storyboard in Resources */,
 				5DBA2A9919C232E200530F7A /* Launch.storyboard in Resources */,
+				D7B2BFCD25E2017D00E4CD58 /* LICENSE.txt in Resources */,
 				262F9EB919A7CA8D001BB393 /* myFilter.fsh in Resources */,
 				28365599139FE71B00D09100 /* ReadMe.txt in Resources */,
 				7214DBCE182AEF8900EA3F99 /* Images.xcassets in Resources */,
@@ -518,13 +526,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F9F9801E03780F009F43D5 /* ShaderUtilities.swift in Sources */,
-				D7F9F97D1E037805009F43D5 /* OpenGLPixelBufferView.swift in Sources */,
 				D7F9F97A1E0377FD009F43D5 /* MovieRecorder.swift in Sources */,
+				D7B2BFC225E1FD7200E4CD58 /* PreviewMetalView.swift in Sources */,
 				D7F9F9711E0377BF009F43D5 /* RosyWriterRenderer.swift in Sources */,
 				D7F9F9771E0377F3009F43D5 /* RosyWriterAppDelegate.swift in Sources */,
 				D7F9F96B1E0377AD009F43D5 /* RosyWriterViewController.swift in Sources */,
 				D7F9F98A1E03791E009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
+				D7A447C225E20B0F00AE3C5D /* PassThrough.metal in Sources */,
 				D7F9F9901E037929009F43D5 /* ObjC.swift in Sources */,
 				D7F9F9751E0377ED009F43D5 /* RosyWriterCIFilterRenderer.swift in Sources */,
 				D7F9F98D1E037924009F43D5 /* NumTypes+Conversion.swift in Sources */,
@@ -536,13 +544,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F9F97F1E03780D009F43D5 /* ShaderUtilities.swift in Sources */,
-				D7F9F97C1E037805009F43D5 /* OpenGLPixelBufferView.swift in Sources */,
 				D7F9F9791E0377FC009F43D5 /* MovieRecorder.swift in Sources */,
+				D7B2BFBD25E1FD7100E4CD58 /* PreviewMetalView.swift in Sources */,
 				D7F9F9701E0377BE009F43D5 /* RosyWriterRenderer.swift in Sources */,
 				D7F9F9761E0377F2009F43D5 /* RosyWriterAppDelegate.swift in Sources */,
 				D7F9F96A1E0377AC009F43D5 /* RosyWriterViewController.swift in Sources */,
 				D7F9F9891E03791D009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */,
+				D7A447BD25E20B0E00AE3C5D /* PassThrough.metal in Sources */,
 				D7F9F98F1E037929009F43D5 /* ObjC.swift in Sources */,
 				D7F9F98C1E037923009F43D5 /* NumTypes+Conversion.swift in Sources */,
 				D7F9F96D1E0377B6009F43D5 /* RosyWriterCapturePipeline.swift in Sources */,
@@ -554,8 +562,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F9F9811E037810009F43D5 /* ShaderUtilities.swift in Sources */,
-				D7F9F97E1E037806009F43D5 /* OpenGLPixelBufferView.swift in Sources */,
 				D7F9F97B1E0377FE009F43D5 /* MovieRecorder.swift in Sources */,
 				D7F9F9721E0377C0009F43D5 /* RosyWriterRenderer.swift in Sources */,
 				D7F9F9781E0377F4009F43D5 /* RosyWriterAppDelegate.swift in Sources */,
@@ -574,12 +580,10 @@
 			files = (
 				D7F9F95F1E037744009F43D5 /* RosyWriterViewController.swift in Sources */,
 				D7F9F9881E037911009F43D5 /* ObjC.swift in Sources */,
-				D7F9F9571E0376EE009F43D5 /* OpenGLPixelBufferView.swift in Sources */,
 				D7F9F9871E037911009F43D5 /* NumTypes+Conversion.swift in Sources */,
 				D7F9F95D1E037744009F43D5 /* RosyWriterAppDelegate.swift in Sources */,
 				D7F9F9561E0376EE009F43D5 /* MovieRecorder.swift in Sources */,
 				D7F9F95E1E037744009F43D5 /* RosyWriterCapturePipeline.swift in Sources */,
-				D7F9F9591E037705009F43D5 /* ShaderUtilities.swift in Sources */,
 				D7F9F9691E03776D009F43D5 /* RosyWriterRenderer.swift in Sources */,
 				D7F9F9681E03776D009F43D5 /* RosyWriterOpenGLRenderer.swift in Sources */,
 				D7F9F9861E037911009F43D5 /* FourCharCode+StringLiteralConvertible.swift in Sources */,

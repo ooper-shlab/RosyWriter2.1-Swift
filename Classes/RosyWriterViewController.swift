@@ -27,7 +27,8 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
     private var _allowedToUseGPU: Bool = false
     
     private var _labelTimer: Timer?
-    private var _previewView: OpenGLPixelBufferView?
+//    private var _previewView: OpenGLPixelBufferView?
+    private var previewView: PreviewMetalView?
     private var _capturePipeline: RosyWriterCapturePipeline!
     
     @IBOutlet private var recordButton: UIBarButtonItem!
@@ -54,7 +55,8 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         _capturePipeline?.stopRecording() // a no-op if we aren't recording
         
         // We reset the OpenGLPixelBufferView to ensure all resources have been cleared when going to the background.
-        _previewView?.reset()
+        //_previewView?.reset()
+        previewView?.pixelBuffer = nil //TODO: do something equivalent to `reset`
     }
     
     @objc func applicationWillEnterForeground() {
@@ -151,17 +153,36 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
     
     private func setupPreviewView() {
         // Set up GL view
-        _previewView = OpenGLPixelBufferView(frame: CGRect.zero)
-        _previewView!.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight, UIView.AutoresizingMask.flexibleWidth]
-        
+//        _previewView = OpenGLPixelBufferView(frame: CGRect.zero)
+        let previewView = PreviewMetalView(frame: .zero)
+        self.previewView = previewView
+        //_previewView!.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight, UIView.AutoresizingMask.flexibleWidth]
+        previewView.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight, UIView.AutoresizingMask.flexibleWidth]
+
         let currentInterfaceOrientation = UIApplication.shared.statusBarOrientation
-        _previewView!.transform = _capturePipeline.transformFromVideoBufferOrientationToOrientation(AVCaptureVideoOrientation(rawValue: currentInterfaceOrientation.rawValue)!, withAutoMirroring: true) // Front camera preview should be mirrored
-        
-        self.view.insertSubview(_previewView!, at: 0)
+        //_previewView!.transform = _capturePipeline.transformFromVideoBufferOrientationToOrientation(AVCaptureVideoOrientation(rawValue: currentInterfaceOrientation.rawValue)!, withAutoMirroring: true) // Front camera preview should be mirrored
+        if let videoConnection = self._capturePipeline.videoConnection {
+            let videoDevicePosition = self._capturePipeline.videoDevice!.position
+            let rotation = PreviewMetalView.Rotation(
+                with: currentInterfaceOrientation,
+                videoOrientation: videoConnection.videoOrientation,
+                cameraPosition: videoDevicePosition
+            )
+            if let rotation = rotation {
+                previewView.rotation = rotation
+            }
+            previewView.mirroring = (videoDevicePosition == .front)
+        }
+
+        //self.view.insertSubview(_previewView!, at: 0)
+        self.view.insertSubview(previewView, at: 0)
         var bounds = CGRect.zero
-        bounds.size = self.view.convert(self.view.bounds, to: _previewView).size
-        _previewView!.bounds = bounds
-        _previewView!.center = CGPoint(x: self.view.bounds.size.width/2.0, y: self.view.bounds.size.height/2.0)
+        //bounds.size = self.view.convert(self.view.bounds, to: _previewView).size
+        bounds.size = self.view.convert(self.view.bounds, to: previewView).size
+        //_previewView!.bounds = bounds
+        previewView.bounds = bounds
+        //_previewView!.center = CGPoint(x: self.view.bounds.size.width/2.0, y: self.view.bounds.size.height/2.0)
+        previewView.center = CGPoint(x: self.view.bounds.size.width/2.0, y: self.view.bounds.size.height/2.0)
     }
     
     @objc func deviceOrientationDidChange() {
@@ -209,16 +230,19 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         if !_allowedToUseGPU {
             return
         }
-        if _previewView == nil {
+        //if _previewView == nil {
+        if previewView == nil {
             self.setupPreviewView()
         }
         
-        _previewView!.displayPixelBuffer(previewPixelBuffer)
+        //_previewView!.displayPixelBuffer(previewPixelBuffer)
+        previewView?.pixelBuffer = previewPixelBuffer
     }
     
     func capturePipelineDidRunOutOfPreviewBuffers(_ capturePipeline: RosyWriterCapturePipeline) {
         if _allowedToUseGPU {
-            _previewView?.flushPixelBufferCache()
+            //_previewView?.flushPixelBufferCache()
+            previewView?.flushTextureCache()
         }
     }
     
@@ -242,4 +266,116 @@ class RosyWriterViewController: UIViewController, RosyWriterCapturePipelineDeleg
         self.showError(error)
     }
     
+}
+
+//Taken from CameraViewController.swift of AVCamFilter
+extension PreviewMetalView.Rotation {
+    init?(with interfaceOrientation: UIInterfaceOrientation, videoOrientation: AVCaptureVideoOrientation, cameraPosition: AVCaptureDevice.Position) {
+        /*
+         Calculate the rotation between the videoOrientation and the interfaceOrientation.
+         The direction of the rotation depends upon the camera position.
+         */
+        switch videoOrientation {
+        case .portrait:
+            switch interfaceOrientation {
+            case .landscapeRight:
+                if cameraPosition == .front {
+                    self = .rotate90Degrees
+                } else {
+                    self = .rotate270Degrees
+                }
+                
+            case .landscapeLeft:
+                if cameraPosition == .front {
+                    self = .rotate270Degrees
+                } else {
+                    self = .rotate90Degrees
+                }
+                
+            case .portrait:
+                self = .rotate0Degrees
+                
+            case .portraitUpsideDown:
+                self = .rotate180Degrees
+                
+            default: return nil
+            }
+        case .portraitUpsideDown:
+            switch interfaceOrientation {
+            case .landscapeRight:
+                if cameraPosition == .front {
+                    self = .rotate270Degrees
+                } else {
+                    self = .rotate90Degrees
+                }
+                
+            case .landscapeLeft:
+                if cameraPosition == .front {
+                    self = .rotate90Degrees
+                } else {
+                    self = .rotate270Degrees
+                }
+                
+            case .portrait:
+                self = .rotate180Degrees
+                
+            case .portraitUpsideDown:
+                self = .rotate0Degrees
+                
+            default: return nil
+            }
+            
+        case .landscapeRight:
+            switch interfaceOrientation {
+            case .landscapeRight:
+                self = .rotate0Degrees
+                
+            case .landscapeLeft:
+                self = .rotate180Degrees
+                
+            case .portrait:
+                if cameraPosition == .front {
+                    self = .rotate270Degrees
+                } else {
+                    self = .rotate90Degrees
+                }
+                
+            case .portraitUpsideDown:
+                if cameraPosition == .front {
+                    self = .rotate90Degrees
+                } else {
+                    self = .rotate270Degrees
+                }
+                
+            default: return nil
+            }
+            
+        case .landscapeLeft:
+            switch interfaceOrientation {
+            case .landscapeLeft:
+                self = .rotate0Degrees
+                
+            case .landscapeRight:
+                self = .rotate180Degrees
+                
+            case .portrait:
+                if cameraPosition == .front {
+                    self = .rotate90Degrees
+                } else {
+                    self = .rotate270Degrees
+                }
+                
+            case .portraitUpsideDown:
+                if cameraPosition == .front {
+                    self = .rotate270Degrees
+                } else {
+                    self = .rotate90Degrees
+                }
+                
+            default: return nil
+            }
+        @unknown default:
+            fatalError("Unknown orientation.")
+        }
+    }
 }
